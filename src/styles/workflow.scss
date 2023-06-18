@@ -1,0 +1,41 @@
+/* global defaults */
+:root {
+  --vf-node-bg: var(--bg-color-page);
+  --vf-node-text: var(--text-color-primary);
+  --vf-node-text-selectable: var(--color-white);
+  --vf-connection-path: var(--border-color);
+  --vf-handle: var(--color-info);
+  /* custom */
+  --vf-handle-primary:var(--color-primary);
+  --vf-handle-success:var(--color-success);
+  --vf-handle-warning:var(--color-warning);
+  --vf-handle-danger:var(--color-danger);
+  
+  .vue-flow__node > .node{
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    background: var(--vf-node-bg);
+    padding: 5px 10px;
+    color:var(--vf-node-text);
+    box-shadow: var(--box-shadow-lighter);
+  }
+  
+  .vue-flow__node-start > .node{
+    background: var(--vf-handle-success);
+    color:var(--vf-node-text-selectable);
+  }
+  
+  .vue-flow__node-step > .node{
+    background: var(--vf-node-bg);
+    color:var(--vf-node-text);
+  }
+  
+  .vue-flow__node-end > .node{
+    background: var(--vf-handle-danger);
+    color:var(--vf-node-text-selectable);
+  }
+  
+  .vue-flow__node > .node.selected{
+    box-shadow: var(--box-shadow);
+  }
+}
