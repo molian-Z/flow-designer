@@ -1,0 +1,130 @@
+<template>
+  <div class="left-panel">
+    <div class="panel-container">
+      <collapse :activeNames="activeNames">
+        <template v-for="(category,categoryKey) in widgetsCategory" :key="categoryKey">
+          <collapse-item :name="categoryKey" :title="names[categoryKey]">
+            <div class="nodes">
+              <template v-for="item in category">
+                <div :class="['vue-flow__node-'+item.type,'workflow-model-item']" :draggable="true"
+                  @dragstart="onDragStart($event, item)">
+                  <svg-icon :icon-class="item.icon" class="color-svg-icon"></svg-icon>
+                  <div class="workflow-model-item__label">
+                    {{getWidgetLabel(item)}}
+                  </div>
+                </div>
+              </template>
+            </div>
+          </collapse-item>
+        </template>
+      </collapse>
+    </div>
+  </div>
+</template>
+
+<script setup>
+  import collapse from '@/components/collapse/index.vue'
+  import collapseItem from '@/components/collapse/collapse-item.vue'
+  import svgIcon from '@/components/svg-icon/index.vue'
+  import {
+    ref,
+    onMounted,
+    nextTick
+  } from 'vue'
+  import widgetsConfig, {
+    names
+  } from "./widgetsConfig"
+  const widgetsCategory = ref({})
+  const activeNames = ref([])
+  let id = 0
+
+  function getId() {
+    return `dndnode_${id++}`
+  }
+
+  onMounted(() => {
+    loadWidgets()
+  })
+
+  function onDragStart(event, node) {
+    if (event.dataTransfer) {
+      node.key = getId()
+      event.dataTransfer.setData('application/vueflow', JSON.stringify(node))
+      event.dataTransfer.effectAllowed = 'move'
+    }
+  }
+
+  function getWidgetLabel(widget) {
+    //这里可以改造i18n
+    return widget.label
+  }
+
+  function loadWidgets() {
+    for (let key in widgetsConfig) {
+      widgetsCategory.value[key] = widgetsConfig[key].map(fld => {
+        return {
+          key: getId(),
+          ...fld,
+          displayName: fld.type
+        }
+      })
+      activeNames.value.push(key)
+    }
+  }
+</script>
+
+<style lang="scss" scoped>
+  .left-panel {
+    height: 100%;
+    width: 300px;
+    overflow-y: auto;
+
+    .panel-container {
+      padding: 15px 10px;
+
+      .nodes {
+        display: flex;
+        flex-wrap: wrap;
+
+        .workflow-model-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          height: 42px;
+          line-height: 32px;
+          width: calc(50% - 6px);
+          float: left;
+          padding: 0;
+          margin: 2px 6px 6px 0;
+          cursor: move;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          background: var(--bg-color-page);
+          border-radius: var(--border-radius);
+          border-width: 0px;
+
+          .color-svg-icon {
+            color: var(--color-primary);
+          }
+
+          transition:var(--transition);
+          .workflow-model-item__label{
+            margin-right: 1em;
+            font-size: 13px;
+          }
+        }
+
+        .workflow-model-item:hover {
+          background: var(--color-primary-light-9);
+          box-shadow: var(--box-shadow-lighter);
+          color: var(--color-primary);
+
+          .color-svg-icon {
+            color: var(--color-primary);
+          }
+        }
+      }
+    }
+  }
+</style>
