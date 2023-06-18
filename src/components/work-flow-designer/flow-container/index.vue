@@ -72,7 +72,13 @@
   } = useVueFlow()
   const props = defineProps({
     designer: Object,
-    modelValue: Array
+    modelValue: Array,
+    topbarRef:{
+      type:Object,
+      default:function(){
+        return{}
+      }
+    }
   })
   const $emit = defineEmits(['update:modelValue'])
   const selectedWorkflow = ref(null)
@@ -279,13 +285,12 @@
   @import '@vue-flow/minimap/dist/style.css';
 
   .workflow-container {
-    width: calc(100% - 230px);
+    width: 100%;
     height: 100%;
     overflow: hidden;
 
     .full-height-width {
       height: 100%;
-      padding: 3px;
 
       .no-widget-hint {
         position: absolute;

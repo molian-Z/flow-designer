@@ -76,7 +76,6 @@
 <style lang="scss" scoped>
   .left-panel {
     height: 100%;
-    width: 300px;
     overflow-y: auto;
 
     .panel-container {
