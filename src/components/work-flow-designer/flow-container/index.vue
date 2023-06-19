@@ -56,8 +56,10 @@
     markRaw,
     computed,
     defineProps,
-    defineEmits
+    defineEmits,
+	defineExpose
   } from 'vue'
+  import { useRefHistory } from '@vueuse/core'
   import {
     useVueFlow,
     Position
@@ -85,6 +87,7 @@
   const selectedWorkflowName = ref(null)
   const workflowToolbarRef = ref()
   const flow = ref(null)
+  const { history, undo, redo } = useRefHistory(props.modelValue)
 
   const nodeTypes = computed(() => {
     const nTypes = {}
@@ -275,6 +278,10 @@
   function move(data) {
     workflowToolbarRef.value.close()
   }
+  
+  defineExpose({
+	undo,redo,history
+  })
 
 </script>
 
