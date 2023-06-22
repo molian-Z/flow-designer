@@ -1,9 +1,11 @@
 <template>
-  <svg-icon icon-class="clear" class="color-svg-icon" @click="reveal" />
+  <div @click="reveal">
+    <slot></slot>
+  </div>
   <teleport to="body">
     <transition name="zoom-in-bottom">
-      <div :style="popperPosition" class="clear-icon-modal-bg" v-if="isRevealed">
-        <div class="popper-title">确定要清空画布么?</div>
+      <div ref="popconfirm" :style="popperPosition" class="popconfirm-modal-bg" v-if="isRevealed">
+        <slot name="reference"></slot>
         <div class="popper-btns">
           <button class="primary" @click="confirm">确认</button>
           <button class="warning" @click="cancel">取消</button>
@@ -14,36 +16,46 @@
 </template>
 
 <script setup>
-  import svgIcon from '@/components/svg-icon/index.vue'
   import {
-    useConfirmDialog
-  } from '@vueuse/core';
+    useConfirmDialog,onClickOutside 
+  } from '@vueuse/core'
+  
   import {
     ref,
     defineOptions,
-    defineEmits
+    defineEmits,
+    defineProps
   } from 'vue'
+  
+  const {confirmButtonText} = defineProps({
+    confirmButtonText:{type:String,default:'确认'},
+    cancelButtonText:{type:String,default:'取消'}
+  })
+  
   defineOptions({
-    name: 'clear',
+    name: 'popconfirm',
     index: 1
   })
-
+  
+  const popconfirm = ref({})
+  
   const $emit = defineEmits(['click'])
-
+  
   const popperPosition = ref({
     position: 'fixed',
     left: '35px',
     top: '45px',
     zIndex: -1
   })
-
+  
   const {
     isRevealed,
     reveal,
     onReveal,
     confirm,
     cancel,
-    onConfirm
+    onConfirm,
+    onCancel
   } = useConfirmDialog()
   onReveal((e) => {
     const {
@@ -67,12 +79,18 @@
     }
   })
   onConfirm(() => {
-    $emit('click')
+    $emit('confirm')
   })
+  onCancel(()=>{
+    $emit('cancel')
+  })
+  
+  onClickOutside(popconfirm, () => {cancel()})
+  
 </script>
 
 <style lang="scss" scoped>
-  .clear-icon-modal-bg {
+  .popconfirm-modal-bg {
     background-color: var(--bg-color);
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow-light);

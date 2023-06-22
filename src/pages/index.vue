@@ -34,6 +34,7 @@
       max-width: 260px;
       width: 260px;
       min-width: 260px;
+      background-color: var(--bg-color);
     }
     .designer-container__header_body{
       /* box-shadow: 3px 7px 9px 0px rgba(0, 0, 0, 0.12); */

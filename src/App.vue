@@ -4,7 +4,7 @@
     reactive,
     defineExpose
   } from 'vue'
-  import workFlowDesginer from '@/components/work-flow-designer/index.vue'
+  import workFlowDesginer from '@/pages/index.vue'
 
   const config = reactive({})
   const flowList = reactive([])

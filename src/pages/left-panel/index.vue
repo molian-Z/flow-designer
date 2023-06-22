@@ -111,6 +111,7 @@
           .workflow-model-item__label{
             margin-right: 1em;
             font-size: 13px;
+            color:var(--text-color-primary);
           }
         }
 

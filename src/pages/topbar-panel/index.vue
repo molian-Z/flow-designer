@@ -2,7 +2,7 @@
   <div class="workflow-header">
     <div class="workflow-header__body">
       <div class="workflow-header__body-left">
-        <svg-icon icon-class="undo" class="color-svg-icon" @click="flowRef.historyRef.undo()"
+        <svg-icon icon-class="undo" class="color-svg-icon" style="margin-right: 15px;" @click="flowRef.historyRef.undo()"
           :class="[!canUndo&&'disabled']"></svg-icon>
         <svg-icon icon-class="redo" class="color-svg-icon" @click="flowRef.historyRef.redo()"
           :class="[!canRedo&&'disabled']"></svg-icon>
@@ -73,6 +73,11 @@
           margin-right: 30px;
         }
       }
+      
+      .workflow-header__body-right{
+        display: flex;
+        align-items: center;
+      }
 
       .color-svg-icon {
         font-size: 16px;
@@ -83,10 +88,7 @@
         &:hover:not(.disabled) {
           opacity: .5;
         }
-
-        &:first-child {
-          margin-right: 15px;
-        }
+        
       }
       
       .disabled{
