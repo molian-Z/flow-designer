@@ -1,7 +1,7 @@
 <template>
   <div class="workflow-container">
     <div class="full-height-width dndflow" @drop="onDrop">
-      <VueFlow ref="flow" fit-view-on-init v-model="flowList" @nodeDragStop="onNodeDragEnd"
+      <VueFlow ref="flowRef" fit-view-on-init v-model="flowList" @nodeDragStop="onNodeDragEnd"
         @onedge-update="onEdgeUpdate" @connect="onConnected" @edge-update-start="onEdgeUpdateStart"
         @edge-update-end="onEdgeUpdateEnd" @dragover="onDragOver" :nodeTypes="nodeTypes" @node-click="onNodeClick"
         @paneClick="onPaneClick" @move="move" @edgeClick="onEdgeClick">
@@ -9,15 +9,9 @@
           <CustomConnectionLine :source-x="sourceX" :source-y="sourceY" :target-x="targetX" :target-y="targetY" />
         </template>
         <Background></Background>
-        <MiniMap pannable zoomable>
-          <!-- <template #node-input="props">
-            <MiniMapNode />
-          </template> -->
-        </MiniMap>
+        <MiniMap pannable zoomable></MiniMap>
         <Controls>
-          <!-- <ControlButton>
-            <i class="fa fa-plus"></i>
-          </ControlButton> -->
+          <slot name="controlButton"></slot>
         </Controls>
       </VueFlow>
     </div>
@@ -39,8 +33,7 @@
     MiniMap
   } from '@vue-flow/minimap'
   import {
-    Controls,
-    ControlButton
+    Controls
   } from '@vue-flow/controls'
   import {getElementByAttr} from '@/utils/util'
   
@@ -59,10 +52,9 @@
     defineEmits,
 	defineExpose
   } from 'vue'
-  import { useRefHistory } from '@vueuse/core'
+  import { useManualRefHistory } from '@vueuse/core'
   import {
-    useVueFlow,
-    Position
+    useVueFlow
   } from '@vue-flow/core'
   const {
     addNodes,
@@ -70,7 +62,6 @@
     vueFlowRef,
     updateEdge,
     addEdges,
-    onConnect,
   } = useVueFlow()
   const props = defineProps({
     designer: Object,
@@ -83,11 +74,9 @@
     }
   })
   const $emit = defineEmits(['update:modelValue'])
-  const selectedWorkflow = ref(null)
-  const selectedWorkflowName = ref(null)
+  const currentNode = ref(null)
   const workflowToolbarRef = ref()
-  const flow = ref(null)
-  const { history, undo, redo } = useRefHistory(props.modelValue)
+  const flowRef = ref(null)
 
   const nodeTypes = computed(() => {
     const nTypes = {}
@@ -130,6 +119,14 @@
       }
     }
   })
+  
+  
+  /* history records */
+  const  historyRef = useManualRefHistory(flowList,{
+    deep:true,
+    clone:true,
+    capacity:20
+  })
 
   function updateFlowPositionToId(id, position) {
     let cacheIndex = props.modelValue.findIndex(item => {
@@ -137,7 +134,7 @@
     })
     if (cacheIndex > -1) {
       props.modelValue[cacheIndex].position = position
-      //props.designer.emitHistoryChange()
+      historyRef.commit()
     }
   }
 
@@ -174,7 +171,7 @@
     addNodes(newNode)
     // align node position after drop, so it's centered to the mouse
     nextTick(() => {
-      const node = flow.value.findNode(newNode.id)
+      const node = flowRef.value.findNode(newNode.id)
       const stop = watch(
         () => node.dimensions,
         (dimensions) => {
@@ -242,7 +239,7 @@
       ...options
     })
     nextTick(() => {
-      //props.designer.emitHistoryChange()
+      historyRef.commit()
     })
     return
   }
@@ -271,16 +268,21 @@
     workflowToolbarRef.value.show(data)
   }
 
-  function onPaneClick(data) {
+  function onPaneClick() {
     workflowToolbarRef.value.close()
   }
 
-  function move(data) {
+  function move() {
     workflowToolbarRef.value.close()
   }
   
+  
+  function clearFlowData(){
+    $emit('update:modelValue', [])
+    historyRef.commit()
+  }
   defineExpose({
-	undo,redo,history
+    historyRef,flowRef,currentNode,clearFlowData
   })
 
 </script>

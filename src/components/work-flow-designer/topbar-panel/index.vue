@@ -2,14 +2,16 @@
   <div class="workflow-header">
     <div class="workflow-header__body">
       <div class="workflow-header__body-left">
-        <svg-icon icon-class="undo" class="color-svg-icon" @click="click('undo')"></svg-icon>
-        <svg-icon icon-class="redo" class="color-svg-icon" @click="click('redo')"></svg-icon>
+        <svg-icon icon-class="undo" class="color-svg-icon" @click="flowRef.historyRef.undo()"
+          :class="[!canUndo&&'disabled']"></svg-icon>
+        <svg-icon icon-class="redo" class="color-svg-icon" @click="flowRef.historyRef.redo()"
+          :class="[!canRedo&&'disabled']"></svg-icon>
       </div>
       <div class="workflow-header__body-right">
         <template v-for="comp in components" :key="comp.name">
           <component :is="comp" @click="click(comp.name)"></component>
         </template>
-		<slot></slot>
+        <slot></slot>
       </div>
     </div>
   </div>
@@ -30,50 +32,67 @@
   const props = defineProps({
     designer: Object,
     modelValue: Array,
-    flowRef:{
-      type:Object,
-      default:function(){
-        return{}
+    flowRef: {
+      type: Object,
+      default: function() {
+        return {}
       }
     }
   })
-  const click = function(type){
-	  console.log(type)
-	  console.log(props.flowRef)
-	  props.flowRef.undo()
+  const canUndo = computed(() => {
+    return props?.flowRef?.historyRef?.canUndo.value
+  })
+  const canRedo = computed(() => {
+    return props?.flowRef?.historyRef?.canRedo.value
+  })
+  
+  const click = function(type) {
+    if(type === 'clear'){
+      props.flowRef.clearFlowData()
+    }
   }
 </script>
 
 <style lang="scss">
-  .workflow-header{
+  .workflow-header {
     min-height: 42px;
     max-height: 42px;
-    
-    .workflow-header__body{
+
+    .workflow-header__body {
       display: flex;
       justify-content: space-between;
       align-items: center;
       height: 100%;
-      padding:0 15px;
-      .workflow-header__body-left{
+      padding: 0 15px;
+
+      .workflow-header__body-left {
         display: flex;
         align-items: center;
-        >*:not(:last-child){
+
+        >*:not(:last-child) {
           margin-right: 30px;
         }
       }
-	  .color-svg-icon{
-	    font-size: 16px;
-	    transition: var(--transition);
-	    color: var(--color-primary);
-	    cursor: pointer;
-	    &:hover{
-	      opacity: .3;
-	    }
-	    &:first-child{
-	      margin-right: 15px;
-	    }
-	  }
+
+      .color-svg-icon {
+        font-size: 16px;
+        transition: var(--transition);
+        color: var(--color-primary);
+        cursor: pointer;
+
+        &:hover:not(.disabled) {
+          opacity: .5;
+        }
+
+        &:first-child {
+          margin-right: 15px;
+        }
+      }
+      
+      .disabled{
+        color:var(--disbled-color);
+        cursor: no-drop;
+      }
     }
   }
 </style>
