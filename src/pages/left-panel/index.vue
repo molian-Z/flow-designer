@@ -3,7 +3,7 @@
     <div class="panel-container">
       <collapse :activeNames="activeNames">
         <template v-for="(category,categoryKey) in widgetsCategory" :key="categoryKey">
-          <collapse-item :name="categoryKey" :title="names[categoryKey]">
+          <collapse-item :name="categoryKey" :title="$t('pages.leftPanel.collapseName.'+categoryKey)">
             <div class="nodes">
               <template v-for="item in category">
                 <div :class="['vue-flow__node-'+item.type,'workflow-model-item']" :draggable="true"
@@ -26,14 +26,12 @@
   import collapse from '@/components/collapse/index.vue'
   import collapseItem from '@/components/collapse/collapse-item.vue'
   import svgIcon from '@/components/svg-icon/index.vue'
+  import { $t } from '@/utils/i18n'
   import {
     ref,
-    onMounted,
-    nextTick
+    onMounted
   } from 'vue'
-  import widgetsConfig, {
-    names
-  } from "./widgetsConfig"
+  import widgetsConfig from "./widgetsConfig"
   const widgetsCategory = ref({})
   const activeNames = ref([])
   let id = 0
@@ -55,8 +53,7 @@
   }
 
   function getWidgetLabel(widget) {
-    //这里可以改造i18n
-    return widget.label
+    return $t('pages.leftPanel.components.'+widget.type) || widget.label
   }
 
   function loadWidgets() {

@@ -7,8 +7,8 @@
       <div ref="popconfirm" :style="popperPosition" class="popconfirm-modal-bg" v-if="isRevealed">
         <slot name="reference"></slot>
         <div class="popper-btns">
-          <button class="primary" @click="confirm">确认</button>
-          <button class="warning" @click="cancel">取消</button>
+          <button class="primary" @click="confirm">{{!confirmButtonText?$t('components.popconfirm.confirm'):confirmButtonText}}</button>
+          <button class="warning" @click="cancel">{{!cancelButtonText?$t('components.popconfirm.cancel'):cancelButtonText}}</button>
         </div>
       </div>
     </transition>
@@ -17,8 +17,9 @@
 
 <script setup>
   import {
-    useConfirmDialog,onClickOutside 
+    useConfirmDialog,onClickOutside,useDebounceFn 
   } from '@vueuse/core'
+  import { $t } from '@/utils/i18n'
   
   import {
     ref,
@@ -26,10 +27,9 @@
     defineEmits,
     defineProps
   } from 'vue'
-  
-  const {confirmButtonText} = defineProps({
-    confirmButtonText:{type:String,default:'确认'},
-    cancelButtonText:{type:String,default:'取消'}
+  const {confirmButtonText,cancelButtonText} = defineProps({
+    confirmButtonText:{type:String,default: '' },
+    cancelButtonText:{type:String,default:''}
   })
   
   defineOptions({
@@ -84,8 +84,13 @@
   onCancel(()=>{
     $emit('cancel')
   })
-  
-  onClickOutside(popconfirm, () => {cancel()})
+  onClickOutside(popconfirm, (e) => {
+    if(isRevealed.value){
+      useDebounceFn(() => {
+        cancel()
+      }, 50)()
+    }
+  })
   
 </script>
 

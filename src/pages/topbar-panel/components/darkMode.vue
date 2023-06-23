@@ -12,7 +12,20 @@
 </template>
 <script setup>
   import { useDark } from '@vueuse/core'
-  const isDark = useDark()
+  import {
+    defineOptions
+  } from 'vue'
+  defineOptions({
+    name: 'darkMode',
+    index: 2
+  })
+  const isDark = useDark({
+      storageKey: 'dark-mode__name',
+      // 暗黑class名字
+      valueDark: 'dark',
+      // 高亮class名字
+      valueLight: 'light',
+    })
 </script>
 
 <style lang="scss" scoped>
@@ -20,7 +33,7 @@
     background-color: var(--bg-color-page);
     border-radius: 30px;
     border:1px solid var(--border-color);
-    width: 60px;
+    width: 50px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -46,7 +59,7 @@
     &.active{
       background-color: var(--bg-color-page);
       .switch-slider{
-        margin-left: 35px;
+        margin-left: 25px;
       }
     }
   }
