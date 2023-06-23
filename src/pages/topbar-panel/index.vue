@@ -29,6 +29,11 @@
   } from 'vue'
   import svgIcon from '@/components/svg-icon/index.vue'
   import components from './components/index'
+  
+  defineOptions({
+    name:'topbarPanel'
+  })
+  
   const props = defineProps({
     designer: Object,
     modelValue: Array,

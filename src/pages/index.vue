@@ -8,13 +8,18 @@
   </div>
 </template>
 
-<script setup name="workflowDesigner">
+<script setup>
   import {
-    ref
+    ref,defineOptions
   } from 'vue'
   import leftPanel from './left-panel/index.vue'
   import flowContainer from './flow-container/index.vue'
   import topbarPanel from './topbar-panel/index.vue'
+  
+  defineOptions({
+    name:"workflowDesigner"
+  })
+  
   const workflowData = ref([])
   const designer = ref({})
   const flowRef = ref({})

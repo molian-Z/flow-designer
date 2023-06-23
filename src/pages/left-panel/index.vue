@@ -29,9 +29,15 @@
   import { $t } from '@/utils/i18n'
   import {
     ref,
-    onMounted
+    onMounted,
+    defineOptions
   } from 'vue'
   import widgetsConfig from "./widgetsConfig"
+  
+  defineOptions({
+    name:'leftPanel'
+  })
+  
   const widgetsCategory = ref({})
   const activeNames = ref([])
   let id = 0

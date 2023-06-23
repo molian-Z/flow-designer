@@ -24,7 +24,8 @@
   //register components
   import {
     VueFlow,
-    MarkerType
+    MarkerType,
+    useVueFlow
   } from '@vue-flow/core'
   import {
     Background
@@ -35,6 +36,8 @@
   import {
     Controls
   } from '@vue-flow/controls'
+  
+  import { useManualRefHistory } from '@vueuse/core'
   import {getElementByAttr} from '@/utils/util'
   
   import workflowWidget from './workflow-widget/index'
@@ -50,12 +53,12 @@
     computed,
     defineProps,
     defineEmits,
+    defineOptions,
 	defineExpose
   } from 'vue'
-  import { useManualRefHistory } from '@vueuse/core'
-  import {
-    useVueFlow
-  } from '@vue-flow/core'
+  defineOptions({
+    name:'flowContainer'
+  })
   const {
     addNodes,
     project,

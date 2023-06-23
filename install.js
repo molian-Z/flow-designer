@@ -1,43 +1,51 @@
-/* import VFormDesigner from '@/components/form-designer/index.vue' */
-
-import ContextMenu from '@imengyu/vue3-context-menu';
-
+/* pages */
+import flowDesigner from '@/pages/index.vue'
+import topbarPanel from '@/pages/topbar-panel/index.vue'
+import leftPanel from '@/pages/left-panel/index.vue'
+import flowContainer from '@/pages/flow-container/index.vue'
 import 'virtual:svg-icons-register'
 
-/* import ContainerWidgets from '@/components/form-designer/form-widget/container-widget/index' */
+flowDesigner.install = function(app){
+  
+  app.component(flowDesigner.name,flowDesigner)
+  
+ /* app.component(VueFlow.name,VueFlow)
+  app.component(Background.name,Background)
+  
+  app.component(MiniMap.name,MiniMap)
+  app.component(Controls.name,Controls) */
+}
 
-/* import i18n, {addENExtensionLang, addZHExtensionLang} from "@/utils/i18n" */
+topbarPanel.install = function(app){
+  app.component(topbarPanel.name,topbarPanel)
+}
 
+leftPanel.install = function(app){
+  app.component(leftPanel.name,leftPanel)
+}
 
-/* VFormDesigner.install = function (app) {
-  addDirective(app)
-  loadExtension(app)
+flowContainer.install = function(app){
+  app.component(flowContainer.name,flowContainer)
+}
 
-  app.use(ContainerWidgets)
-  app.use(ContainerItems)
-  app.use(DataV, { classNamePrefix: 'data-v-' });
-  app.use(ContextMenu)
-  app.config.globalProperties.$echarts = echarts;
-  registerIcon(app)
-  app.component('draggable', Draggable)
-  app.component(VFormDesigner.name, VFormDesigner)
-  app.component(TableMultiLevelColumn.name, TableMultiLevelColumn)
-  app.component(TableHighLevelColumn.name, TableHighLevelColumn)
-} */
 const components = [
-  VFormDesigner
+  flowDesigner,
+  topbarPanel,
+  leftPanel,
+  flowContainer
 ]
 
 const install = (app) => {
-  app.use(ContextMenu)
   components.forEach(component => {
     app.component(component.name, component)
   })
 }
-if (typeof window !== 'undefined' && window.Vue) { /* script方式引入时赋值axios！！ */
-  //window.axios = axios
-}
+
 
 export default {
+  flowDesigner,
+  topbarPanel,
+  leftPanel,
+  flowContainer,
   install
 }
