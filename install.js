@@ -5,27 +5,20 @@ import leftPanel from '@/pages/left-panel/index.vue'
 import flowContainer from '@/pages/flow-container/index.vue'
 import 'virtual:svg-icons-register'
 
-flowDesigner.install = function(app){
-  
-  app.component(flowDesigner.name,flowDesigner)
-  
- /* app.component(VueFlow.name,VueFlow)
-  app.component(Background.name,Background)
-  
-  app.component(MiniMap.name,MiniMap)
-  app.component(Controls.name,Controls) */
+flowDesigner.install = function(app) {
+  app.component(flowDesigner.name, flowDesigner)
 }
 
-topbarPanel.install = function(app){
-  app.component(topbarPanel.name,topbarPanel)
+topbarPanel.install = function(app) {
+  app.component(topbarPanel.name, topbarPanel)
 }
 
-leftPanel.install = function(app){
-  app.component(leftPanel.name,leftPanel)
+leftPanel.install = function(app) {
+  app.component(leftPanel.name, leftPanel)
 }
 
-flowContainer.install = function(app){
-  app.component(flowContainer.name,flowContainer)
+flowContainer.install = function(app) {
+  app.component(flowContainer.name, flowContainer)
 }
 
 const components = [
