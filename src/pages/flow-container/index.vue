@@ -4,7 +4,7 @@
       <VueFlow ref="flowRef" fit-view-on-init v-model="flowList" @nodeDragStop="onNodeDragEnd"
         @onedge-update="onEdgeUpdate" @connect="onConnected" @edge-update-start="onEdgeUpdateStart"
         @edge-update-end="onEdgeUpdateEnd" @dragover="onDragOver" :nodeTypes="nodeTypes" @node-click="onNodeClick"
-        @paneClick="onPaneClick" @move="move" @edgeClick="onEdgeClick">
+        @edgeClick="onEdgeClick">
         <template #connection-line="{ sourceX, sourceY, targetX, targetY }">
           <CustomConnectionLine :source-x="sourceX" :source-y="sourceY" :target-x="targetX" :target-y="targetY" />
         </template>
@@ -282,15 +282,6 @@
   function onEdgeClick(data) {
     workflowToolbarRef.value.show(data)
   }
-
-  function onPaneClick() {
-    workflowToolbarRef.value.close()
-  }
-
-  function move() {
-    workflowToolbarRef.value.close()
-  }
-
 
   function clearFlowData() {
     $emit('update:modelValue', [])

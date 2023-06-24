@@ -67,7 +67,7 @@ export default defineConfig({
 				},
 				assetFileNames: 'flow-designer.style.css',
 			}
-		}
+		},
 	}
 
 })

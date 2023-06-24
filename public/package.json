@@ -1,0 +1,16 @@
+{
+  "name": "work-flow-designer",
+  "version": "0.1.0",
+  "private": false,
+  "description": "",
+  "author": "molian-Z",
+  "main": "./flow-designer.umd.js",
+  "keywords": [
+    "work-flow-designer",
+    "vue3",
+    "vue",
+    "vueflow",
+    "vueuse"
+  ],
+  "license": "MIT"
+}
