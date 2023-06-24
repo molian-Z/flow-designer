@@ -36,10 +36,14 @@
   import {
     Controls
   } from '@vue-flow/controls'
-  
-  import { useManualRefHistory } from '@vueuse/core'
-  import {getElementByAttr} from '@/utils/util'
-  
+
+  import {
+    useManualRefHistory
+  } from '@vueuse/core'
+  import {
+    getElementByAttr
+  } from '@/utils/util'
+
   import workflowWidget from './workflow-widget/index'
   import toolbarPanel from './toolbar-panel/index.vue'
   import CustomConnectionLine from './workflow-widget/line/index.vue'
@@ -54,10 +58,10 @@
     defineProps,
     defineEmits,
     defineOptions,
-	defineExpose
+    defineExpose
   } from 'vue'
   defineOptions({
-    name:'flowContainer'
+    name: 'flowContainer'
   })
   const {
     addNodes,
@@ -65,14 +69,15 @@
     vueFlowRef,
     updateEdge,
     addEdges,
+    nodes
   } = useVueFlow()
   const props = defineProps({
     designer: Object,
     modelValue: Array,
-    topbarRef:{
-      type:Object,
-      default:function(){
-        return{}
+    topbarRef: {
+      type: Object,
+      default: function() {
+        return {}
       }
     }
   })
@@ -98,12 +103,12 @@
         if (widget && widget.type === 'edge') {
           return {
             ...widget.options,
-            id: widget.options.$id,
+            id: widget.id,
             data: node
           }
         } else if (widget) {
           return {
-            id: widget.options.$id,
+            id: widget.id,
             position: widget.position,
             type: widget.type,
             label: widget.options.label || widget.label,
@@ -119,30 +124,36 @@
       })
       if (JSON.stringify(props.modelValue) !== JSON.stringify(newData)) {
         $emit('update:modelValue', newData)
+        historyData.value = newData
       }
     }
   })
-  
-  
-  /* history records */
-  const  historyRef = useManualRefHistory(flowList,{
-    deep:true,
-    clone:true,
-    capacity:20
+
+  const historyData = ref([])
+
+  watch(historyData, (val) => {
+    $emit('update:modelValue', val)
   })
 
+  /* history records */
+  const historyRef = useManualRefHistory(historyData, {
+    deep:true,
+    clone: true,
+    capacity: 20
+  })
+
+
   function updateFlowPositionToId(id, position) {
-    let cacheIndex = props.modelValue.findIndex(item => {
-      return item.options.$id === id
-    })
-    if (cacheIndex > -1) {
-      props.modelValue[cacheIndex].position = position
+    const node = flowRef.value.findNode(id)
+    node.data.widget.position = position
+    node.position = position
+    nextTick(() => {
       historyRef.commit()
-    }
+    })
   }
 
   function onNodeDragEnd(e) {
-    updateFlowPositionToId(e.node.data.widget.options.$id, e.node.position)
+    updateFlowPositionToId(e.node.id, e.node.position)
   }
 
   function onDrop(event) {
@@ -159,8 +170,8 @@
     })
     let id = node.widget.type + '-' + node.widget.key + '_' + flowList.value.length
     node.widget.options.name = id
+    node.widget.id = id
     node.widget.options.label = node.widget.label
-    node.widget.options.$id = id
     node.props = props
     node.widget.position = position
     node.type = 'node'
@@ -184,12 +195,14 @@
               y: node.position.y - node.dimensions.height / 2
             }
             stop()
-            updateFlowPositionToId(node.data.widget.options.$id, node.position)
-            nextTick(()=>{
+            updateFlowPositionToId(node.id, node.position)
+            nextTick(() => {
               var dom = document.getElementsByClassName('vue-flow__node')
               onNodeClick({
                 node,
-                event:{target:getElementByAttr(dom,'data-id',newNode.id)[0]}
+                event: {
+                  target: getElementByAttr(dom, 'data-id', newNode.id)[0]
+                }
               })
             })
           }
@@ -219,8 +232,6 @@
   function onConnected(params) {
     const id = 'edge-' + flowList.value.length
     const options = {
-      $id: id,
-      id: id,
       name: id,
       type: 'smoothstep',
       label: 'custom label text',
@@ -236,6 +247,7 @@
         props: props,
         widget: {
           type: 'edge',
+          id: id,
           options
         }
       },
@@ -264,7 +276,7 @@
     } = data.node.data
     const designer = props.designer
     designer.selectedWorkflow = widget
-    designer.selectedWorkflowName = widget.options.$id
+    designer.selectedWorkflowName = widget.id
   }
 
   function onEdgeClick(data) {
@@ -278,16 +290,18 @@
   function move() {
     workflowToolbarRef.value.close()
   }
-  
-  
-  function clearFlowData(){
+
+
+  function clearFlowData() {
     $emit('update:modelValue', [])
     historyRef.commit()
   }
   defineExpose({
-    historyRef,flowRef,currentNode,clearFlowData
+    historyRef,
+    flowRef,
+    currentNode,
+    clearFlowData
   })
-
 </script>
 
 <style lang="scss">

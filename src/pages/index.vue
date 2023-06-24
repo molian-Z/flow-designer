@@ -17,7 +17,7 @@
   import topbarPanel from './topbar-panel/index.vue'
   
   defineOptions({
-    name:"workflowDesigner"
+    name:"workFlowDesigner"
   })
   
   const workflowData = ref([])

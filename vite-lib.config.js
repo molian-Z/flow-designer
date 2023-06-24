@@ -12,21 +12,16 @@ import visualizer from 'rollup-plugin-visualizer'
 // https://vitejs.dev/config/
 export default defineConfig({
 	plugins: [
-		vue(),
-
-		//解决引入commonjs模块后打包出现的{'default' is not exported by XXX}错误!!
-		/* commonjs({
+		vue({
+      reactivityTransform: true,
+    }),
+		commonjs({
 			requireReturnsDefault: true
-		}), */
-		/* 配置requireReturnsDefault属性，
-		  解决打包后引入VForm出现的"Axios is not a constructor"错！！ */
-
-		//可视化Bundle
-		//visualizer(),
-
+		}),
+		visualizer(),
 		createSvgIconsPlugin({
 			// Specify the icon folder to be cached
-			iconDirs: [resolve(process.cwd(), 'src/icons/svg')],
+			iconDirs: [resolve(process.cwd(), 'src/icons')],
 			// Specify symbolId format
 			symbolId: 'icon-[dir]-[name]',
 		}),
@@ -64,7 +59,7 @@ export default defineConfig({
 			// 确保外部化处理那些你不想打包进库的依赖
 			external: ['vue'],
 			output: {
-				exports: 'default', //要支持CDN引入必须设置此参数！！！
+				exports: 'default',
 				format:'umd',
 				// 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
 				globals: {

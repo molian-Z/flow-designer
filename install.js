@@ -1,12 +1,15 @@
 /* pages */
-import flowDesigner from '@/pages/index.vue'
+import workFlowDesigner from '@/pages/index.vue'
 import topbarPanel from '@/pages/topbar-panel/index.vue'
 import leftPanel from '@/pages/left-panel/index.vue'
 import flowContainer from '@/pages/flow-container/index.vue'
 import 'virtual:svg-icons-register'
 
-flowDesigner.install = function(app) {
-  app.component(flowDesigner.name, flowDesigner)
+workFlowDesigner.install = function(app) {
+  app.component(workFlowDesigner.name, workFlowDesigner)
+  app.component(topbarPanel.name, topbarPanel)
+  app.component(leftPanel.name, leftPanel)
+  app.component(flowContainer.name, flowContainer)
 }
 
 topbarPanel.install = function(app) {
@@ -21,24 +24,27 @@ flowContainer.install = function(app) {
   app.component(flowContainer.name, flowContainer)
 }
 
-const components = [
-  flowDesigner,
-  topbarPanel,
-  leftPanel,
-  flowContainer
-]
-
-const install = (app) => {
+const install = (app)=>{
+  const components = [
+    workFlowDesigner,
+    topbarPanel,
+    leftPanel,
+    flowContainer
+  ]
   components.forEach(component => {
     app.component(component.name, component)
   })
 }
 
-
 export default {
-  flowDesigner,
+  install,
+  workFlowDesigner,
   topbarPanel,
   leftPanel,
-  flowContainer,
-  install
+  flowContainer
 }
+
+export * from '@/pages/index.vue'
+export * from '@/pages/topbar-panel/index.vue'
+export * from '@/pages/left-panel/index.vue'
+export * from '@/pages/flow-container/index.vue'

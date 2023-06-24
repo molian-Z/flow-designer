@@ -5,8 +5,14 @@
 </template>
 
 <script setup>
-import {ref} from 'vue'
+import {onMounted, ref} from 'vue'
 const activeNode = ref(false)
+const itemRef = ref()
+onMounted(()=>{
+  if(itemRef.value.outerText === itemRef.value.parentNode.__vnode.props.activeName){
+    activeNode.value = true
+  }
+})
 </script>
 
 <style lang="scss" scoped>

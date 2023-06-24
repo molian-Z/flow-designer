@@ -1,7 +1,8 @@
 {
   "name": "work-flow-designer",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.1.0",
+  "private": false,
+  "author": "molian-Z",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

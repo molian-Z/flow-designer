@@ -5,7 +5,7 @@
   <teleport to="body">
     <transition name="zoom-in-bottom">
       <div ref="dropdown" :style="popperPosition" class="dropdown-modal-bg" v-if="isRevealed">
-        <div ref="dropdownMenu" class="dropdown-menu" @click="itemClick">
+        <div ref="dropdownMenu" :activeName="activeName" class="dropdown-menu" @click="itemClick">
           <slot name="dropdown"></slot>
         </div>
       </div>
@@ -83,20 +83,6 @@
         top: bottom + 10 + 'px',
         zIndex: 1000
       }
-    }
-  })
-  
-  watch(isRevealed,(val)=>{
-    if(val){
-      nextTick(()=>{
-        dropdownMenu.value.__vnode.children[0].children.forEach(item =>{
-          if(item.el.innerText === props.activeName){
-            item.component.setupState.activeNode = true
-          }else{
-            item.component.setupState.activeNode = false
-          }
-        })
-      })
     }
   })
   
