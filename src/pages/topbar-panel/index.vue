@@ -58,9 +58,9 @@
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .workflow-header {
-    min-height: 42px;
+    height: 42px;
     max-height: 42px;
 
     .workflow-header__body {
@@ -84,7 +84,7 @@
         align-items: center;
       }
 
-      .color-svg-icon {
+      :deep(.color-svg-icon) {
         font-size: 16px;
         transition: var(--transition);
         color: var(--color-primary);
@@ -93,7 +93,6 @@
         &:hover:not(.disabled) {
           opacity: .5;
         }
-        
       }
       
       .disabled{
