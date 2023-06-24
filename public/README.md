@@ -1,4 +1,4 @@
-# work-flow-path-designer
+# flow-designer
 > 这是一个基于vue3、vue-flow、@vueuse/core 开发的设计器除此之外他将不依赖于其他UI库
 > 拖拽式可视化工作流
 > gzip压缩大小仅84kb
@@ -20,7 +20,7 @@
 
 <br/>
 
-#### 2. 引入并全局注册VForm组件
+#### 2. 引入并全局注册flow-designer组件
 ```
 import {createApp} from 'vue'
 
