@@ -1,26 +1,30 @@
 {
   "name": "work-flow-designer",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.1.0",
+  "private": false,
+  "author": "molian-Z",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    "lib": "vite build --config vite-lib.config.js"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
+    "@rollup/plugin-commonjs": "^25.0.1",
     "@vue-flow/background": "^1.2.0",
     "@vue-flow/controls": "^1.1.0",
     "@vue-flow/core": "^1.20.2",
     "@vue-flow/minimap": "^1.1.1",
     "@vue-flow/node-resizer": "^1.3.2",
     "@vue-flow/node-toolbar": "^1.1.0",
+    "@vueuse/core": "^10.2.0",
     "fast-glob": "^3.2.12",
-    "sass": "^1.63.4",
+    "rollup-plugin-visualizer": "^5.9.2",
+    "sass": "^1.63.6",
     "vite-plugin-svg-icons": "^2.0.1",
-    "vue": "^3.3.4",
-    "vue-i18n": "^9.2.2"
+    "vue": "^3.3.4"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",

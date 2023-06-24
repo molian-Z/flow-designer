@@ -1,43 +1,50 @@
-/* import VFormDesigner from '@/components/form-designer/index.vue' */
-
-import ContextMenu from '@imengyu/vue3-context-menu';
-
+/* pages */
+import workFlowDesigner from '@/pages/index.vue'
+import topbarPanel from '@/pages/topbar-panel/index.vue'
+import leftPanel from '@/pages/left-panel/index.vue'
+import flowContainer from '@/pages/flow-container/index.vue'
 import 'virtual:svg-icons-register'
 
-/* import ContainerWidgets from '@/components/form-designer/form-widget/container-widget/index' */
+workFlowDesigner.install = function(app) {
+  app.component(workFlowDesigner.name, workFlowDesigner)
+  app.component(topbarPanel.name, topbarPanel)
+  app.component(leftPanel.name, leftPanel)
+  app.component(flowContainer.name, flowContainer)
+}
 
-/* import i18n, {addENExtensionLang, addZHExtensionLang} from "@/utils/i18n" */
+topbarPanel.install = function(app) {
+  app.component(topbarPanel.name, topbarPanel)
+}
 
+leftPanel.install = function(app) {
+  app.component(leftPanel.name, leftPanel)
+}
 
-/* VFormDesigner.install = function (app) {
-  addDirective(app)
-  loadExtension(app)
+flowContainer.install = function(app) {
+  app.component(flowContainer.name, flowContainer)
+}
 
-  app.use(ContainerWidgets)
-  app.use(ContainerItems)
-  app.use(DataV, { classNamePrefix: 'data-v-' });
-  app.use(ContextMenu)
-  app.config.globalProperties.$echarts = echarts;
-  registerIcon(app)
-  app.component('draggable', Draggable)
-  app.component(VFormDesigner.name, VFormDesigner)
-  app.component(TableMultiLevelColumn.name, TableMultiLevelColumn)
-  app.component(TableHighLevelColumn.name, TableHighLevelColumn)
-} */
-const components = [
-  VFormDesigner
-]
-
-const install = (app) => {
-  app.use(ContextMenu)
+const install = (app)=>{
+  const components = [
+    workFlowDesigner,
+    topbarPanel,
+    leftPanel,
+    flowContainer
+  ]
   components.forEach(component => {
     app.component(component.name, component)
   })
 }
-if (typeof window !== 'undefined' && window.Vue) { /* script方式引入时赋值axios！！ */
-  //window.axios = axios
-}
 
 export default {
-  install
+  install,
+  workFlowDesigner,
+  topbarPanel,
+  leftPanel,
+  flowContainer
 }
+
+export * from '@/pages/index.vue'
+export * from '@/pages/topbar-panel/index.vue'
+export * from '@/pages/left-panel/index.vue'
+export * from '@/pages/flow-container/index.vue'

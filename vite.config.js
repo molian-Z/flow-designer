@@ -1,6 +1,12 @@
-import {createSvgIconsPlugin} from 'vite-plugin-svg-icons'
-import { defineConfig } from 'vite'
-import { resolve } from 'path'
+import {
+  createSvgIconsPlugin
+} from 'vite-plugin-svg-icons'
+import {
+  defineConfig
+} from 'vite'
+import {
+  resolve
+} from 'path'
 import vue from '@vitejs/plugin-vue'
 /* import commonjs from '@rollup/plugin-commonjs'
 import externalGlobals from "rollup-plugin-external-globals" */
@@ -18,7 +24,19 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-        "@": resolve(__dirname, 'src'), // 路径别名
+      "@": resolve(__dirname, 'src'), // 路径别名
     },
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: id => {
+          // 将 node_modules 中的代码单独打包成一个 JS 文件
+          if (id.includes('node_modules')) {
+            return 'vendor'
+          }
+        }
+      }
+    }
   }
 })

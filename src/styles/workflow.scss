@@ -11,6 +11,32 @@
   --vf-handle-warning:var(--color-warning);
   --vf-handle-danger:var(--color-danger);
   
+  .vue-flow{
+    background-color: var(--bg-color);
+  }
+  
+  .vue-flow__minimap{
+    background-color: var(--bg-color);
+  }
+  
+  .vue-flow__background{
+    background-color: var(--bg-color);
+  }
+  
+  .vue-flow__controls{
+    background-color: var(--bg-color);
+    .vue-flow__controls-button{
+      background-color: var(--bg-color);
+      fill:var(--text-color-primary);
+      border-color: var(--border-color);
+    }
+  }
+  
+  .vue-flow__handle{
+    background-color: var(--bg-color);
+    border-color: var(--border-color);
+  }
+  
   .vue-flow__node > .node{
     border-radius: var(--border-radius);
     transition: var(--transition);

@@ -57,10 +57,14 @@
       align-items: center;
       cursor: pointer;
       padding: 15px 5px;
+      
+      .title{
+        color:var(--text-color-primary);
+      }
 
       >.arrow {
         transition: var(--transition);
-
+        color:var(--text-color-primary);
         &.rotate {
           transform: rotate(-90deg);
         }

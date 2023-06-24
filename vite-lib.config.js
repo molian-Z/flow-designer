@@ -2,8 +2,7 @@ import {
 	defineConfig
 } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import vueJsx from '@vitejs/plugin-vue-jsx'
-import createSvgIconsPlugin from 'vite-plugin-svg-icons'
+import {createSvgIconsPlugin} from 'vite-plugin-svg-icons'
 import {
 	resolve
 } from 'path'
@@ -13,24 +12,16 @@ import visualizer from 'rollup-plugin-visualizer'
 // https://vitejs.dev/config/
 export default defineConfig({
 	plugins: [
-		vue(),
-		
-		//添加jsx/tsx支持
-		vueJsx({}),
-
-		//解决引入commonjs模块后打包出现的{'default' is not exported by XXX}错误!!
+		vue({
+      reactivityTransform: true,
+    }),
 		commonjs({
 			requireReturnsDefault: true
 		}),
-		/* 配置requireReturnsDefault属性，
-		  解决打包后引入VForm出现的"Axios is not a constructor"错！！ */
-
-		//可视化Bundle
 		visualizer(),
-
 		createSvgIconsPlugin({
 			// Specify the icon folder to be cached
-			iconDirs: [resolve(process.cwd(), 'src/icons/svg')],
+			iconDirs: [resolve(process.cwd(), 'src/icons')],
 			// Specify symbolId format
 			symbolId: 'icon-[dir]-[name]',
 		}),
@@ -45,14 +36,14 @@ export default defineConfig({
 	},
 
 	optimizeDeps: {
-		include: ['@/../lib/vuedraggable/dist/vuedraggable.umd.js', 'quill'],
+		include: [],
 	},
 
 	css: {
 		preprocessorOptions: {
 			scss: {
 				/* 自动引入全局scss文件 */
-				additionalData: '@import "./src/styles/global.scss";'
+				additionalData: '@import "./src/styles/index.scss";'
 			}
 		}
 	},
@@ -61,24 +52,20 @@ export default defineConfig({
 		//minify: false,
 		lib: {
 			entry: resolve(__dirname, 'install.js'),
-			name: 'VFormDesigner',
-			fileName: (format) => `designer.${format}.js`
+			name: 'work-flow-designer',
+			fileName: (format) => `flow-designer.${format}.js`
 		},
 		rollupOptions: {
 			// 确保外部化处理那些你不想打包进库的依赖
-			external: ['vue', 'element-plus', 'axios', '@element-plus/icons-vue', 'echarts','@imengyu/vue3-context-menu'],
+			external: ['vue'],
 			output: {
-				exports: 'default', //要支持CDN引入必须设置此参数！！！
+				exports: 'default',
 				format:'umd',
 				// 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
 				globals: {
-					vue: 'Vue',
-					'element-plus': 'ElementPlus',
-					'echarts': 'echarts',
-					'axios': 'axios',
-          'ContextMenu':'@imengyu/vue3-context-menu'
+					vue: 'Vue'
 				},
-				assetFileNames: 'designer.style.css',
+				assetFileNames: 'flow-designer.style.css',
 			}
 		}
 	}

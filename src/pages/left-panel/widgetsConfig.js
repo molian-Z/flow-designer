@@ -1,8 +1,3 @@
-export const names = {
-  baseContainer:'分组容器',
-  basicFields:'基础组件'
-}
-
 export default {
   basicFields: [{
     type: 'start',
