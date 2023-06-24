@@ -1,5 +1,5 @@
 {
-  "name": "work-flow-designer",
+  "name": "@molian-z/flow-designer",
   "version": "0.1.0",
   "private": false,
   "author": "molian-Z",
@@ -11,7 +11,6 @@
     "lib": "vite build --config vite-lib.config.js"
   },
   "dependencies": {
-    "@popperjs/core": "^2.11.8",
     "@rollup/plugin-commonjs": "^25.0.1",
     "@vue-flow/background": "^1.2.0",
     "@vue-flow/controls": "^1.1.0",

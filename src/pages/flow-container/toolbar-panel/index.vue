@@ -1,103 +1,126 @@
 <template>
-    <div ref="workflowPopoverRef" class="popper">
-       <transition name="zoom-in-bottom">
-        <div class="popper-container" v-if="isShow">
-          <span> Some content </span>
-        </div>
-        </transition>
-    </div>
+  <teleport to="body">
+    <transition name="zoom-in-bottom">
+      <div ref="popconfirm" :style="popperPosition" class="toolbar-container" v-if="isRevealed">
+        some content
+      </div>
+    </transition>
+  </teleport>
 </template>
 
 <script setup>
   import {
-    createPopper
-  } from '@popperjs/core';
-  import collapseTransition from '@/components/collapse/collapse-transition.vue'
+    useConfirmDialog,
+    onClickOutside,
+    useDebounceFn
+  } from '@vueuse/core'
+  import {
+    $t
+  } from '@/utils/i18n'
+
   import {
     ref,
     defineOptions,
-    defineExpose,
-    onMounted,
-    computed,
-    watch,
-    defineProps
+    defineEmits,
+    defineExpose
   } from 'vue'
+
   defineOptions({
-    name: 'toolbar'
+    name: 'toolbarPanel'
   })
-  const props = defineProps({
-    visible:Boolean,
-    placement:{
-      type:String,
-      default:'top',
+
+  const popconfirm = ref({})
+  const currentId = ref()
+
+  const $emit = defineEmits(['click'])
+
+  const popperPosition = ref({
+    position: 'fixed',
+    left: '35px',
+    top: '45px',
+    zIndex: -1
+  })
+
+  const {
+    isRevealed,
+    reveal,
+    onReveal,
+    confirm,
+    cancel,
+    onConfirm,
+    onCancel
+  } = useConfirmDialog()
+  onReveal((e) => {
+    const {
+      x,
+      y,
+      width,
+      right
+    } = e.target.getBoundingClientRect()
+    const realX = x+(width/2) - 100
+    const realY = y - 50
+    if (right + 80 >= document.body.clientWidth) {
+      popperPosition.value = {
+        position: 'fixed',
+        right: '5px',
+        top: realY + 'px',
+        zIndex: 1000
+      }
+    } else {
+      popperPosition.value = {
+        position: 'fixed',
+        left: realX + 'px',
+        top: realY + 'px',
+        zIndex: 1000
+      }
     }
   })
-  
-  const isShow = ref(false)
-  const workflowPopoverRef = ref()
-  const currentId = ref('')
-  
-  function generateGetBoundingClientRect(x = 0, y = 0) {
-    return () => ({
-      width: 0,
-      height: 0,
-      top: y,
-      right: x,
-      bottom: y,
-      left: x,
-    });
-  }
-  
-  const virtualElement = ref({
-    getBoundingClientRect: generateGetBoundingClientRect(),
-  });
-  const instance = ref({})
-  onMounted(()=>{
-    close()
-    instance.value = createPopper(virtualElement.value, workflowPopoverRef.value);
+  onConfirm(() => {
+    $emit('confirm')
   })
-  
+  onCancel(() => {
+    $emit('cancel')
+  })
+  onClickOutside(popconfirm, () => {
+    if (isRevealed.value) {
+      useDebounceFn(() => {
+        cancel()
+      }, 50)()
+    }
+  })
+
+
   const show = function(data) {
-    if(data.node.id === currentId.value && isShow.value){
+    if (data.node.id === currentId.value && isRevealed.value) {
       close()
       return false
     }
-    const dom = data.event.target
-    const {x,y,width} = dom.getBoundingClientRect()
-    const realX = x+(width/2)
-    const realY = y - 50
-    virtualElement.value.getBoundingClientRect = generateGetBoundingClientRect(realX,realY)
     currentId.value = data.node.id
-    isShow.value = true
-    instance.value.update()
+    reveal(data.event)
   }
   const close = function() {
-    isShow.value = false
+    cancel()
   }
 
-  
   defineExpose({
-    show,
-    close
+    show
   })
 </script>
 
 <style lang="scss">
-  .popper{
-    transition:var(--transition);
-    .popper-container{
-      background-color: var(--bg-color);
-      padding: 10px 15px;
-      box-shadow: var(--box-shadow-light);
-      border-radius: var(--border-radius);
-    }
+  .toolbar-container {
+    background-color: var(--bg-color);
+    padding: 10px 15px;
+    box-shadow: var(--box-shadow-light);
+    border-radius: var(--border-radius);
+    width: 170px;
   }
-  
-  .zoom-in-bottom-enter-active{
+
+  .zoom-in-bottom-enter-active {
     opacity: 0;
     transform: scaleY(0);
   }
-  
+
   .zoom-in-bottom-enter-to,
   .zoom-in-bottom-leave-active {
     opacity: 1;
@@ -105,10 +128,9 @@
     transition: transform var(--transition) cubic-bezier(0.23, 1, 0.32, 1), opacity var(--transition) cubic-bezier(0.23, 1, 0.32, 1);
     transform-origin: center bottom;
   }
-  
+
   .zoom-in-bottom-leave-to {
     opacity: 0;
     transform: scaleY(0);
   }
-  
 </style>

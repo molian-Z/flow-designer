@@ -24,6 +24,7 @@
 </script>
 <style scoped lang="scss">
   .popper-title {
+    color:var(--text-color-primary);
     font-size: 14px;
     margin-bottom: 10px;
   }

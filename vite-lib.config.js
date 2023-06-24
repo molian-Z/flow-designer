@@ -52,8 +52,8 @@ export default defineConfig({
 		//minify: false,
 		lib: {
 			entry: resolve(__dirname, 'install.js'),
-			name: 'work-flow-designer',
-			fileName: (format) => `flow-designer.${format}.js`
+			name: 'work-flow',
+			fileName: (format) => `index.${format}.js`
 		},
 		rollupOptions: {
 			// 确保外部化处理那些你不想打包进库的依赖
@@ -65,9 +65,9 @@ export default defineConfig({
 				globals: {
 					vue: 'Vue'
 				},
-				assetFileNames: 'flow-designer.style.css',
+				assetFileNames: 'index.css',
 			}
-		}
+		},
 	}
 
 })
