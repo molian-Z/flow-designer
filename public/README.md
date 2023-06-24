@@ -11,11 +11,11 @@
 
 #### 1. 安装包
   ```bash
-  npm i work-flow-designer
+  npm i @molian-z/work-flow-designer
   ```
 或
   ```bash
-  yarn add work-flow-designer
+  yarn add @molian-z/work-flow-designer
   ```
 
 <br/>
@@ -26,7 +26,7 @@ import {createApp} from 'vue'
 
 import App from './App.vue'
 
-import flow from 'work-flow-designer'
+import flow from '@molian-z/work-flow-designer'
 
 import './lib/flow-designer.style.css'
 
