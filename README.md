@@ -1,4 +1,4 @@
-# work-flow
+# work-flow-path-designer
 > 这是一个基于vue3、vue-flow、@vueuse/core 开发的设计器除此之外他将不依赖于其他UI库
 > 拖拽式可视化工作流
 > gzip压缩大小仅84kb
@@ -11,11 +11,11 @@
 
 #### 1. 安装包
   ```bash
-  npm i @molian-z/work-flow
+  npm i @molian-z/flow-designer
   ```
 或
   ```bash
-  yarn add @molian-z/work-flow
+  yarn add @molian-z/flow-designer
   ```
 
 <br/>
@@ -26,14 +26,13 @@ import {createApp} from 'vue'
 
 import App from './App.vue'
 
-import flow from '@molian-z/work-flow'
+import flowDesigner from '@molian-z/flow-designer'
 
-import './lib/flow-designer.style.css'
+import '@molian-z/flow-designer/index.css'
 
 const app = createApp(App)
 
-app.use(flow)
-
+app.use(flowDesigner)
 app.mount('#app')
 
 ```
