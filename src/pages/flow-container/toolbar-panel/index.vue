@@ -107,7 +107,7 @@
   })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .toolbar-container {
     background-color: var(--bg-color);
     padding: 10px 15px;
