@@ -4,27 +4,43 @@ import topbarPanel from '@/pages/topbar-panel/index.vue'
 import leftPanel from '@/pages/left-panel/index.vue'
 import flowContainer from '@/pages/flow-container/index.vue'
 import 'virtual:svg-icons-register'
+import {
+  setDark,
+  i18n
+} from '@/utils/exposeConfig'
 
-workFlowDesigner.install = function(app) {
+
+const setConfig = function(config) {
+  setDark(config.setDark)
+  if (!!config.setLang) {
+    i18n.setLang(config.setLang)
+  }
+}
+
+workFlowDesigner.install = function(app, config) {
   app.component(workFlowDesigner.name, workFlowDesigner)
   app.component(topbarPanel.name, topbarPanel)
   app.component(leftPanel.name, leftPanel)
   app.component(flowContainer.name, flowContainer)
+  setConfig(config)
 }
 
-topbarPanel.install = function(app) {
+topbarPanel.install = function(app, config) {
   app.component(topbarPanel.name, topbarPanel)
+  setConfig(config)
 }
 
-leftPanel.install = function(app) {
+leftPanel.install = function(app, config) {
   app.component(leftPanel.name, leftPanel)
+  setConfig(config)
 }
 
-flowContainer.install = function(app) {
+flowContainer.install = function(app, config) {
   app.component(flowContainer.name, flowContainer)
+  setConfig(config)
 }
 
-const install = (app)=>{
+const install = (app, config) => {
   const components = [
     workFlowDesigner,
     topbarPanel,
@@ -34,6 +50,8 @@ const install = (app)=>{
   components.forEach(component => {
     app.component(component.name, component)
   })
+
+  setConfig(config)
 }
 
 export default {
@@ -44,6 +62,7 @@ export default {
   flowContainer
 }
 
+export {setDark, i18n} from '@/utils/exposeConfig'
 export * from '@/pages/index.vue'
 export * from '@/pages/topbar-panel/index.vue'
 export * from '@/pages/left-panel/index.vue'

@@ -1,3 +1,4 @@
+正在开发中```
 # flow-designer
 > 这是一个基于vue3、vue-flow、@vueuse/core 开发的设计器除此之外他将不依赖于其他UI库
 > 拖拽式可视化工作流
@@ -28,11 +29,12 @@ import App from './App.vue'
 
 import flowDesigner from '@molian-z/flow-designer'
 
-import '@molian-z/flow-designer/index.css'
+import '@molian-z/flow-designer/dist/index.css'
 
 const app = createApp(App)
 
-app.use(flowDesigner)
+app.use(flowDesigner,{setLang:'zh-CN'})//setLang  中文可传递 中文或者zh-CN  英文应传递 English或者en-US
+
 app.mount('#app')
 
 ```
@@ -45,9 +47,17 @@ app.mount('#app')
   import {
     ref,
     reactive,
-    defineExpose
+    defineExpose,
+    watch
   } from 'vue'
-
+  import {i18n} from '@molian-z/flow-designer'
+  i18n.setLang('zh-CN')
+  watch('i18n.currentLang',{
+    handler:(val){
+      console.log(val)
+    }
+  })
+  console.log(i18n.currentLang)
   const config = reactive({})
   const flowList = reactive([])
   const flowRef = ref()

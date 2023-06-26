@@ -1,16 +1,20 @@
 {
   "name": "@molian-z/flow-designer",
-  "version": "0.1.4",
+  "version": "0.2.1",
   "private": false,
   "description": "",
   "author": "molian-Z",
-  "main": "./index.umd.js",
+  "main": "./dist/index.umd.js",
   "keywords": [
     "flow-designer",
-    "vue3",
     "vue",
     "vueflow",
     "vueuse"
   ],
+  "homepage": "https://github.com/molian-Z/flow-designer#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/molian-Z/flow-designer.git"
+  },
   "license": "MIT"
 }
