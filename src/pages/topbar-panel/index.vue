@@ -9,7 +9,7 @@
       </div>
       <div class="workflow-header__body-right">
         <template v-for="comp in components" :key="comp.name">
-          <component :is="comp" @click="click(comp.name)"></component>
+          <component :is="comp" @click="click(comp.name)" v-if="hiddenComponents.indexOf(comp.name) === -1"></component>
         </template>
         <slot></slot>
       </div>
@@ -19,13 +19,10 @@
 
 <script setup>
   import {
-    ref,
-    nextTick,
-    watch,
     computed,
     defineProps,
-    defineEmits,
-    defineOptions
+    defineOptions,
+    defineEmits
   } from 'vue'
   import svgIcon from '@/components/svg-icon/index.vue'
   import components from './components/index'
@@ -33,6 +30,8 @@
   defineOptions({
     name:'topbarPanel'
   })
+  
+  const $emit = defineEmits(['topClick'])
   
   const props = defineProps({
     designer: Object,
@@ -42,7 +41,13 @@
       default: function() {
         return {}
       }
-    }
+    },
+    hiddenComponents:{
+      type:Array,
+      default: function(){
+        return []
+      }
+    },
   })
   const canUndo = computed(() => {
     return props?.flowRef?.historyRef?.canUndo.value
@@ -54,6 +59,8 @@
   const click = function(type) {
     if(type === 'clear'){
       props.flowRef.clearFlowData()
+    }else{
+      $emit('topClick',{type})
     }
   }
 </script>

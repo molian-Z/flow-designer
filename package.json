@@ -1,10 +1,15 @@
 {
   "name": "@molian-z/flow-designer",
-  "version": "0.1.4",
+  "version": "0.2.1",
   "private": false,
   "author": "molian-Z",
+  "homepage": "https://github.com/molian-Z/flow-designer#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/molian-Z/flow-designer.git"
+  },
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",

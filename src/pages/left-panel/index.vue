@@ -83,7 +83,9 @@
     overflow-y: auto;
 
     .panel-container {
-      padding: 15px 10px;
+      padding: 0 10px;
+      height: 100%;
+      background-color: var(--bg-color);
 
       .nodes {
         display: flex;

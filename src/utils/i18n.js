@@ -23,7 +23,7 @@ export const languageName = computed(()=>{
 
 export const setLang = function(val){
   const findLang = languageObj.value.find(item =>{
-    return item.label === val
+    return item.label === val || item.value === val
   })
   if(findLang){
     language.value = findLang.value
