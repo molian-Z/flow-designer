@@ -11,17 +11,25 @@
   --vf-handle-warning:var(--color-warning);
   --vf-handle-danger:var(--color-danger);
   
+  /* vue-flow container style */
+  
   .vue-flow{
     background-color: var(--bg-color);
   }
+  
+   /* vue-flow__minimap style */
   
   .vue-flow__minimap{
     background-color: var(--bg-color);
   }
   
+  /* vue-flow__background style */
+  
   .vue-flow__background{
     background-color: var(--bg-color);
   }
+  
+  /* vue-flow__controls style */
   
   .vue-flow__controls{
     background-color: var(--bg-color);
@@ -32,23 +40,38 @@
     }
   }
   
+  /* Node handle element wrapper style */
+  
   .vue-flow__handle{
     background-color: var(--bg-color);
     border-color: var(--border-color);
   }
   
+  /* node style */
+  
   .vue-flow__node > .node{
     border-radius: var(--border-radius);
-    transition: var(--transition);
     background: var(--vf-node-bg);
     padding: 5px 10px;
     color:var(--vf-node-text);
     box-shadow: var(--box-shadow-lighter);
   }
   
+  .vue-flow__node{
+    transition: box-shadow var(--transition);
+  }
+  
+  .vue-flow__node.selected{
+    box-shadow: var(--box-shadow);
+  }
+  
   .vue-flow__node-start > .node{
     background: var(--vf-handle-success);
     color:var(--vf-node-text-selectable);
+    height: calc(100% - 10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   
   .vue-flow__node-step > .node{
@@ -61,7 +84,22 @@
     color:var(--vf-node-text-selectable);
   }
   
-  .vue-flow__node > .node.selected{
-    box-shadow: var(--box-shadow);
+  
+  /* resize component */
+  /* line style */
+  
+  .vue-flow__resize-control.line{
+    border-color:var(--border-color);
   }
+  
+  /* control style */
+  
+  .vue-flow__resize-control.handle{
+    background-color: var(--border-color);
+    border-radius: 50%;
+    width: 6px;
+    height: 6px;
+    z-index: 1;
+  }
+  
 }

@@ -1,8 +1,10 @@
 <template>
   <teleport to="body">
     <transition name="zoom-in-bottom">
-      <div ref="popconfirm" :style="popperPosition" class="toolbar-container" v-if="isRevealed">
-        some content
+      <div ref="toolbarRef" :style="popperPosition" class="toolbar-container" v-if="isRevealed">
+        <template v-for="comp in components" :key="comp.name">
+          <component :is="comp" ></component>
+        </template>
       </div>
     </transition>
   </teleport>
@@ -17,19 +19,31 @@
   import {
     $t
   } from '@/utils/i18n'
+  
+  import components from './components/index'
 
   import {
     ref,
     defineOptions,
     defineEmits,
-    defineExpose
+    defineExpose,
+    defineProps
   } from 'vue'
 
   defineOptions({
     name: 'toolbarPanel'
   })
+  
+  const props = defineProps({
+    flowRef:{
+      type:Object,
+      default:function(){
+        return {}
+      }
+    }
+  })
 
-  const popconfirm = ref({})
+  const toolbarRef = ref({})
   const currentId = ref()
 
   const $emit = defineEmits(['click'])
@@ -81,8 +95,8 @@
   onCancel(() => {
     $emit('cancel')
   })
-  onClickOutside(popconfirm, () => {
-    if (isRevealed.value) {
+  onClickOutside(toolbarRef, () => {
+    if (isRevealed.value && props.flowRef?.getSelectedElements[0]?.id === currentId.value) {
       useDebounceFn(() => {
         cancel()
       }, 50)()
@@ -91,6 +105,9 @@
 
 
   const show = function(data) {
+    if(data.event.target.type === 'textarea'){
+      return false
+    }
     if (data.node.id === currentId.value && isRevealed.value) {
       close()
       return false
