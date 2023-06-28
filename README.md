@@ -81,3 +81,11 @@ app.mount('#app')
   }
 </style>
 ```
+
+
+### 5.引入暴漏函数
+
+```
+import {setDark,i18n} from '@molian-z/flow-designer'
+
+```

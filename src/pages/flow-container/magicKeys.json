@@ -1,0 +1,14 @@
+{
+  "delete": {
+    "key": "delete",
+    "command":"delete"
+  },
+  "ctrl_z": {
+    "key": "ctrl_z",
+    "command":"undo"
+  },
+  "ctrl_y":{
+    "key": "ctrl_y",
+    "command":"redo"
+  }
+}

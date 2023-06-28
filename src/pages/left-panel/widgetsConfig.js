@@ -2,10 +2,9 @@ export default {
   basicFields: [{
     type: 'start',
     icon: 'node-start',
-    label: 'startNode',
     options: {
       name: '',
-      label: '',
+      label: 'startNode',
       customClass: '',
       hidden: false,
       position: ['Right'],
@@ -17,10 +16,9 @@ export default {
   }, {
     type: 'step',
     icon: 'node-step',
-    label: 'stepNode',
     options: {
       name: '',
-      label: '',
+      label: 'stepNode',
       customClass: '',
       hidden: false,
       position: ['Left', 'Right'],
@@ -32,10 +30,9 @@ export default {
   }, {
     type: 'end',
     icon: 'node-end',
-    label: 'endNode',
     options: {
       name: '',
-      label: '',
+      label: 'endNode',
       customClass: '',
       hidden: false,
       position: ['Left'],

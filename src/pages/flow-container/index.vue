@@ -16,7 +16,7 @@
       </VueFlow>
     </div>
     <!-- <settingPanel></settingPanel> -->
-    <toolbarPanel ref="workflowToolbarRef"></toolbarPanel>
+    <toolbarPanel ref="workflowToolbarRef" :flowRef="flowRef"></toolbarPanel>
   </div>
 </template>
 
@@ -40,9 +40,6 @@
   import {
     useManualRefHistory
   } from '@vueuse/core'
-  import {
-    getElementByAttr
-  } from '@/utils/util'
 
   import workflowWidget from './workflow-widget/index'
   import toolbarPanel from './toolbar-panel/index.vue'
@@ -58,8 +55,11 @@
     defineProps,
     defineEmits,
     defineOptions,
-    defineExpose
+    defineExpose,
+    onMounted,
+    provide
   } from 'vue'
+  import initDesigner from './designer.js'
   defineOptions({
     name: 'flowContainer'
   })
@@ -68,8 +68,7 @@
     project,
     vueFlowRef,
     updateEdge,
-    addEdges,
-    nodes
+    addEdges
   } = useVueFlow()
   const props = defineProps({
     designer: Object,
@@ -111,7 +110,7 @@
             id: widget.id,
             position: widget.position,
             type: widget.type,
-            label: widget.options.label || widget.label,
+            label: widget.options.label,
             data: node
           }
         }
@@ -142,6 +141,15 @@
     capacity: 20
   })
 
+  onMounted(()=>{
+    initDesigner({
+      flowRef,
+      designer:props.designer,
+      historyRef
+    })
+  })
+
+
 
   function updateFlowPositionToId(id, position) {
     const node = flowRef.value.findNode(id)
@@ -171,7 +179,6 @@
     let id = node.widget.type + '-' + node.widget.key + '_' + flowList.value.length
     node.widget.options.name = id
     node.widget.id = id
-    node.widget.options.label = node.widget.label
     node.props = props
     node.widget.position = position
     node.type = 'node'
@@ -179,7 +186,7 @@
       id: id,
       position,
       type: node.widget.type,
-      label: node.widget.options.label || node.widget.label,
+      label: node.widget.options.label,
       data: node
     }
     addNodes(newNode)
@@ -196,15 +203,6 @@
             }
             stop()
             updateFlowPositionToId(node.id, node.position)
-            nextTick(() => {
-              var dom = document.getElementsByClassName('vue-flow__node')
-              onNodeClick({
-                node,
-                event: {
-                  target: getElementByAttr(dom, 'data-id', newNode.id)[0]
-                }
-              })
-            })
           }
         }, {
           deep: true,
@@ -269,24 +267,20 @@
   }
 
   function onNodeClick(data) {
-    workflowToolbarRef.value.show(data)
-    const {
-      props,
-      widget
-    } = data.node.data
-    const designer = props.designer
-    designer.selectedWorkflow = widget
-    designer.selectedWorkflowName = widget.id
+    workflowToolbarRef.value.show(data,flowRef)
   }
 
   function onEdgeClick(data) {
-    workflowToolbarRef.value.show(data)
+    workflowToolbarRef.value.show(data,flowRef)
   }
 
   function clearFlowData() {
     $emit('update:modelValue', [])
     historyRef.commit()
   }
+  
+  provide('vueFlow',vueFlowRef)
+  
   defineExpose({
     historyRef,
     flowRef,
@@ -300,6 +294,7 @@
   @import '@vue-flow/core/dist/theme-default.css';
   @import '@vue-flow/controls/dist/style.css';
   @import '@vue-flow/minimap/dist/style.css';
+  @import '@vue-flow/node-resizer/dist/style.css';
 
   .workflow-container {
     width: 100%;

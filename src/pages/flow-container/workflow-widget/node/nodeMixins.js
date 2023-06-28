@@ -1,13 +1,13 @@
 import {
   defineEmits,
-  getCurrentInstance
+  getCurrentInstance,
+  inject
 } from 'vue'
 
 export function useMixins() {
   const ctx = getCurrentInstance()
   const attrs = ctx.attrs
   const $emit = defineEmits(['change', 'gradient'])
-
   const onSelect = function(color) {
     $emit('change', color)
   }
@@ -23,6 +23,7 @@ export function useMixins() {
     formConfig: attrs.data.formConfig,
     globalDsv: attrs.data.globalDsv,
     onSelect,
-    onGradient
+    onGradient,
+    ctx
   }
 }
