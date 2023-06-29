@@ -3,8 +3,7 @@
     <div class="full-height-width dndflow" @drop="onDrop">
       <VueFlow ref="flowRef" fit-view-on-init v-model="flowList" @nodeDragStop="onNodeDragEnd"
         @onedge-update="onEdgeUpdate" @connect="onConnected" @edge-update-start="onEdgeUpdateStart"
-        @edge-update-end="onEdgeUpdateEnd" @dragover="onDragOver" :nodeTypes="nodeTypes" @node-click="onNodeClick"
-        @edgeClick="onEdgeClick">
+        @edge-update-end="onEdgeUpdateEnd" @dragover="onDragOver" :nodeTypes="nodeTypes">
         <template #connection-line="{ sourceX, sourceY, targetX, targetY }">
           <CustomConnectionLine :source-x="sourceX" :source-y="sourceY" :target-x="targetX" :target-y="targetY" />
         </template>
@@ -16,7 +15,7 @@
       </VueFlow>
     </div>
     <!-- <settingPanel></settingPanel> -->
-    <toolbarPanel ref="workflowToolbarRef" :flowRef="flowRef"></toolbarPanel>
+    <toolbarPanel ref="workflowToolbarRef"></toolbarPanel>
   </div>
 </template>
 
@@ -84,6 +83,7 @@
   const currentNode = ref(null)
   const workflowToolbarRef = ref()
   const flowRef = ref(null)
+  
 
   const nodeTypes = computed(() => {
     const nTypes = {}
@@ -264,14 +264,6 @@
     if (event.dataTransfer) {
       event.dataTransfer.dropEffect = 'move'
     }
-  }
-
-  function onNodeClick(data) {
-    workflowToolbarRef.value.show(data,flowRef)
-  }
-
-  function onEdgeClick(data) {
-    workflowToolbarRef.value.show(data,flowRef)
   }
 
   function clearFlowData() {
