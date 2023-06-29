@@ -3,8 +3,7 @@
     <div class="full-height-width dndflow" @drop="onDrop">
       <VueFlow ref="flowRef" fit-view-on-init v-model="flowList" @nodeDragStop="onNodeDragEnd"
         @onedge-update="onEdgeUpdate" @connect="onConnected" @edge-update-start="onEdgeUpdateStart"
-        @edge-update-end="onEdgeUpdateEnd" @dragover="onDragOver" :nodeTypes="nodeTypes" @node-click="onNodeClick"
-        @edgeClick="onEdgeClick">
+        @edge-update-end="onEdgeUpdateEnd" @dragover="onDragOver" :nodeTypes="nodeTypes">
         <template #connection-line="{ sourceX, sourceY, targetX, targetY }">
           <CustomConnectionLine :source-x="sourceX" :source-y="sourceY" :target-x="targetX" :target-y="targetY" />
         </template>
@@ -16,7 +15,7 @@
       </VueFlow>
     </div>
     <!-- <settingPanel></settingPanel> -->
-    <toolbarPanel ref="workflowToolbarRef" :flowRef="flowRef" :visualRef="visualRef"></toolbarPanel>
+    <toolbarPanel ref="workflowToolbarRef"></toolbarPanel>
   </div>
 </template>
 
@@ -84,7 +83,7 @@
   const currentNode = ref(null)
   const workflowToolbarRef = ref()
   const flowRef = ref(null)
-  const visualRef = ref(null)
+  
 
   const nodeTypes = computed(() => {
     const nTypes = {}
@@ -264,22 +263,6 @@
 
     if (event.dataTransfer) {
       event.dataTransfer.dropEffect = 'move'
-    }
-  }
-
-  function onNodeClick(data) {
-    if(visualRef.value === data){
-      visualRef.value = null
-    }else{
-      visualRef.value = data
-    }
-  }
-
-  function onEdgeClick(data) {
-    if(visualRef.value === data){
-      visualRef.value = null
-    }else{
-      visualRef.value = data
     }
   }
 

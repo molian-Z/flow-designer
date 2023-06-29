@@ -1,5 +1,12 @@
 <template>
-  <teleport to="body">
+  <div v-if="!insertBody">
+    <transition :name="transName">
+      <div ref="popoverRef" :style="position" class="popover-container" v-if="isRevealed">
+        <slot></slot>
+      </div>
+    </transition>
+  </div>
+  <teleport to="body" v-else>
     <transition :name="transName">
       <div ref="popoverRef" :style="position" class="popover-container" v-if="isRevealed">
         <slot></slot>
@@ -8,7 +15,7 @@
   </teleport>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import {
     useConfirmDialog,
     onClickOutside,
@@ -18,45 +25,65 @@
   import {
     ref,
     defineOptions,
-    defineEmits,
     defineProps,
+    defineEmits,
     watch
   } from 'vue'
 
   defineOptions({
     name: 'popover'
   })
+  
+  const $emit = defineEmits(['update:modelValue'])
 
   const props = defineProps({
     flowRef: {
       type: Object,
-      default: function() {
+      default: function () {
         return {}
       }
     },
     visualRef: {
       type: Object,
-      default: function() {
+      default: function () {
         return {}
       }
+    },
+    insertBody:{
+      type:Boolean,
+      default:true
+    },
+    modelValue:{
+      type:Boolean,
+      default:false
     }
   })
+  
+  watch(()=>props.visualRef,(newVal)=>{
+    reveal(newVal)
+  })
 
-  watch(() => props.visualRef, (showRef) => {
-    if (showRef) {
-      reveal(showRef)
-    } else {
+  watch(()=>props.modelValue,(newVal)=>{
+    if(newVal){
+      reveal(props.visualRef)
+    }else{
       cancel()
     }
   })
+  
+  const popoverRef = ref<any>({})
+  const transName = ref<'zoom-in-bottom' | 'zoom-in-top'>('zoom-in-top')
 
-  const popoverRef = ref({})
-  const currentId = ref()
-  const transName = ref('')
-
-  const $emit = defineEmits(['click'])
-
-  const position = ref({})
+  const position = ref<{
+    position : 'fixed'
+    top ?: String
+    zIndex : Number
+    right ?: String
+    left ?: String
+  }>({
+    position: 'fixed',
+    zIndex: 1000
+  })
 
   const {
     isRevealed,
@@ -65,44 +92,53 @@
     cancel
   } = useConfirmDialog()
   onReveal((showRef) => {
-    currentId.value = showRef.node.id
-    const flowRect = props.flowRef.vueFlowRef.getBoundingClientRect()
+    const flowRect = props.flowRef.getBoundingClientRect()
     const {
       x,
       y,
       width,
       bottom
-    } = showRef.event.target.getBoundingClientRect()
+    } = showRef.getBoundingClientRect()
     const realX = x + (width / 2) - 100
     const realY = y - 50
-    const currentPosition = {
-      position: 'fixed',
-      top: realY + 'px',
-      zIndex:1000
-    }
-    if (realX+205 >= document.body.clientWidth) {
+    const currentPosition : {
+      position : 'fixed'
+      top ?: String
+      zIndex : Number
+      right ?: String
+      left ?: String
+    } = {
+        position: 'fixed',
+        top: realY + 'px',
+        zIndex: 1000
+      }
+    if (realX + 205 >= document.body.clientWidth) {
       currentPosition.right = '5px'
-    }else if(realX - flowRect.x - 5 <= 0){
+    } else if (realX - flowRect.x - 5 <= 0) {
       currentPosition.left = flowRect.x + 5 + 'px'
-    }else{
+    } else {
       currentPosition.left = realX + 'px'
     }
-    
-    if(realY - flowRect.y <= 0){
+
+    if (realY - flowRect.y <= 0) {
       currentPosition.top = bottom + 10 + 'px'
       transName.value = "zoom-in-bottom"
-    }else{
+    } else {
       transName.value = "zoom-in-top"
     }
     position.value = currentPosition
   })
-  onClickOutside(popoverRef, () => {
-    if (isRevealed.value && props.visualRef.node.id === currentId.value) {
-      useDebounceFn(()=>{
-        cancel()
-      },50)()
+  onClickOutside(popoverRef, (e) => {
+    if (isRevealed.value && (e.target.__vnode.key === "pane-vue-flow-0" || e.target.tagName === 'svg')) {
+      useDebounceFn(() => {
+        close()
+      }, 50)()
     }
   })
+  
+  const close = function(){
+    $emit('update:modelValue',false)
+  }
 </script>
 
 <style lang="scss" scoped>
@@ -114,7 +150,8 @@
     width: 170px;
   }
 
-  .zoom-in-bottom-enter-active,.zoom-in-top-enter-active {
+  .zoom-in-bottom-enter-active,
+  .zoom-in-top-enter-active {
     opacity: 0;
     transform: scaleY(0);
   }
@@ -126,7 +163,7 @@
     transition: transform var(--transition) cubic-bezier(0.23, 1, 0.32, 1), opacity var(--transition) cubic-bezier(0.23, 1, 0.32, 1);
     transform-origin: center top;
   }
-  
+
   .zoom-in-top-enter-to,
   .zoom-in-top-leave-active {
     opacity: 1;
@@ -134,8 +171,9 @@
     transition: transform var(--transition) cubic-bezier(0.23, 1, 0.32, 1), opacity var(--transition) cubic-bezier(0.23, 1, 0.32, 1);
     transform-origin: center bottom;
   }
-  
-  .zoom-in-bottom-leave-to,.zoom-in-top-leave-to {
+
+  .zoom-in-bottom-leave-to,
+  .zoom-in-top-leave-to {
     opacity: 0;
     transform: scaleY(0);
   }
