@@ -65,13 +65,18 @@
     box-shadow: var(--box-shadow);
   }
   
+  .vue-flow__node{
+    >.node{
+      height: calc(100% - 10px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  
   .vue-flow__node-start > .node{
     background: var(--vf-handle-success);
     color:var(--vf-node-text-selectable);
-    height: calc(100% - 10px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
   
   .vue-flow__node-step > .node{

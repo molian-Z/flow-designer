@@ -16,7 +16,7 @@
       </VueFlow>
     </div>
     <!-- <settingPanel></settingPanel> -->
-    <toolbarPanel ref="workflowToolbarRef" :flowRef="flowRef"></toolbarPanel>
+    <toolbarPanel ref="workflowToolbarRef" :flowRef="flowRef" :visualRef="visualRef"></toolbarPanel>
   </div>
 </template>
 
@@ -84,6 +84,7 @@
   const currentNode = ref(null)
   const workflowToolbarRef = ref()
   const flowRef = ref(null)
+  const visualRef = ref(null)
 
   const nodeTypes = computed(() => {
     const nTypes = {}
@@ -267,11 +268,19 @@
   }
 
   function onNodeClick(data) {
-    workflowToolbarRef.value.show(data,flowRef)
+    if(visualRef.value === data){
+      visualRef.value = null
+    }else{
+      visualRef.value = data
+    }
   }
 
   function onEdgeClick(data) {
-    workflowToolbarRef.value.show(data,flowRef)
+    if(visualRef.value === data){
+      visualRef.value = null
+    }else{
+      visualRef.value = data
+    }
   }
 
   function clearFlowData() {
