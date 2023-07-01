@@ -113,6 +113,7 @@
     width: 130px;
 
     .dropdown-menu {
+      user-select: none;
       padding: 10px 0;
     }
   }

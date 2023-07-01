@@ -1,14 +1,12 @@
 <template>
-  <div v-if="!insertBody">
-    <transition :name="transName">
-      <div ref="popoverRef" :style="position" class="popover-container" v-if="isRevealed">
-        <slot></slot>
-      </div>
-    </transition>
-  </div>
+  <transition :name="transName" v-if="!insertBody">
+    <div ref="popoverRef" :style="position" :class="[!removeClass && 'popover-container']" v-if="isRevealed">
+      <slot></slot>
+    </div>
+  </transition>
   <teleport to="body" v-else>
     <transition :name="transName">
-      <div ref="popoverRef" :style="position" class="popover-container" v-if="isRevealed">
+      <div ref="popoverRef" :style="position" :class="[!removeClass && 'popover-container']" v-if="isRevealed">
         <slot></slot>
       </div>
     </transition>
@@ -27,17 +25,18 @@
     defineOptions,
     defineProps,
     defineEmits,
-    watch
+    watch,
+    nextTick
   } from 'vue'
 
   defineOptions({
     name: 'popover'
   })
-  
+
   const $emit = defineEmits(['update:modelValue'])
 
   const props = defineProps({
-    flowRef: {
+    vueFlowRef: {
       type: Object,
       default: function () {
         return {}
@@ -49,28 +48,32 @@
         return {}
       }
     },
-    insertBody:{
-      type:Boolean,
-      default:true
+    insertBody: {
+      type: Boolean,
+      default: true
     },
-    modelValue:{
+    removeClass:{
       type:Boolean,
       default:false
+    },
+    modelValue: {
+      type: Boolean,
+      default: false
+    },
+    offsetY:{
+      type:Number,
+      default:10
     }
   })
-  
-  watch(()=>props.visualRef,(newVal)=>{
-    reveal(newVal)
-  })
 
-  watch(()=>props.modelValue,(newVal)=>{
-    if(newVal){
+  watch(() => props.modelValue, (newVal) => {
+    if (newVal) {
       reveal(props.visualRef)
-    }else{
+    } else {
       cancel()
     }
   })
-  
+
   const popoverRef = ref<any>({})
   const transName = ref<'zoom-in-bottom' | 'zoom-in-top'>('zoom-in-top')
 
@@ -92,62 +95,68 @@
     cancel
   } = useConfirmDialog()
   onReveal((showRef) => {
-    const flowRect = props.flowRef.getBoundingClientRect()
+    const flowRect = props.vueFlowRef.getBoundingClientRect()
     const {
       x,
       y,
       width,
       bottom
     } = showRef.getBoundingClientRect()
-    const realX = x + (width / 2) - 100
-    const realY = y - 50
-    const currentPosition : {
-      position : 'fixed'
-      top ?: String
-      zIndex : Number
-      right ?: String
-      left ?: String
-    } = {
-        position: 'fixed',
-        top: realY + 'px',
-        zIndex: 1000
+    nextTick(() => {
+      const realX = x + ((width - popoverRef.value.clientWidth) / 2)
+      const realY = y - popoverRef.value.clientHeight - props.offsetY
+      const currentPosition : {
+        position : 'fixed'
+        top ?: String
+        zIndex : Number
+        right ?: String
+        left ?: String
+      } = {
+          position: 'fixed',
+          top: realY + 'px',
+          zIndex: 1000
+        }
+      if (realX + popoverRef.value.clientWidth + 5 >= document.body.clientWidth) {
+        currentPosition.right = '5px'
+      } else if (realX - flowRect.x - 5 <= 0) {
+        currentPosition.left = flowRect.x + 5 + 'px'
+      } else {
+        currentPosition.left = realX + 'px'
       }
-    if (realX + 205 >= document.body.clientWidth) {
-      currentPosition.right = '5px'
-    } else if (realX - flowRect.x - 5 <= 0) {
-      currentPosition.left = flowRect.x + 5 + 'px'
-    } else {
-      currentPosition.left = realX + 'px'
-    }
 
-    if (realY - flowRect.y <= 0) {
-      currentPosition.top = bottom + 10 + 'px'
-      transName.value = "zoom-in-bottom"
-    } else {
-      transName.value = "zoom-in-top"
-    }
-    position.value = currentPosition
+      if (realY - flowRect.y <= 0) {
+        currentPosition.top = bottom + 10 + 'px'
+        transName.value = "zoom-in-bottom"
+      } else {
+        transName.value = "zoom-in-top"
+      }
+      position.value = currentPosition
+    })
   })
   onClickOutside(popoverRef, (e) => {
-    if (isRevealed.value && (e.target.__vnode.key === "pane-vue-flow-0" || e.target.tagName === 'svg')) {
+    if (e.target.__vnode.key === "pane-vue-flow-0" || e.target.tagName === 'svg') {
       useDebounceFn(() => {
         close()
       }, 50)()
+    }else if(isRevealed.value){
+      if(props.insertBody){
+        reveal(e.target)
+      }else{
+        reveal(props.visualRef)
+      }
     }
   })
-  
-  const close = function(){
-    $emit('update:modelValue',false)
+
+  const close = function () {
+    $emit('update:modelValue', false)
   }
 </script>
 
 <style lang="scss" scoped>
   .popover-container {
     background-color: var(--bg-color);
-    padding: 10px 15px;
     box-shadow: var(--box-shadow-light);
     border-radius: var(--border-radius);
-    width: 170px;
   }
 
   .zoom-in-bottom-enter-active,

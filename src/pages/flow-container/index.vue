@@ -1,9 +1,9 @@
 <template>
   <div class="workflow-container">
     <div class="full-height-width dndflow" @drop="onDrop">
-      <VueFlow ref="flowRef" fit-view-on-init v-model="flowList" @nodeDragStop="onNodeDragEnd"
-        @onedge-update="onEdgeUpdate" @connect="onConnected" @edge-update-start="onEdgeUpdateStart"
-        @edge-update-end="onEdgeUpdateEnd" @dragover="onDragOver" :nodeTypes="nodeTypes">
+      <VueFlow fit-view-on-init v-model="flowList" @nodeDragStop="onNodeDragEnd" @onedge-update="onEdgeUpdate"
+        @connect="onConnected" @edge-update-start="onEdgeUpdateStart" @edge-update-end="onEdgeUpdateEnd"
+        @dragover="onDragOver" :nodeTypes="nodeTypes">
         <template #connection-line="{ sourceX, sourceY, targetX, targetY }">
           <CustomConnectionLine :source-x="sourceX" :source-y="sourceY" :target-x="targetX" :target-y="targetY" />
         </template>
@@ -23,7 +23,6 @@
   //register components
   import {
     VueFlow,
-    MarkerType,
     useVueFlow
   } from '@vue-flow/core'
   import {
@@ -40,35 +39,36 @@
     useManualRefHistory
   } from '@vueuse/core'
 
-  import workflowWidget from './workflow-widget/index'
+  
   import toolbarPanel from './toolbar-panel/index.vue'
   import CustomConnectionLine from './workflow-widget/line/index.vue'
   /* import settingPanel from './setting-panel/index' */
   //register methods
   import {
     ref,
-    nextTick,
     watch,
-    markRaw,
     computed,
     defineProps,
     defineEmits,
     defineOptions,
     defineExpose,
-    onMounted,
     provide
   } from 'vue'
-  import initDesigner from './designer.js'
+  import initDesigner from './designer'
+  import {
+    useCompsDrag
+  } from './compsDrag'
   defineOptions({
     name: 'flowContainer'
   })
   const {
-    addNodes,
     project,
-    vueFlowRef,
+    addNodes,
+    addEdges,
     updateEdge,
-    addEdges
+    vueFlowRef
   } = useVueFlow()
+  provide('vueFlow', vueFlowRef)
   const props = defineProps({
     designer: Object,
     modelValue: Array,
@@ -82,16 +82,8 @@
   const $emit = defineEmits(['update:modelValue'])
   const currentNode = ref(null)
   const workflowToolbarRef = ref()
-  const flowRef = ref(null)
   
-
-  const nodeTypes = computed(() => {
-    const nTypes = {}
-    for (let key in workflowWidget) {
-      nTypes[workflowWidget[key].type] = markRaw(workflowWidget[key])
-    }
-    return nTypes
-  })
+  /* 数据处理 */
   const flowList = computed({
     get() {
       const list = props.modelValue.map(widget => {
@@ -136,146 +128,39 @@
 
   /* history records */
   const historyRef = useManualRefHistory(historyData, {
-    deep:true,
+    deep: true,
     clone: true,
     capacity: 20
   })
 
-  onMounted(()=>{
-    initDesigner({
-      flowRef,
-      designer:props.designer,
-      historyRef
-    })
+  const {
+    nodeTypes,
+    clearFlowData
+  } = initDesigner({
+    vueFlowRef,
+    designer: props.designer,
+    historyRef
   })
 
+  const {
+    onConnected,
+    onEdgeUpdateStart,
+    onEdgeUpdate,
+    onEdgeUpdateEnd,
+    onDragOver,
+    onDrop,
+    onNodeDragEnd,
+  } = useCompsDrag(flowList, historyRef, {
+    project,
+    addNodes,
+    addEdges,
+    updateEdge,
+    vueFlowRef
+  })
 
-
-  function updateFlowPositionToId(id, position) {
-    const node = flowRef.value.findNode(id)
-    node.data.widget.position = position
-    node.position = position
-    nextTick(() => {
-      historyRef.commit()
-    })
-  }
-
-  function onNodeDragEnd(e) {
-    updateFlowPositionToId(e.node.id, e.node.position)
-  }
-
-  function onDrop(event) {
-    const node = {}
-    node.widget = JSON.parse(event.dataTransfer?.getData('application/vueflow'))
-    const {
-      left,
-      top
-    } = vueFlowRef.value.getBoundingClientRect()
-
-    const position = project({
-      x: event.clientX - left,
-      y: event.clientY - top,
-    })
-    let id = node.widget.type + '-' + node.widget.key + '_' + flowList.value.length
-    node.widget.options.name = id
-    node.widget.id = id
-    node.props = props
-    node.widget.position = position
-    node.type = 'node'
-    const newNode = {
-      id: id,
-      position,
-      type: node.widget.type,
-      label: node.widget.options.label,
-      data: node
-    }
-    addNodes(newNode)
-    // align node position after drop, so it's centered to the mouse
-    nextTick(() => {
-      const node = flowRef.value.findNode(newNode.id)
-      const stop = watch(
-        () => node.dimensions,
-        (dimensions) => {
-          if (dimensions.width > 0 && dimensions.height > 0) {
-            node.position = {
-              x: node.position.x - node.dimensions.width / 2,
-              y: node.position.y - node.dimensions.height / 2
-            }
-            stop()
-            updateFlowPositionToId(node.id, node.position)
-          }
-        }, {
-          deep: true,
-          flush: 'post'
-        },
-      )
-    })
-  }
-
-  function onEdgeUpdateStart(edge) {
-    return console.log('start update', edge)
-  }
-
-  function onEdgeUpdateEnd(edge) {
-    return console.log('end update', edge)
-  }
-
-  function onEdgeUpdate({
-    edge,
-    connection
-  }) {
-    return updateEdge(edge, connection)
-  }
-
-  function onConnected(params) {
-    const id = 'edge-' + flowList.value.length
-    const options = {
-      name: id,
-      type: 'smoothstep',
-      label: 'custom label text',
-      labelStyle: {
-        fill: '#10b981',
-        fontWeight: 700
-      },
-      markerEnd: MarkerType.ArrowClosed,
-      ...params
-    }
-    addEdges({
-      data: {
-        props: props,
-        widget: {
-          type: 'edge',
-          id: id,
-          options
-        }
-      },
-      ...options
-    })
-    nextTick(() => {
-      historyRef.commit()
-    })
-    return
-  }
-
-  //左侧拖放
-  function onDragOver(event) {
-    event.preventDefault()
-
-    if (event.dataTransfer) {
-      event.dataTransfer.dropEffect = 'move'
-    }
-  }
-
-  function clearFlowData() {
-    $emit('update:modelValue', [])
-    historyRef.commit()
-  }
-  
-  provide('vueFlow',vueFlowRef)
-  
   defineExpose({
     historyRef,
-    flowRef,
+    vueFlowRef,
     currentNode,
     clearFlowData
   })

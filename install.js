@@ -1,4 +1,6 @@
 /* pages */
+import Vue3ColorPicker from "vue3-colorpicker"
+import "vue3-colorpicker/style.css"
 import workFlowDesigner from '@/pages/index.vue'
 import topbarPanel from '@/pages/topbar-panel/index.vue'
 import leftPanel from '@/pages/left-panel/index.vue'
@@ -18,6 +20,7 @@ const setConfig = function(config) {
 }
 
 workFlowDesigner.install = function(app, config) {
+  app.use(Vue3ColorPicker)
   app.component(workFlowDesigner.name, workFlowDesigner)
   app.component(topbarPanel.name, topbarPanel)
   app.component(leftPanel.name, leftPanel)
@@ -41,6 +44,7 @@ flowContainer.install = function(app, config) {
 }
 
 const install = (app, config) => {
+  app.use(Vue3ColorPicker)
   const components = [
     workFlowDesigner,
     topbarPanel,

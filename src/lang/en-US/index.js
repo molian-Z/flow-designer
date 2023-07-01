@@ -3,8 +3,9 @@ export const name = 'English'
 export default {
   components:{
     popconfirm:{
-      confirm:'confirm',
-      cancel:'cancel'
+      confirm:'Confirm',
+      cancel:'Cancel',
+      close:'Close'
     }
   },
   pages:{
@@ -21,6 +22,12 @@ export default {
         step:'Step Node',
         end:'End Node'
       }
+    },
+    flowContainer:{
+      
+    },
+    toolbarPanel:{
+      
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <NodeResizer min-width="50" min-height="20" :isVisible="selected"></NodeResizer>
-  <div class="node">
+  <div class="node" :style="styles">
     <div class="vue-flow-edit-label__input-container" v-if="isDbl">
       <textarea ref="textareaRef" :style="{color:currentRefColor}" v-model="editName" />
     </div>
@@ -24,8 +24,12 @@
       currentNode.value.data.widget.options.label = val
     }
   })
+  
   const selected = computed(()=>{
     return parent.proxy.$attrs.selected
+  })
+  const styles = computed(()=>{
+    return parent.proxy.$attrs.data.widget.style
   })
   
   onMounted(()=>{

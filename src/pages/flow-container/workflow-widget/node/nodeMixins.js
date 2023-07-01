@@ -1,7 +1,6 @@
 import {
   defineEmits,
-  getCurrentInstance,
-  inject
+  getCurrentInstance
 } from 'vue'
 
 export function useMixins() {
@@ -23,7 +22,6 @@ export function useMixins() {
     formConfig: attrs.data.formConfig,
     globalDsv: attrs.data.globalDsv,
     onSelect,
-    onGradient,
-    ctx
+    onGradient
   }
 }
