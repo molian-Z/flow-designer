@@ -1,23 +1,19 @@
 import {
-  nextTick,watch,getCurrentInstance, onMounted
+  nextTick,watch,getCurrentInstance
 } from 'vue'
 import {
   MarkerType
 } from '@vue-flow/core'
 
-export function useCompsDrag(flowList, historyRef) {
-  let setupState = {}
-  let project,addNodes,addEdges,updateEdge,vueFlowRef;
+export function useCompsDrag(flowList, historyRef, {
+  project,
+  addNodes,
+  addEdges,
+  updateEdge,
+  vueFlowRef
+}) {
   const { proxy } = getCurrentInstance()
   const props = proxy.$props
-  onMounted(()=>{
-    setupState = getCurrentInstance().setupState
-    project = setupState.project
-    addNodes = setupState.addNodes
-    addEdges = setupState.addEdges
-    updateEdge = setupState.updateEdge
-    vueFlowRef = setupState.vueFlowRef
-  })
   
   // 连接线处理方案
   function onConnected(params) {
@@ -85,7 +81,7 @@ export function useCompsDrag(flowList, historyRef) {
     const {
       left,
       top
-    } = vueFlowRef.getBoundingClientRect()
+    } = vueFlowRef.value.getBoundingClientRect()
   
     const position = project({
       x: event.clientX - left,
@@ -108,7 +104,7 @@ export function useCompsDrag(flowList, historyRef) {
     addNodes(newNode)
     // align node position after drop, so it's centered to the mouse
     nextTick(() => {
-      const node = vueFlowRef.__vnode.ctx.exposed.findNode(newNode.id)
+      const node = vueFlowRef.value.__vnode.ctx.exposed.findNode(newNode.id)
       const stop = watch(
         () => node.dimensions,
         (dimensions) => {
@@ -135,7 +131,7 @@ export function useCompsDrag(flowList, historyRef) {
   
   //更新flow位置并保存历史记录
   function updateFlowPositionToId(id, position) {
-    const node = vueFlowRef.__vnode.ctx.exposed.findNode(id)
+    const node = vueFlowRef.value.__vnode.ctx.exposed.findNode(id)
     node.data.widget.position = position
     node.position = position
     nextTick(() => {

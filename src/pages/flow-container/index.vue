@@ -150,7 +150,13 @@
     onDragOver,
     onDrop,
     onNodeDragEnd,
-  } = useCompsDrag(flowList, historyRef)
+  } = useCompsDrag(flowList, historyRef, {
+    project,
+    addNodes,
+    addEdges,
+    updateEdge,
+    vueFlowRef
+  })
 
   defineExpose({
     historyRef,
@@ -161,6 +167,11 @@
 </script>
 
 <style lang="scss">
+  @import '@vue-flow/core/dist/style.css';
+  @import '@vue-flow/core/dist/theme-default.css';
+  @import '@vue-flow/controls/dist/style.css';
+  @import '@vue-flow/minimap/dist/style.css';
+  @import '@vue-flow/node-resizer/dist/style.css';
 
   .workflow-container {
     width: 100%;

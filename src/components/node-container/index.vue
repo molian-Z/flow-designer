@@ -28,9 +28,8 @@
   const selected = computed(()=>{
     return parent.proxy.$attrs.selected
   })
-  
   const styles = computed(()=>{
-    return parent.setupState.widget.style
+    return parent.proxy.$attrs.data.widget.style
   })
   
   onMounted(()=>{
