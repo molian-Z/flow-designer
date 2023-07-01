@@ -64,6 +64,10 @@
       user-select: none;
       font-weight: 500;
       position: relative;
+      
+      .svg-icon{
+        fill:var(--text-color-primary);
+      }
 
       .background-color-picker {
         width: 26px;

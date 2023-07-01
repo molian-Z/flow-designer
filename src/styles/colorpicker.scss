@@ -4,5 +4,34 @@
   border-radius:0 !important;
   .vc-colorpicker--container{
     padding: 0 !important;
+    border-radius:var(--border-radius) !important;
+    .vc-colorpicker--tabs[data-v-d742e728]{
+      background: var(--bg-color-page) !important;
+      .vc-colorpicker--tabs__inner{
+        background: var(--bg-color-page) !important;
+        color:var(--text-color-primary) !important;
+        .vc-colorpicker--tabs__btn{
+          button{
+            color:var(--text-color-primary) !important;
+          }
+        }
+        .vc-colorpicker--tabs__btn.vc-btn-active{
+          button{
+            background-color: var(--bg-color) !important;
+          }
+        }
+        .vc-colorpicker--tabs__bg{
+          color:var(--text-color-primary) !important;
+          background-color: var(--bg-color) !important;
+        }
+      }
+    }
+    .vc-fk-colorPicker{
+      background-color: transparent !important;
+    }
+      .vc-color-input input,.vc-alpha-input,.vc-gradient-picker__body .vc-degree-input,.vc-degree-input__panel .vc-degree-input__disk{
+        background-color:var(--bg-color-page) !important;
+      }
+    
   }
 }

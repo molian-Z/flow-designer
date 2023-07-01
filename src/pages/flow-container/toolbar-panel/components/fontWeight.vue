@@ -49,6 +49,10 @@
 
 <style scoped lang="scss">
   .font-weight-container {
+    
+    .svg-icon{
+      fill:var(--text-color-primary);
+    }
 
     &.is-active {
       background-color: var(--bg-color-page);

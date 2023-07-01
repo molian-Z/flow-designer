@@ -21,11 +21,11 @@
 </template>
 
 <style lang="scss">
-  @import "vue3-colorpicker/style.css";
-  @import 'styles/index.scss';
   html,body,#app {
     height: 100%;
     overflow: hidden;
     margin: 0;
   }
+  @import "vue3-colorpicker/style.css";
+  @import 'styles/index.scss';
 </style>

@@ -43,6 +43,7 @@
     .svg-icon{
       user-select: none;
       font-weight: bold;
+      fill:var(--text-color-primary);
     }
     
     &.is-active{
