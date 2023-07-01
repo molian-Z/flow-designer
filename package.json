@@ -25,10 +25,13 @@
     "@vue-flow/node-toolbar": "^1.1.0",
     "@vueuse/core": "^10.2.0",
     "fast-glob": "^3.2.12",
+    "i": "^0.3.7",
+    "npm": "^9.7.2",
     "rollup-plugin-visualizer": "^5.9.2",
     "sass": "^1.63.6",
     "vite-plugin-svg-icons": "^2.0.1",
-    "vue": "^3.3.4"
+    "vue": "^3.3.4",
+    "vue3-colorpicker": "^2.1.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",

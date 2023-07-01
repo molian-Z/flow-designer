@@ -1,12 +1,12 @@
 <template>
   <transition :name="transName" v-if="!insertBody">
-    <div ref="popoverRef" :style="position" class="popover-container" v-if="isRevealed">
+    <div ref="popoverRef" :style="position" :class="[!removeClass && 'popover-container']" v-if="isRevealed">
       <slot></slot>
     </div>
   </transition>
   <teleport to="body" v-else>
     <transition :name="transName">
-      <div ref="popoverRef" :style="position" class="popover-container" v-if="isRevealed">
+      <div ref="popoverRef" :style="position" :class="[!removeClass && 'popover-container']" v-if="isRevealed">
         <slot></slot>
       </div>
     </transition>
@@ -51,6 +51,10 @@
     insertBody: {
       type: Boolean,
       default: true
+    },
+    removeClass:{
+      type:Boolean,
+      default:false
     },
     modelValue: {
       type: Boolean,
@@ -151,7 +155,6 @@
 <style lang="scss" scoped>
   .popover-container {
     background-color: var(--bg-color);
-    padding: 0 5px;
     box-shadow: var(--box-shadow-light);
     border-radius: var(--border-radius);
   }

@@ -94,6 +94,7 @@ export function useCompsDrag(flowList, historyRef) {
     let id = node.widget.type + '-' + node.widget.key + '_' + flowList.value.length
     node.widget.options.name = id
     node.widget.id = id
+    node.widget.style = {}
     node.props = props
     node.widget.position = position
     node.type = 'node'

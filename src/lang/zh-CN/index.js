@@ -4,7 +4,8 @@ export default {
   components:{
     popconfirm:{
       confirm:'确定',
-      cancel:'取消'
+      cancel:'取消',
+      close:'关闭'
     }
   },
   pages:{
@@ -21,6 +22,12 @@ export default {
         step:'流程事件',
         end:'结束流程'
       }
+    },
+    flowContainer:{
+      
+    },
+    toolbarPanel:{
+      
     }
   }
 }

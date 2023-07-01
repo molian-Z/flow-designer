@@ -11,6 +11,6 @@
 
 <style lang="scss">
   .collapse-container{
-    
+    user-select: none;
   }
 </style>
