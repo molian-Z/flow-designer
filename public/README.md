@@ -1,7 +1,7 @@
 # flow-designer
 > 这是一个基于vue3、vue-flow、@vueuse/core 开发的设计器除此之外他将不依赖于其他UI库
 > 拖拽式可视化工作流
-> gzip压缩大小仅84kb
+> gzip压缩大小仅150kb
 
 <br/>
 
@@ -90,9 +90,12 @@ app.mount('#app')
 ```html
 <template>
   <div class="designer-container">
+    <!-- 左侧面板 -->
     <leftPanel class="designer-container__left_body"></leftPanel>
     <div class="designer-container__body">
+    <!-- 顶部面板应注意传入flowRef -->
       <topbar-panel class="designer-container__header_body" ref="topbarRef" :flowRef="flowRef" v-model="workflowData"></topbar-panel>
+      <!-- 主面板应注意传入topbarRef -->
       <flowContainer :topbarRef="topbarRef" ref="flowRef" :designer="designer" v-model="workflowData"></flowContainer>
     </div>
   </div>

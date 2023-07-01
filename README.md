@@ -1,7 +1,7 @@
 # flow-designer
 > 这是一个基于vue3、vue-flow、@vueuse/core 开发的设计器除此之外他将不依赖于其他UI库
 > 拖拽式可视化工作流
-> gzip压缩大小仅84kb
+> gzip压缩大小仅150kb
 
 <br/>
 
