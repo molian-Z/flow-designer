@@ -1,22 +1,22 @@
 <template>
   <div ref="visualRef" class="font-size-container">
     <div class="font-size-input" @click="showPopover">{{fontSize}}px</div>
-    <popover :insertBody="false" :visualRef="visualRef" :flowRef="flowRef" v-model="isPopover">
-      <div>sadasdsad</div>
-    </popover>
   </div>
+  <popover :insertBody="false" :visualRef="visualRef" :vueFlowRef="vueFlowRef" v-model="isPopover">
+    <div>sadasdsad</div>
+  </popover>
 </template>
 
 <script setup>
-  /* import popover from '@/components/popover/index.vue'
-  import {defineOptions, defineProps,ref} from 'vue'
+  import popover from '@/components/popover/index.vue'
+  import {defineOptions, defineProps,ref, watch} from 'vue'
   defineOptions({
     name:'fontSize',
     index:0
   })
   
   defineProps({
-    flowRef:{
+    vueFlowRef:{
       type:Object,
       default:function(){
         return {}
@@ -28,9 +28,13 @@
   const fontSize = ref(16)
   const isPopover = ref(false)
   
+  watch(isPopover,(newVal)=>{
+    console.log(newVal)
+  })
+  
   const showPopover = function(){
     isPopover.value = !isPopover.value
-  } */
+  }
 </script>
 
 <style scoped lang="scss">

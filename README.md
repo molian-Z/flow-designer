@@ -83,8 +83,79 @@ app.mount('#app')
 </style>
 ```
 
+#### 5. 在Vue模板中使用模块的容器组件
 
-### 5.引入暴漏函数
+##### 当然为了更好的集成在已有项目中, leftPanel topbarPanel flowContainer 这些都允许单独引用。
+> 您可以根据您目前的项目对其进行拆分及整合
+```html
+<template>
+  <div class="designer-container">
+    <!-- 左侧面板 -->
+    <leftPanel class="designer-container__left_body"></leftPanel>
+    <div class="designer-container__body">
+    <!-- 顶部面板应注意传入flowRef -->
+      <topbar-panel class="designer-container__header_body" ref="topbarRef" :flowRef="flowRef" v-model="workflowData"></topbar-panel>
+      <!-- 主面板应注意传入topbarRef -->
+      <flowContainer :topbarRef="topbarRef" ref="flowRef" :designer="designer" v-model="workflowData"></flowContainer>
+    </div>
+  </div>
+</template>
+
+<script setup>
+  import {
+    ref,defineOptions
+  } from 'vue'
+  import leftPanel from './left-panel/index.vue'
+  import flowContainer from './flow-container/index.vue'
+  import topbarPanel from './topbar-panel/index.vue'
+  
+  defineOptions({
+    name:"workFlowDesigner"
+  })
+  
+  const workflowData = ref([])
+  const designer = ref({})
+  const flowRef = ref({})
+  const topbarRef = ref({})
+</script>
+
+<style lang="scss" scoped>
+  .designer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    
+    .designer-container__left_body{
+      border-right: 1px solid var(--border-color);
+      max-width: 260px;
+      width: 260px;
+      min-width: 260px;
+      background-color: var(--bg-color);
+    }
+    .designer-container__header_body{
+      /* box-shadow: 3px 7px 9px 0px rgba(0, 0, 0, 0.12); */
+      border-bottom: 1px solid var(--border-color);
+      position: relative;
+      z-index: 1000;
+      width: calc(100% + 1px);
+      left: -1px;
+      background:var(--bg-color);
+    }
+
+    .designer-container__body {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+    }
+  }
+</style>
+```
+
+
+### 6.引入暴漏函数
 
 ```
 import {setDark,i18n} from '@molian-z/flow-designer'

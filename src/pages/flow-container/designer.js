@@ -1,3 +1,5 @@
+import { computed, markRaw, defineEmits } from 'vue'
+import workflowWidget from './workflow-widget/index'
 import {
   useMagicKeys,
   whenever
@@ -6,11 +8,11 @@ import magicKeysData from './magicKeys.json'
 
 export default function({
   designer,
-  flowRef,
+  vueFlowRef,
   historyRef,
   selected
 }) {
-
+  const $emit = defineEmits['command']
   const keys = useMagicKeys()
   for (let key in magicKeysData) {
     const item = magicKeysData[key]
@@ -28,11 +30,30 @@ export default function({
         historyRef.canRedo.value && historyRef.redo()
         break;
       case 'delete':
-      console.log(flowRef)
+      console.log(vueFlowRef)
         //historyRef.commit()
         break;
       default:
         break;
     }
+    $emit('command',cmd)
+  }
+  
+  const nodeTypes = computed(() => {
+    const nTypes = {}
+    for (let key in workflowWidget) {
+      nTypes[workflowWidget[key].type] = markRaw(workflowWidget[key])
+    }
+    return nTypes
+  })
+  
+  function clearFlowData() {
+    $emit('update:modelValue', [])
+    historyRef.commit()
+  }
+  
+  return {
+    nodeTypes,
+    clearFlowData
   }
 }
