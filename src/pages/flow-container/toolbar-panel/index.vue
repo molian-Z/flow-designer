@@ -1,5 +1,5 @@
 <template>
-  <popover ref="popoverRef" :visualRef="visualRef" :vueFlowRef="vueFlowRef" v-model="isPopover">
+  <popover :visualRef="visualRef" :vueFlowRef="vueFlowRef" v-model="isPopover">
     <div class="toolbar-container">
       <template v-for="comp in components" :key="comp.name">
         <component :is="comp" :vueFlowRef="vueFlowRef"></component>
@@ -48,7 +48,11 @@
     justify-content: space-between;
     align-items: center;
     >*{
-      padding: 10px 0;
+      padding: 10px 10px;
+      transition: var(--transition);
+      &:hover{
+        background-color: var(--bg-color-page);
+      }
     }
   }
 </style>

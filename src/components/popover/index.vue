@@ -19,14 +19,14 @@
     onClickOutside,
     useDebounceFn
   } from '@vueuse/core'
-  import { nextTick } from 'vue';
 
   import {
     ref,
     defineOptions,
     defineProps,
     defineEmits,
-    watch
+    watch,
+    nextTick
   } from 'vue'
 
   defineOptions({
@@ -60,10 +60,6 @@
       type:Number,
       default:10
     }
-  })
-
-  watch(() => props.visualRef, (newVal) => {
-    reveal(newVal)
   })
 
   watch(() => props.modelValue, (newVal) => {
@@ -134,10 +130,16 @@
     })
   })
   onClickOutside(popoverRef, (e) => {
-    if (isRevealed.value && (e.target.__vnode.key === "pane-vue-flow-0" || e.target.tagName === 'svg')) {
+    if (e.target.__vnode.key === "pane-vue-flow-0" || e.target.tagName === 'svg') {
       useDebounceFn(() => {
         close()
       }, 50)()
+    }else if(isRevealed.value){
+      if(props.insertBody){
+        reveal(e.target)
+      }else{
+        reveal(props.visualRef)
+      }
     }
   })
 
