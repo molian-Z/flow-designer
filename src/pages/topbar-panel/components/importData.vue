@@ -11,8 +11,7 @@
   import {
     defineOptions,
     defineProps,
-    ref,
-    getCurrentInstance
+    ref
   } from 'vue'
 
   defineOptions({
@@ -41,6 +40,7 @@
           }
         }
       })
+      props.flowRef.vueFlowRef.__vnode.ctx.exposed.fitView()
     }catch(e){
       alert('数据格式有误')
     }
