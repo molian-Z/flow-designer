@@ -6,11 +6,18 @@ export default {
       confirm:'确定',
       cancel:'取消',
       close:'关闭'
+    },
+    copyable:{
+      copyText:"复制",
+      copiedText:"复制成功",
     }
   },
   pages:{
     topbarPanel:{
-      clearTitle:'确定要清空画布么?'
+      clearTitle:'确定要清空画布么?',
+      importData:'导入数据',
+      exportData:'导出数据',
+      
     },
     leftPanel:{
       collapseName:{

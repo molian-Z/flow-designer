@@ -13,7 +13,7 @@
   import { defineOptions } from 'vue'
   defineOptions({
     name: 'selectedLange',
-    index: 3
+    index: 50
   })
   import svgIcon from '@/components/svg-icon/index.vue'
   import {

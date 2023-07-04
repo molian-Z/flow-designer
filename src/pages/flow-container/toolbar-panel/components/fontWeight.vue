@@ -5,11 +5,12 @@
 </template>
 
 <script setup lang="ts">
-  import { defineOptions, defineProps, defineEmits, ref, computed } from 'vue'
+  import { defineOptions, defineProps, defineEmits, computed } from 'vue'
   import svgIcon from '@/components/svg-icon/index.vue'
   defineOptions({
     name: 'fontWeight',
-    index: 1
+    index: 10,
+    split:true
   })
 
   const props = defineProps({

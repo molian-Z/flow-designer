@@ -2,7 +2,7 @@
   <div class="designer-container">
     <leftPanel class="designer-container__left_body"></leftPanel>
     <div class="designer-container__body">
-      <topbar-panel class="designer-container__header_body" ref="topbarRef" :flowRef="flowRef" v-model="workflowData"></topbar-panel>
+      <topbar-panel class="designer-container__header_body" ref="topbarRef" :flowRef="flowRef"></topbar-panel>
       <flowContainer :topbarRef="topbarRef" ref="flowRef" :designer="designer" v-model="workflowData"></flowContainer>
     </div>
   </div>
@@ -10,7 +10,7 @@
 
 <script setup>
   import {
-    ref,defineOptions
+    ref,defineOptions, watch,defineExpose
   } from 'vue'
   import leftPanel from './left-panel/index.vue'
   import flowContainer from './flow-container/index.vue'
@@ -24,6 +24,13 @@
   const designer = ref({})
   const flowRef = ref({})
   const topbarRef = ref({})
+  
+  defineExpose({
+    workflowData,
+    flowRef,
+    topbarRef
+  })
+  
 </script>
 
 <style lang="scss" scoped>

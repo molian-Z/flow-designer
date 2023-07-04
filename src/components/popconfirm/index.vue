@@ -7,8 +7,8 @@
       <div ref="popconfirm" :style="popperPosition" class="popconfirm-modal-bg" v-if="isRevealed">
         <slot name="reference"></slot>
         <div class="popper-btns">
-          <button class="primary" @click="confirm">{{!confirmButtonText?$t('components.popconfirm.confirm'):confirmButtonText}}</button>
-          <button class="warning" @click="cancel">{{!cancelButtonText?$t('components.popconfirm.cancel'):cancelButtonText}}</button>
+          <button type="primary" @click="confirm">{{!confirmButtonText?$t('components.popconfirm.confirm'):confirmButtonText}}</button>
+          <button type="warning" @click="cancel">{{!cancelButtonText?$t('components.popconfirm.cancel'):cancelButtonText}}</button>
         </div>
       </div>
     </transition>
@@ -111,31 +111,6 @@
       display: flex;
       justify-content: flex-end;
       align-items: center;
-
-      button+button {
-        margin-left: 10px;
-      }
-
-      button {
-        border-width: 0px;
-        color: #FFF;
-        padding: 5px 10px;
-        border-radius: 4px;
-        transition: var(--transition);
-        cursor: pointer;
-
-        &:hover {
-          opacity: .7;
-        }
-      }
-
-      .primary {
-        background-color: var(--color-primary);
-      }
-
-      .warning {
-        background-color: var(--color-warning);
-      }
     }
   }
 

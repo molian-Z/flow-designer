@@ -1,4 +1,4 @@
-import { computed, markRaw, defineEmits } from 'vue'
+import { computed, markRaw, getCurrentInstance } from 'vue'
 import workflowWidget from './workflow-widget/index'
 import {
   useMagicKeys,
@@ -7,12 +7,9 @@ import {
 import magicKeysData from './magicKeys.json'
 
 export default function({
-  designer,
-  vueFlowRef,
   historyRef,
-  selected
+  $emit
 }) {
-  const $emit = defineEmits['command']
   const keys = useMagicKeys()
   for (let key in magicKeysData) {
     const item = magicKeysData[key]
@@ -28,10 +25,6 @@ export default function({
         break;
       case 'redo':
         historyRef.canRedo.value && historyRef.redo()
-        break;
-      case 'delete':
-      console.log(vueFlowRef)
-        //historyRef.commit()
         break;
       default:
         break;

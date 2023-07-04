@@ -17,7 +17,7 @@
   import {isDark,setDark} from '@/utils/exposeConfig'
   defineOptions({
     name: 'darkMode',
-    index: 2
+    index: 40
   })
   
 </script>

@@ -6,11 +6,17 @@ export default {
       confirm:'Confirm',
       cancel:'Cancel',
       close:'Close'
+    },
+    copyable:{
+      copyText:"Copy",
+      copiedText:"Copied",
     }
   },
   pages:{
     topbarPanel:{
-      clearTitle:'Are you sure you want to empty the canvas ?'
+      clearTitle:'Are you sure you want to empty the canvas ?',
+      importData:'Import Data',
+      exportData:'Export Data',
     },
     leftPanel:{
       collapseName:{

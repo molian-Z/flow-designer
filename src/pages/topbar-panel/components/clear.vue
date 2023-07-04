@@ -1,5 +1,5 @@
 <template>
-  <popconfirm @confirm="$emit('click')">
+  <popconfirm @confirm="click">
     <svg-icon icon-class="clear" class="color-svg-icon" />
     <template v-slot:reference>
       <div class="popper-title">{{$t('pages.topbarPanel.clearTitle')}}</div>
@@ -14,13 +14,25 @@
 
   import {
     defineOptions,
-    defineEmits
+    defineProps
   } from 'vue'
   defineOptions({
     name: 'clear',
-    index: 1
+    index: 30
   })
-  const $emit = defineEmits(['click'])
+  
+  const props = defineProps({
+    flowRef:{
+      type:Object,
+      default:function(){
+        return {}
+      }
+    }
+  })
+  
+  const click = function(){
+    props.flowRef.clearFlowData()
+  }
 </script>
 <style scoped lang="scss">
   .popper-title {

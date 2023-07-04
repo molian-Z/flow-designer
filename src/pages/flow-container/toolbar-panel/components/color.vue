@@ -17,7 +17,7 @@
 
   defineOptions({
     name: 'color',
-    index: 2
+    index: 20
   })
 
   const props = defineProps({
