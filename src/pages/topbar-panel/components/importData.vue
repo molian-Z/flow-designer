@@ -1,7 +1,7 @@
 <template>
   <svg-icon icon-class="import-data" class="color-svg-icon" @click="click" />
-  <flowDialog width="500px" headerTitle="导入数据" v-model="isDialog">
-    hello
+  <flowDialog width="500px" headerTitle="导入数据" v-model="isDialog" @confirm="confirm">
+    <textarea class="maxHeight" v-model="importModelValue" :expand-depth="5" sort></textarea>
   </flowDialog>
 </template>
 
@@ -11,7 +11,8 @@
   import {
     defineOptions,
     defineProps,
-    ref
+    ref,
+    getCurrentInstance
   } from 'vue'
 
   defineOptions({
@@ -28,6 +29,23 @@
     }
   })
   
+  const importModelValue = ref<any>([])
+  
+  const confirm = function(){
+    try{
+      const flowList = JSON.parse(importModelValue.value)
+      props.flowRef.flowList = flowList.map((item:any) =>{
+        return {
+          data:{
+            widget:item
+          }
+        }
+      })
+    }catch(e){
+      alert('数据格式有误')
+    }
+  }
+  
   const isDialog = ref<boolean>(false)
 
   const click = function () {
@@ -36,4 +54,9 @@
 </script>
 
 <style scoped lang="scss">
+  .maxHeight{
+    width: 100%;
+    height: 400px;
+    overflow: auto;
+  }
 </style>

@@ -22,3 +22,15 @@ button[type="primary"]{
 button[type="warning"]{
   background-color: var(--color-warning);
 }
+
+
+input,textarea{
+  border:1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  outline: none;
+  transition: var(--transition);
+  resize: none;
+  &:hover,&:active,&:focus{
+    border-color: var(--color-primary);
+  }
+}

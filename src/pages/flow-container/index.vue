@@ -115,7 +115,6 @@
       if (JSON.stringify(props.modelValue) !== JSON.stringify(newData)) {
         $emit('update:modelValue', newData)
         historyData.value = newData
-        console.log(newData)
       }
     }
   })
@@ -161,7 +160,8 @@
   defineExpose({
     historyRef,
     vueFlowRef,
-    flowList:historyData,
+    flowList,
+    flowData:historyData,
     clearFlowData
   })
 </script>

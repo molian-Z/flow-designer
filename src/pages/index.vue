@@ -10,7 +10,7 @@
 
 <script setup>
   import {
-    ref,defineOptions, watch
+    ref,defineOptions, watch,defineExpose
   } from 'vue'
   import leftPanel from './left-panel/index.vue'
   import flowContainer from './flow-container/index.vue'
@@ -25,8 +25,10 @@
   const flowRef = ref({})
   const topbarRef = ref({})
   
-  watch(workflowData,(newVal)=>{
-    console.log(newVal)
+  defineExpose({
+    workflowData,
+    flowRef,
+    topbarRef
   })
   
 </script>

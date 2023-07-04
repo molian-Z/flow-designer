@@ -63,20 +63,24 @@
     reveal,
     confirm,
     cancel,
+    onConfirm,
     onCancel
   } = useConfirmDialog()
 
-  const $emit = defineEmits(['update:modelValue'])
+  const $emit = defineEmits(['update:modelValue','confirm','cancel'])
 
   const openDialog = async () => {
-    const { data, isCanceled } = await reveal()
-    if (!isCanceled) {
-      console.log(data)
-    }
+    await reveal()
+    
   }
+  onConfirm(()=>{
+    $emit('update:modelValue', false)
+    $emit('confirm')
+  })
 
   onCancel(() => {
     $emit('update:modelValue', false)
+    $emit('cancel')
   })
 </script>
 
@@ -123,6 +127,10 @@
             opacity: .5;
           }
         }
+      }
+      
+      .modal-content{
+        padding: 20px 0;
       }
 
       .modal-btns {
