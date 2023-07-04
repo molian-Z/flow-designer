@@ -21,7 +21,7 @@
 
   defineOptions({
     name: 'background',
-    index: 3
+    index: 30
   })
 
   const props = defineProps({

@@ -79,8 +79,7 @@
       }
     }
   })
-  const $emit = defineEmits(['update:modelValue'])
-  const currentNode = ref(null)
+  const $emit = defineEmits(['update:modelValue','command'])
   const workflowToolbarRef = ref()
   
   /* 数据处理 */
@@ -116,6 +115,7 @@
       if (JSON.stringify(props.modelValue) !== JSON.stringify(newData)) {
         $emit('update:modelValue', newData)
         historyData.value = newData
+        console.log(newData)
       }
     }
   })
@@ -137,9 +137,9 @@
     nodeTypes,
     clearFlowData
   } = initDesigner({
-    vueFlowRef,
     designer: props.designer,
-    historyRef
+    historyRef,
+    $emit
   })
 
   const {
@@ -161,7 +161,7 @@
   defineExpose({
     historyRef,
     vueFlowRef,
-    currentNode,
+    flowList:historyData,
     clearFlowData
   })
 </script>
