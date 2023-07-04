@@ -9,7 +9,7 @@
       </div>
       <div class="workflow-header__body-right">
         <template v-for="comp in components" :key="comp.name">
-          <component :is="comp" @click="click(comp.name)" :flowRef="flowRef" v-if="hiddenComponents.indexOf(comp.name) === -1"></component>
+          <component :is="comp" :flowRef="flowRef" v-if="hiddenComponents.indexOf(comp.name) === -1"></component>
         </template>
         <slot></slot>
       </div>

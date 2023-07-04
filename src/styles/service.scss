@@ -1,4 +1,4 @@
-button+button {
+button+button:not(.vue-flow__controls-button) {
   margin-left: 10px;
 }
 
