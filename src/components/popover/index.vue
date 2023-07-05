@@ -133,8 +133,17 @@
       position.value = currentPosition
     })
   })
-  onClickOutside(popoverRef, (e) => {
-    if (e.target.__vnode.key === "pane-vue-flow-0" || e.target.tagName === 'svg') {
+  
+  onClickOutside(popoverRef, (e:any) => {
+    const needClose = function(){
+      if(!props?.visualRef || e?.target?.__vnode.props.class === props?.visualRef?.__vnode.props.class){
+        return false
+      }else if(props?.visualRef?.contains(e.target)){
+        return false
+      }
+      return true
+    }
+    if (needClose()) {
       useDebounceFn(() => {
         close()
       }, 50)()

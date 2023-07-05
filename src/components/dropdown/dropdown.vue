@@ -13,7 +13,7 @@
   </teleport>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import {
     useConfirmDialog,
     onClickOutside,
@@ -25,8 +25,6 @@
     defineOptions,
     defineProps,
     defineEmits,
-    nextTick,
-    watch
   } from 'vue'
 
   defineOptions({
@@ -45,12 +43,12 @@
     }
   })
   
-  const dropdown = ref({})
-  const dropdownMenu = ref({})
+  const dropdown = ref<any>({})
+  const dropdownMenu = ref<any>({})
 
   const $emit = defineEmits(['command'])
 
-  const popperPosition = ref({
+  const popperPosition = ref<any>({
     position: 'fixed',
     left: '35px',
     top: '45px',
@@ -79,21 +77,21 @@
     } else {
       popperPosition.value = {
         position: 'fixed',
-        left: right - 150 + 'px',
+        left: right - 65 + 'px',
         top: bottom + 10 + 'px',
         zIndex: 1000
       }
     }
   })
   
-  const opened = function(e){
+  const opened = function(e:any){
     if(!props.disabled){
       reveal(e)
     }
   }
 
-  const itemClick = function(e) {
-    $emit('command', e.target.innerText)
+  const itemClick = function(e:any) {
+    $emit('command', e.target.dataset.vValue)
     confirm()
   }
   onClickOutside(dropdown, () => {

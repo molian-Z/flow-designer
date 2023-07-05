@@ -1,6 +1,6 @@
 {
   "name": "@molian-z/flow-designer",
-  "version": "0.6.6",
+  "version": "0.6.10",
   "private": false,
   "author": "molian-Z",
   "homepage": "https://github.com/molian-Z/flow-designer#readme",
@@ -24,14 +24,14 @@
     "@vue-flow/minimap": "^1.1.1",
     "@vue-flow/node-resizer": "^1.3.2",
     "@vueuse/core": "^10.2.0",
+    "color-gradient-picker-vue3": "^1.0.3",
+    "dom-to-image": "^2.6.0",
     "fast-glob": "^3.2.12",
-    "html2canvas": "^1.4.1",
     "rollup-plugin-visualizer": "^5.9.2",
     "sass": "^1.63.6",
     "vite-plugin-svg-icons": "^2.0.1",
     "vue": "^3.3.4",
-    "vue-json-viewer": "^3.0.4",
-    "vue3-colorpicker": "^2.1.5"
+    "vue-json-viewer": "^3.0.4"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",

@@ -35,7 +35,6 @@
     
     .switch-slider{
       background-color: var(--bg-color);
-      width: 12px;
       border-radius: 50%;
       margin: 1px 2px;
       padding: 5px;

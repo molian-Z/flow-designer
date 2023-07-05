@@ -49,7 +49,7 @@
   
   /* node style */
   
-  .vue-flow__node > .node{
+  .vue-flow__node > .node-container{
     border-radius: var(--border-radius);
     background: var(--vf-node-bg);
     padding: 5px 10px;
@@ -66,7 +66,7 @@
   }
   
   .vue-flow__node{
-    >.node{
+    >.node-container{
       height: calc(100% - 10px);
       display: flex;
       justify-content: center;
@@ -74,17 +74,17 @@
     }
   }
   
-  .vue-flow__node-start > .node{
+  .vue-flow__node-start > .node-container{
     background: var(--vf-handle-success);
     color:var(--vf-node-text-selectable);
   }
   
-  .vue-flow__node-step > .node{
+  .vue-flow__node-step > .node-container{
     background: var(--vf-node-bg);
     color:var(--vf-node-text);
   }
   
-  .vue-flow__node-end > .node{
+  .vue-flow__node-end > .node-container{
     background: var(--vf-handle-danger);
     color:var(--vf-node-text-selectable);
   }
