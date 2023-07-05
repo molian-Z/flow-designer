@@ -5,19 +5,18 @@
       <div class="background-color-picker" :style="{'background-color': currentColor}"></div>
     </div>
   </div>
-  <popover class="color-picker-bg" :visualRef="visualRef" :insertBody="false" :vueFlowRef="vueFlowRef" v-model="isPopover">
-    <Vue3ColorPicker :isWidget="true" use-type="both" @pureColorChange="change" @gradientColorChange="change" />
-    <div class="popover-btns" @click="showPopover()">
-      {{$t('components.popconfirm.close')}}
-    </div>
+  <popover class="color-picker-bg" :visualRef="visualRef" :insertBody="false" :vueFlowRef="vueFlowRef"
+    v-model="isPopover">
+    <ColorPicker :color="computedColor" :on-end-change="(color:any) => change(color)"></ColorPicker>
   </popover>
 </template>
 
 <script setup lang="ts">
   import popover from '@/components/popover/index.vue'
   import svgIcon from '@/components/svg-icon/index.vue'
-  import { defineOptions, defineProps, defineEmits, ref } from 'vue'
-  import { $t } from '@/utils/i18n'
+  import { defineOptions, defineProps, defineEmits, ref, computed } from 'vue'
+  import ColorPicker from 'color-gradient-picker-vue3';
+  import { HEX2RGB, rgbaToArray } from '@/utils/util'
 
   defineOptions({
     name: 'background',
@@ -48,11 +47,22 @@
     isPopover.value = !isPopover.value
   }
   
-  const change = function (val : string) {
-    currentColor.value = val
+  const computedColor = computed(() => {
+    const colors:any = rgbaToArray(HEX2RGB(currentColor.value))
+    const colorObj = {
+      red: colors[0],
+      green: colors[1],
+      blue: colors[2],
+      alpha: 1,
+   }
+    return colorObj
+  })
+
+  const change = function (val : any) {
+    currentColor.value = `rgb(${val.red},${val.green},${val.blue})`
     props.currentNode.node.data.widget.style.background = currentColor.value
     $emit('change', {
-      type: 'background',
+      type: 'color',
       value: currentColor.value
     })
   }
@@ -64,9 +74,9 @@
       user-select: none;
       font-weight: 500;
       position: relative;
-      
-      .svg-icon{
-        fill:var(--text-color-primary);
+
+      .svg-icon {
+        fill: var(--text-color-primary);
       }
 
       .background-color-picker {
@@ -77,20 +87,21 @@
       }
     }
   }
-  
-  .popover-btns{
+
+  .popover-btns {
     background-color: var(--bg-color);
     transition: var(--transition);
     height: 36px;
     line-height: 36px;
     border-radius: var(--border-radius);
-    color:var(--color-primary);
-    &:hover{
+    color: var(--color-primary);
+
+    &:hover {
       background-color: var(--bg-color-page);
     }
   }
-  
-  .color-picker-bg:hover{
+
+  .color-picker-bg:hover {
     background-color: var(--bg-color);
   }
 </style>

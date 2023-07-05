@@ -1,12 +1,24 @@
 <template>
-  <svg-icon icon-class="export-image" class="color-svg-icon" @click="click" />
+  <dropdown ref="popcofirm" @command="command">
+    <svg-icon icon-class="export-image" class="color-svg-icon" />
+    <template #dropdown>
+      <dropdownItem class="color-item" value="toSvg">保存为SVG</dropdownItem>
+      <dropdownItem class="color-item" value="toPng">保存为PNG</dropdownItem>
+      <dropdownItem class="color-item" value="toJpeg">保存为JPG</dropdownItem>
+      <dropdownItem class="color-item" value="save2PDF">保存为PDF</dropdownItem>
+    </template>
+  </dropdown>
   <fullLoading :modelValue="showLoading"></fullLoading>
 </template>
 
 <script setup lang="ts">
   import svgIcon from '@/components/svg-icon/index.vue'
   import fullLoading from '@/components/full-loading/index.vue'
-  import html2canvas from 'html2canvas'
+  import {
+    dropdown,
+    dropdownItem
+  } from '@/components/dropdown'
+  import domtoimage from 'dom-to-image'
   import {
     defineOptions,
     defineProps,
@@ -26,54 +38,61 @@
       }
     }
   })
-  
+
   const showLoading = ref(false)
 
-
-  const click = function () {
+  const command = function (cmd : string) {
+    const options : any = {}
     showLoading.value = true
     props.flowRef.vueFlowRef.__vnode.ctx.exposed.fitView(/* { padding: 0.25, includeHiddenNodes: true } */)
-    setTimeout(()=>{
-      html2canvas(props.flowRef.vueFlowRef, {
-        allowTaint: false,
-        useCORS: true,
-      })
-      .then(canvas =>{
-        //将图片保存到变量
-        var image = canvas.toDataURL("image/jpeg");
-        downloadFile(Math.round(new Date()).toString(), image);
-      })
-      .catch(err =>{
-        showLoading.value = false
-        alert(err)
-      })
-    },1000)
+    setTimeout(() => {
+      if (cmd === 'save2PDF') {
+
+      } else {
+        if (cmd === 'toJpeg') {
+          options.bgcolor = '#FFF'
+        }
+        domtoimage[cmd](props.flowRef.vueFlowRef.firstElementChild, options)
+          .then(function (dataUrl : any) {
+            downloadFile(Math.round(new Date()).toString(), dataUrl, cmd);
+          })
+          .catch((err : any) => {
+            showLoading.value = false
+            alert(err)
+          })
+      }
+    }, 1000)
   }
 
-  function downloadFile(fileName:string|number, content:any) { //下载base64图片
-    var base64ToBlob = function (code:any) {
-      let parts = code.split(';base64,');
-      let contentType = parts[0].split(':')[1];
-      let raw = window.atob(parts[1]);
-      let rawLength = raw.length;
-      let uInt8Array = new Uint8Array(rawLength);
-      for (let i = 0; i < rawLength; ++i) {
-        uInt8Array[i] = raw.charCodeAt(i);
-      }
-      return new Blob([uInt8Array], {
-        type: contentType
-      });
-    };
-    let aLink = document.createElement('a');
-    let blob = base64ToBlob(content); //new Blob([content]);
-    let evt = document.createEvent("HTMLEvents");
-    evt.initEvent("click", true, true); //initEvent 不加后两个参数在FF下会报错  事件类型，是否冒泡，是否阻止浏览器的默认行为
-    aLink.download = fileName;
-    aLink.href = URL.createObjectURL(blob);
-    aLink.click();
+  function downloadFile(fileName : string | number, dataUrl : any, cmd : string) { //下载base64图片
+    let expandName : string
+    switch (cmd) {
+      case 'toSvg':
+        expandName = '.svg'
+        break;
+      case 'toPng':
+        expandName = '.png'
+        break;
+      case 'toJpeg':
+        expandName = '.jpg'
+        break;
+      case 'save2PDF':
+        expandName = '.pdf'
+        break;
+      default:
+        expandName = '.png'
+        break;
+    }
+    var link : any = document.createElement('a');
+    link.download = fileName + expandName;
+    link.href = dataUrl;
+    link.click();
     showLoading.value = false
   };
 </script>
 
-<style>
+<style lang="scss" scoped>
+  .color-item {
+    color: var(--color-primary);
+  }
 </style>

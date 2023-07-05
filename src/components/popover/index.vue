@@ -133,8 +133,8 @@
       position.value = currentPosition
     })
   })
-  onClickOutside(popoverRef, (e) => {
-    if (e.target.__vnode.key === "pane-vue-flow-0" || e.target.tagName === 'svg') {
+  onClickOutside(popoverRef, (e:any) => {
+    if (e?.target?.__vnode?.key === "pane-vue-flow-0" || e?.target?.tagName === 'svg') {
       useDebounceFn(() => {
         close()
       }, 50)()

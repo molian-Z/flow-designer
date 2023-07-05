@@ -7,11 +7,11 @@
         <template #connection-line="{ sourceX, sourceY, targetX, targetY }">
           <CustomConnectionLine :source-x="sourceX" :source-y="sourceY" :target-x="targetX" :target-y="targetY" />
         </template>
-        <Background></Background>
-        <MiniMap pannable zoomable></MiniMap>
-        <Controls>
-          <slot name="controlButton"></slot>
-        </Controls>
+          <Background></Background>
+          <MiniMap pannable zoomable></MiniMap>
+          <Controls>
+            <slot name="controlButton"></slot>
+          </Controls>
       </VueFlow>
     </div>
     <!-- <settingPanel></settingPanel> -->

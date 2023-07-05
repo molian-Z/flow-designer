@@ -55,7 +55,7 @@
     >.toolbar-item {
       position: relative;
 
-      >* {
+      >*:not(.popover-container) {
         padding: 10px 10px;
         min-width: 36px;
         text-align: center;

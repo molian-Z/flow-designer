@@ -1,6 +1,6 @@
 <template>
   <div ref="visualRef" class="more-container" :class="[isPopover && 'is-active']" @click="showPopover">
-    <svg-icon icon-class="toolbar-more" class="svg-icon"></svg-icon>
+    <svg-icon icon-class="toolbar-more"></svg-icon>
     <popover :visualRef="visualRef" :insertBody="false" :vueFlowRef="vueFlowRef" v-model="isPopover">
       <div class="more-list">
         <div class="more-list-item" v-for="more in moreList" :key="more">{{more}}</div>
@@ -44,6 +44,7 @@
       user-select: none;
       font-weight: bold;
       fill:var(--text-color-primary);
+      margin: 0;
     }
     
     &.is-active{

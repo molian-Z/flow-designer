@@ -1,6 +1,5 @@
 /* pages */
-import Vue3ColorPicker from "vue3-colorpicker"
-import "vue3-colorpicker/style.css"
+import 'color-gradient-picker-vue3/dist/style.css';
 import JsonViewer from 'vue-json-viewer'
 import workFlowDesigner from '@/pages/index.vue'
 import topbarPanel from '@/pages/topbar-panel/index.vue'
@@ -21,7 +20,6 @@ const setConfig = function(config) {
 }
 
 workFlowDesigner.install = function(app, config) {
-  app.use(Vue3ColorPicker)
   app.component(workFlowDesigner.name, workFlowDesigner)
   app.component(topbarPanel.name, topbarPanel)
   app.component(leftPanel.name, leftPanel)
@@ -46,7 +44,6 @@ flowContainer.install = function(app, config) {
 }
 
 const install = (app, config) => {
-  app.use(Vue3ColorPicker)
   app.use(JsonViewer)
   const components = [
     workFlowDesigner,
