@@ -1,6 +1,6 @@
 <template>
   <NodeResizer min-width="50" min-height="20" :isVisible="selected"></NodeResizer>
-  <div class="node" :style="styles">
+  <div class="node-container" :style="styles">
     <div class="vue-flow-edit-label__input-container" v-if="isDbl">
       <textarea ref="textareaRef" :style="{color:currentRefColor}" v-model="editName" />
     </div>
@@ -52,7 +52,7 @@
 </script>
 
 <style scoped lang="scss">
-  .node{
+  .node-container{
     position: relative;
     
     .vue-flow-edit-label__input-container{

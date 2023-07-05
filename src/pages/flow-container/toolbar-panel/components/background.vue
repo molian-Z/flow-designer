@@ -83,7 +83,6 @@
         width: 26px;
         height: 3px;
         position: absolute;
-        left: 5px;
       }
     }
   }

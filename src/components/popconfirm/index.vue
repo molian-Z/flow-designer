@@ -72,7 +72,7 @@
     }else{
       popperPosition.value = {
         position: 'fixed',
-        left: right - 150 + 'px',
+        left: right - 75 + 'px',
         top: bottom + 10 + 'px',
         zIndex: 1000
       }
@@ -100,7 +100,7 @@
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow-light);
     padding: 15px;
-    width: 130px;
+    width: 150px;
 
     .popper-title {
       font-size: 14px;
