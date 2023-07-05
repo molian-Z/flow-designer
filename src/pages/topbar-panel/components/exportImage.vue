@@ -47,7 +47,11 @@
     showLoading.value = true
     const vueFlowRefMethods = props.flowRef.vueFlowRef.__vnode.ctx.exposed
     const SelectedElements = vueFlowRefMethods.getSelectedElements.value
-    vueFlowRefMethods.fitView({ padding: .25, includeHiddenNodes: false })
+    if(cmd === 'save2PDF'){
+      vueFlowRefMethods.fitView({ padding: .25, includeHiddenNodes: false })
+    }else{
+      vueFlowRefMethods.fitView()
+    }
     SelectedElements.forEach((item:any) =>{
       vueFlowRefMethods.removeSelectedElements(item)
     })
