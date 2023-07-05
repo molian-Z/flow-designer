@@ -19,6 +19,7 @@
     dropdownItem
   } from '@/components/dropdown'
   import domtoimage from 'dom-to-image'
+  import {pdfHtml} from '@/components/pdf-html';
   import {
     defineOptions,
     defineProps,
@@ -44,10 +45,21 @@
   const command = function (cmd : string) {
     const options : any = {}
     showLoading.value = true
-    props.flowRef.vueFlowRef.__vnode.ctx.exposed.fitView(/* { padding: 0.25, includeHiddenNodes: true } */)
+    const vueFlowRefMethods = props.flowRef.vueFlowRef.__vnode.ctx.exposed
+    const SelectedElements = vueFlowRefMethods.getSelectedElements.value
+    vueFlowRefMethods.fitView({ padding: .25, includeHiddenNodes: false })
+    SelectedElements.forEach((item:any) =>{
+      vueFlowRefMethods.removeSelectedElements(item)
+    })
     setTimeout(() => {
       if (cmd === 'save2PDF') {
-
+       pdfHtml({
+            el: props.flowRef.vueFlowRef.firstElementChild,
+            styles:{
+              size:'auto'
+            }
+        })
+        showLoading.value = false
       } else {
         if (cmd === 'toJpeg') {
           options.bgcolor = '#FFF'
