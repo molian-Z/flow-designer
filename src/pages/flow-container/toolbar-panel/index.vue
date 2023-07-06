@@ -36,12 +36,21 @@
     setVisualRef(data)
   })
   const setVisualRef = function (data : any) {
+    const selectedDom = getParentNodes(data.event.target)
     currentNode.value = data
-    if (visualRef.value === data.event.target && isPopover.value) {
+    if (visualRef.value === selectedDom && isPopover.value) {
       isPopover.value = false
     } else {
-      visualRef.value = data.event.target
+      visualRef.value = selectedDom
       isPopover.value = true
+    }
+  }
+  
+  const getParentNodes = function(parentNode:any){
+    if(parentNode.__vnode.props.class !== 'node-container'){
+      return getParentNodes(parentNode.parentNode)
+    }else{
+      return parentNode
     }
   }
 </script>
