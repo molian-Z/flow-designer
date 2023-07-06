@@ -93,6 +93,7 @@
     .font-size-list-item {
       line-height: 36px;
       height: 36px;
+      cursor: pointer;
       transition: var(--transition);
   
       &:hover {
