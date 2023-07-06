@@ -5,43 +5,44 @@
   </svg>
 </template>
 
-<script>
-  export default {
-    name: 'SvgIcon',
-    props: {
-      iconClass: {
-        type: String,
-        required: true
-      },
-      className: {
-        type: String
-      },
-      title: {
-        type: String,
-        default: ''
-      }
+<script lang="ts" setup>
+  import { defineOptions, defineProps, computed } from 'vue'
+  defineOptions({
+    name: 'SvgIcon'
+  })
+
+  const props = defineProps({
+    iconClass: {
+      type: String,
+      required: true
     },
-    computed: {
-      iconName() {
-        return `#icon-${this.iconClass}`
-      },
-      svgClass() {
-        if (this.className) {
-          return 'svg-icon ' + this.className
-        } else {
-          return 'svg-icon'
-        }
-      }
+    className: {
+      type: String
+    },
+    title: {
+      type: String,
+      default: ''
     }
-  }
+  })
+
+  const iconName:any = computed(()=>{
+    return `#icon-${props.iconClass}`
+  })
+  const svgClass:any = computed(()=>{
+    if (props.className) {
+      return 'svg-icon ' + props.className
+    } else {
+      return 'svg-icon'
+    }
+  })
 </script>
 
 <style lang="scss" scoped>
   .svg-icon {
-    width: 1.1em;
-    height: 1.1em;
-    margin-left: 0.35em;
-    margin-right: 0.35em;
+    width: 18px;
+    height: 18px;
+    margin-left: 5px;
+    margin-right: 5px;
     vertical-align: -0.15em;
     fill: currentColor;
     overflow: hidden;

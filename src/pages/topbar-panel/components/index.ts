@@ -1,4 +1,4 @@
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 interface comps {
   index ?: number
   name : string
@@ -9,14 +9,14 @@ interface comps {
   __name ?: any
 }
 const modules : any = import.meta.globEager('./*.vue')
-const comps : comps[] = []
+const comps = ref<comps[]>([])
 for (const path in modules) {
-  console.log(modules[path])
-  comps.push(modules[path].default)
+  comps.value.push(modules[path].default)
 }
-export const appendComponents = []
+export const addCmps = ref<comps[]>([])
 export default computed(() => {
-  return comps.sort((a : comps, b : comps) => {
+  const allComps = [...comps.value, ...addCmps.value]
+  return allComps.sort((a : comps, b : comps) => {
     return a.index - b.index
   })
 })

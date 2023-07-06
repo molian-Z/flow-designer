@@ -12,6 +12,10 @@ import {
   i18n
 } from '@/utils/exposeConfig'
 
+import popover from '@/components/popover/index.vue'
+
+import svgIcon from '@/components/svg-icon/index.vue'
+
 
 const setConfig = function (config : any) {
   setDark(config.setDark)
@@ -25,22 +29,29 @@ workFlowDesigner.install = function (app : App, config : any) {
   app.component(topbarPanel.name, topbarPanel)
   app.component(leftPanel.name, leftPanel)
   app.component(flowContainer.name, flowContainer)
+  app.component(popover.name, popover)
+  app.component(svgIcon.name, svgIcon)
   setConfig(config)
 }
 
 topbarPanel.install = function (app : App, config : any) {
   app.use(JsonViewer)
   app.component(topbarPanel.name, topbarPanel)
+  app.component(popover.name, popover)
+  app.component(svgIcon.name, svgIcon)
   setConfig(config)
 }
 
 leftPanel.install = function (app : App, config : any) {
   app.component(leftPanel.name, leftPanel)
+  app.component(svgIcon.name, svgIcon)
   setConfig(config)
 }
 
 flowContainer.install = function (app : App, config : any) {
   app.component(flowContainer.name, flowContainer)
+  app.component(popover.name, popover)
+  app.component(svgIcon.name, svgIcon)
   setConfig(config)
 }
 
@@ -50,7 +61,9 @@ const install = (app : App, config : any) => {
     workFlowDesigner,
     topbarPanel,
     leftPanel,
-    flowContainer
+    flowContainer,
+    popover,
+    svgIcon
   ]
   components.forEach(component => {
     app.component(component.name, component)
