@@ -1,9 +1,13 @@
 <template>
-  <div ref="visualRef" class="more-container" :class="[isPopover && 'is-active']" @click="showPopover">
+  <div ref="visualRef" class="more-container" :class="[isPopover && 'is-active']" @click="showPopover" v-if="moreComps.length > 0">
     <svg-icon icon-class="toolbar-more"></svg-icon>
     <popover :visualRef="visualRef" :insertBody="false" :vueFlowRef="vueFlowRef" v-model="isPopover">
       <div class="more-list">
-        <div class="more-list-item" v-for="more in moreList" :key="more">{{more}}</div>
+        <template v-for="moreComp in moreComps" :key="moreComp.name">
+          <div class="more-list-item">
+            <component :is="moreComp" :vueFlowRef="vueFlowRef"></component>
+          </div>
+        </template>
       </div>
     </popover>
   </div>
@@ -12,6 +16,7 @@
 <script setup lang="ts">
   import popover from '@/components/popover/index.vue'
   import svgIcon from '@/components/svg-icon/index.vue'
+  import { moreComps } from './index'
   import { defineOptions, defineProps, ref } from 'vue'
   defineOptions({
     name: 'more',
@@ -29,10 +34,11 @@
 
   const visualRef = ref<any>()
   const isPopover = ref<boolean>(false)
-  const moreList = ref<number[]>([13,14,15,16,17,18,22,26,32,36,42,48,54])
 
   const showPopover = function () {
-    isPopover.value = !isPopover.value
+    if(moreComps.value.length > 0){
+      isPopover.value = !isPopover.value
+    }
   }
 </script>
 

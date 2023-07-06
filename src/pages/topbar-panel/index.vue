@@ -6,8 +6,10 @@
           :class="[!canUndo&&'disabled']"></svg-icon>
         <svg-icon icon-class="redo" class="color-svg-icon" @click="flowRef.historyRef.redo()"
           :class="[!canRedo&&'disabled']"></svg-icon>
+          <slot name="left"></slot>    
       </div>
       <div class="workflow-header__body-right">
+        <slot name="right-left"></slot>
         <template v-for="comp in components" :key="comp.name">
           <component :is="comp" :flowRef="flowRef" v-if="hiddenComponents.indexOf(comp.name) === -1"></component>
         </template>
@@ -17,7 +19,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import {
     computed,
     defineProps,

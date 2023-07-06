@@ -1,6 +1,6 @@
 <template>
   <popover :visualRef="visualRef" :vueFlowRef="vueFlowRef" v-model="isPopover">
-    <div class="toolbar-container">
+    <div class="toolbar-container" :class="[toolbarConfig.sort]">
       <template v-for="comp in components" :key="comp.name">
         <div class="toolbar-item" :class="[comp.split && 'split']">
           <component :is="comp" :vueFlowRef="vueFlowRef" :currentNode="currentNode"></component>
@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
   import popover from '@/components/popover/index.vue'
-  import components from './components/index'
+  import components, { toolbarConfig } from './components/index'
 
   import {
     defineOptions,
@@ -36,12 +36,21 @@
     setVisualRef(data)
   })
   const setVisualRef = function (data : any) {
+    const selectedDom = getParentNodes(data.event.target)
     currentNode.value = data
-    if (visualRef.value === data.event.target && isPopover.value) {
+    if (visualRef.value === selectedDom && isPopover.value) {
       isPopover.value = false
     } else {
-      visualRef.value = data.event.target
+      visualRef.value = selectedDom
       isPopover.value = true
+    }
+  }
+  
+  const getParentNodes = function(parentNode:any){
+    if(parentNode.__vnode.props.class !== 'node-container'){
+      return getParentNodes(parentNode.parentNode)
+    }else{
+      return parentNode
     }
   }
 </script>
@@ -71,10 +80,26 @@
         }
       }
 
-      &.split::after {
+    }
+
+    &.asc {
+      >.toolbar-item.split::after {
         content: " ";
         position: absolute;
         right: 0;
+        top: 0;
+        width: 1px;
+        height: calc(100% - 20px);
+        background-color: var(--border-color);
+        margin: 10px 0;
+      }
+    }
+
+    &.desc {
+      >.toolbar-item.split::before {
+        content: " ";
+        position: absolute;
+        left: 0;
         top: 0;
         width: 1px;
         height: calc(100% - 20px);

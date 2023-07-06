@@ -10,8 +10,8 @@ watch(language,(val)=>{
   immediate:true
 })
 
-export const currentLang = computed(()=>{
-  const findLang = languageObj.value.find(item =>{
+export const currentLang:any = computed(()=>{
+  const findLang = languageObj.value.find((item:any) =>{
     return item.value === language.value
   })
   return findLang
@@ -21,8 +21,8 @@ export const languageName = computed(()=>{
   return currentLang.value?.label
 })
 
-export const setLang = function(val){
-  const findLang = languageObj.value.find(item =>{
+export const setLang = function(val:string){
+  const findLang = languageObj.value.find((item:any) =>{
     return item.label === val || item.value === val
   })
   if(findLang){
@@ -35,7 +35,7 @@ export const setLang = function(val){
 
 export const isSupported = languages.isSupported
 
-export const $t = function(val){
+export const $t = function(val:string){
   return langResource.value[val]
 }
 

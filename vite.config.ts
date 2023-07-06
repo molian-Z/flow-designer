@@ -8,9 +8,6 @@ import {
   resolve
 } from 'path'
 import vue from '@vitejs/plugin-vue'
-/* import commonjs from '@rollup/plugin-commonjs'
-import externalGlobals from "rollup-plugin-external-globals" */
-
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -25,6 +22,8 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": resolve(__dirname, 'src'), // 路径别名
+      '#': resolve(__dirname, 'src/types'),
+      'vue': 'vue/dist/vue.esm-bundler.js'
     },
   },
   build: {
