@@ -61,13 +61,16 @@
     transition: box-shadow var(--transition);
   }
   
-  .vue-flow__node.selected{
-    box-shadow: var(--box-shadow);
+  .vue-flow__node.selected {
+    >.node-container{
+      box-shadow: var(--box-shadow);
+    }
+    
   }
   
   .vue-flow__node{
     >.node-container{
-      height: calc(100% - 10px);
+      height: 100%;
       display: flex;
       justify-content: center;
       align-items: center;

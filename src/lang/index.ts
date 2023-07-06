@@ -5,10 +5,10 @@ import { useCloned } from '@vueuse/core'
 
 export const languageObj = ref([])
 const langResources = ref([])
-const langFiles = import.meta.globEager('./**/*.js')
+const langFiles = import.meta.globEager('./**/*.ts')
 const lang = ref()
 
-export const setLanguage = function(newLang){
+export const setLanguage = function(newLang:string){
   lang.value = newLang
 }
 
@@ -26,9 +26,9 @@ for (const path in langFiles) {
   }
 }
 
-const lang_revange = function(data) {
+const lang_revange = function(data:any) {
   var _data = {};
-  var Rcallee = function(obj,name) {
+  var Rcallee = function(obj:any,name:any) {
     for (let key in obj) {
       if (typeof obj[key] === "object") {
         if(name){
@@ -47,7 +47,7 @@ const lang_revange = function(data) {
       }
     }
   }
-  Rcallee(data);
+  Rcallee(data,null);
   return _data;
 }
 

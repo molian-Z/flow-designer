@@ -19,7 +19,7 @@
   } from '@vue-flow/core'
   import {
     useMixins
-  } from './nodeMixins.js'
+  } from './nodeMixins'
   defineOptions({
     name: 'startWidget',
     type: 'start',

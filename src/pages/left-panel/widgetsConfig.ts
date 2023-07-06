@@ -1,4 +1,13 @@
-export default {
+import { ref, computed } from 'vue'
+interface widgetFieldComps {
+  type : string,
+  icon : string,
+  options : any
+}
+const widgetComps = ref<{
+  basicFields : widgetFieldComps[]
+  svgFields : widgetFieldComps[]
+}>({
   basicFields: [{
     type: 'start',
     icon: 'node-start',
@@ -41,5 +50,17 @@ export default {
       pRightClass: '',
       pBottomClass: ''
     },
-  }]
+  }],
+  svgFields: []
+})
+
+export const addWidgetsConfig = function (widgetObj : any) {
+  for (let key in widgetObj) {
+    widgetComps.value[key].push(widgetObj[key])
+  }
 }
+
+
+export default computed(() => {
+  return widgetComps.value
+})

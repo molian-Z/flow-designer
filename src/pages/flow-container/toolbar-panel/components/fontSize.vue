@@ -77,31 +77,30 @@
     &.is-active {
       background-color: var(--bg-color-page);
     }
-
-    .font-size-list {
-      padding: 5px 0;
-      max-height: 200px;
-      overflow-y: auto;
-      text-align: center;
-      color: var(--text-color-primary);
-      width: 55px;
-
-      &::-webkit-scrollbar {
-        width: 0px;
+  }
+  .font-size-list {
+    padding: 5px 0;
+    max-height: 200px;
+    overflow-y: auto;
+    text-align: center;
+    color: var(--text-color-primary);
+    width: 55px;
+  
+    &::-webkit-scrollbar {
+      width: 0px;
+    }
+  
+    .font-size-list-item {
+      line-height: 36px;
+      height: 36px;
+      transition: var(--transition);
+  
+      &:hover {
+        background-color: var(--bg-color-page);
       }
-
-      .font-size-list-item {
-        line-height: 36px;
-        height: 36px;
-        transition: var(--transition);
-
-        &:hover {
-          background-color: var(--bg-color-page);
-        }
-
-        &.is-selected {
-          background-color: var(--bg-color-page);
-        }
+  
+      &.is-selected {
+        background-color: var(--bg-color-page);
       }
     }
   }

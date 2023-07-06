@@ -1,16 +1,17 @@
 <template>
-  <svg :class="svgClass" aria-hidden="true">
+  <svg :class="svgClass" aria-hidden="true" v-if="props?.iconClass?.length < 100">
     <use :xlink:href="iconName" rel="external nofollow"></use>
     <title v-if="!!title">{{title}}</title>
   </svg>
+  <stringSvg :class="svgClass" v-else></stringSvg>
 </template>
 
 <script lang="ts" setup>
-  import { defineOptions, defineProps, computed } from 'vue'
+  import { defineOptions, defineProps, computed, h, compile } from 'vue'
   defineOptions({
     name: 'SvgIcon'
   })
-
+  
   const props = defineProps({
     iconClass: {
       type: String,
@@ -26,8 +27,21 @@
   })
 
   const iconName:any = computed(()=>{
-    return `#icon-${props.iconClass}`
+    if(!props.iconClass || props?.iconClass?.length < 100){
+      return `#icon-${props.iconClass}`
+    }else{
+      return props.iconClass
+    }
   })
+  
+  
+  
+  const stringSvg = props?.iconClass?.length < 100 ? '': {
+    render: () => {
+      return h(compile(iconName.value));
+    },
+  }
+  
   const svgClass:any = computed(()=>{
     if (props.className) {
       return 'svg-icon ' + props.className

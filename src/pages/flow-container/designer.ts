@@ -1,4 +1,4 @@
-import { computed, markRaw, getCurrentInstance } from 'vue'
+import { computed, markRaw } from 'vue'
 import workflowWidget from './workflow-widget/index'
 import {
   useMagicKeys,
@@ -34,8 +34,8 @@ export default function({
   
   const nodeTypes = computed(() => {
     const nTypes = {}
-    for (let key in workflowWidget) {
-      nTypes[workflowWidget[key].type] = markRaw(workflowWidget[key])
+    for (let key in workflowWidget.value) {
+      nTypes[workflowWidget.value[key].type] = markRaw(workflowWidget.value[key])
     }
     return nTypes
   })

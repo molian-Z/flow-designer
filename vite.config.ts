@@ -23,6 +23,7 @@ export default defineConfig({
     alias: {
       "@": resolve(__dirname, 'src'), // 路径别名
       '#': resolve(__dirname, 'src/types'),
+      'vue': 'vue/dist/vue.esm-bundler.js'
     },
   },
   build: {

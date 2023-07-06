@@ -63,8 +63,8 @@
   }
 
   function loadWidgets() {
-    for (let key in widgetsConfig) {
-      widgetsCategory.value[key] = widgetsConfig[key].map(fld => {
+    for (let key in widgetsConfig.value) {
+      widgetsCategory.value[key] = widgetsConfig.value[key].map(fld => {
         return {
           key: getId(),
           ...fld,
