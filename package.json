@@ -8,13 +8,15 @@
     "type": "git",
     "url": "git+https://github.com/molian-Z/flow-designer.git"
   },
-  "main": "./install.js",
+  "main": "./dist/dist/index.umd.js",
+  "module": "./dist/dist/index.es.js",
+  "types":"./dist/dist/index.d.ts",
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
-    "lib": "vite build --config vite-lib.config.js"
+    "lib": "vite build --config vite-lib.config.ts"
   },
   "dependencies": {
     "@rollup/plugin-commonjs": "^25.0.1",
@@ -29,6 +31,7 @@
     "fast-glob": "^3.2.12",
     "rollup-plugin-visualizer": "^5.9.2",
     "sass": "^1.63.6",
+    "vite-plugin-dts": "^3.1.0",
     "vite-plugin-svg-icons": "^2.0.1",
     "vue": "^3.3.4",
     "vue-json-viewer": "^3.0.4"

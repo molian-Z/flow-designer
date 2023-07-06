@@ -10,6 +10,7 @@ import {
 } from 'path'
 import commonjs from '@rollup/plugin-commonjs'
 import visualizer from 'rollup-plugin-visualizer'
+import dts from 'vite-plugin-dts'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -27,7 +28,7 @@ export default defineConfig({
       // Specify symbolId format
       symbolId: 'icon-[dir]-[name]',
     }),
-
+    dts()
   ],
 
   resolve: {
@@ -52,7 +53,7 @@ export default defineConfig({
 
   build: {
     lib: {
-      entry: resolve(__dirname, 'install.js'),
+      entry: resolve(__dirname, 'install.ts'),
       name: 'work-flow',
       fileName: (format) => `dist/index.${format}.js`
     },
