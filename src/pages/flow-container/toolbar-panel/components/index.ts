@@ -9,6 +9,11 @@ interface comps {
   __hmrId ?: any
   __name ?: any
 }
+
+interface config {
+  sort: 'asc' | 'desc'
+}
+
 const modules : any = import.meta.globEager('./*.vue')
 const comps = ref<comps[]>([])
 for (const path in modules) {
@@ -17,17 +22,22 @@ for (const path in modules) {
 
 export const moreComps = ref<comps[]>([])
 
-export const toolbarConfig = ref<{
-  sort : 'asc' | 'desc'
-}>({
+export const toolbarConfig = ref<config>({
   sort: 'asc'
 })
 
-export const addMoreCmps = function(moreCompData:comps[]){
+export const setToolbarConfig = function(config:config){
+  toolbarConfig.value = {
+    ...toolbarConfig,
+    ...config
+  }
+}
+
+export const addToolMoreComps = function(moreCompData:comps[]){
   moreComps.value.push(...moreCompData)
 }
 
-export const addComps = function(compData:comps[]){
+export const addToolComps = function(compData:comps[]){
   comps.value.push(...compData)
 }
 

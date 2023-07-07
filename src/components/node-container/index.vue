@@ -9,8 +9,13 @@
 </template>
 
 <script setup>
-  import { getCurrentInstance, computed, ref, watch, nextTick, onMounted } from 'vue'
+  import { getCurrentInstance, computed, ref, watch, nextTick, onMounted,defineOptions } from 'vue'
   import {NodeResizer} from '@vue-flow/node-resizer'
+  
+  defineOptions({
+    name:'nodeContainer'
+  })
+  
   const isDbl = ref(false)
   const {parent} = getCurrentInstance()
   const currentNode = ref()

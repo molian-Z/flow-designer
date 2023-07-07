@@ -21,8 +21,22 @@
     useMixins
   } from './nodeMixins'
   defineOptions({
+    category: 'basicFields',
+    index: 2,
     name: 'endWidget',
-    type: 'end'
+    type: 'end',
+    icon: 'node-end',
+    options: {
+      name: '',
+      label: 'endNode',
+      customClass: '',
+      hidden: false,
+      position: ['Left'],
+      pTopClass: '',
+      pLeftClass: '',
+      pRightClass: '',
+      pBottomClass: ''
+    }
   })
   const {
     widget

@@ -21,8 +21,22 @@
     useMixins
   } from './nodeMixins'
   defineOptions({
+    category: 'basicFields',
+    index: 0,
     name: 'startWidget',
     type: 'start',
+    icon: 'node-start',
+    options: {
+      name: '',
+      label: 'startNode',
+      customClass: '',
+      hidden: false,
+      position: ['Right'],
+      pTopClass: '',
+      pLeftClass: '',
+      pRightClass: '',
+      pBottomClass: ''
+    }
   })
 
 

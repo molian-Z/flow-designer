@@ -29,6 +29,7 @@
   import { $t } from '@/utils/i18n'
   import {
     ref,
+    computed,
     onMounted,
     defineOptions
   } from 'vue'
@@ -37,17 +38,26 @@
   defineOptions({
     name:'leftPanel'
   })
-  
-  const widgetsCategory = ref({})
-  const activeNames = ref([])
   let id = 0
-
   function getId() {
     return `dndnode_${id++}`
   }
-
-  onMounted(() => {
-    loadWidgets()
+  
+  const widgetsCategory = computed(()=>{
+    const widgetsCates = {}
+    for (let key in widgetsConfig.value) {
+      widgetsCates[key] = widgetsConfig.value[key].map(fld => {
+        return {
+          key: getId(),
+          ...fld,
+          displayName: fld.type
+        }
+      })
+    }
+    return widgetsCates
+  })
+  const activeNames = computed(()=>{
+    return Object.keys(widgetsConfig.value)
   })
 
   function onDragStart(event, node) {
@@ -60,19 +70,6 @@
 
   function getWidgetLabel(widget) {
     return $t('pages.leftPanel.components.'+widget.type) || widget.label
-  }
-
-  function loadWidgets() {
-    for (let key in widgetsConfig.value) {
-      widgetsCategory.value[key] = widgetsConfig.value[key].map(fld => {
-        return {
-          key: getId(),
-          ...fld,
-          displayName: fld.type
-        }
-      })
-      activeNames.value.push(key)
-    }
   }
 </script>
 

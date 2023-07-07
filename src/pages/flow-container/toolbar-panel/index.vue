@@ -37,19 +37,24 @@
   })
   const setVisualRef = function (data : any) {
     const selectedDom = getParentNodes(data.event.target)
-    currentNode.value = data
-    if (visualRef.value === selectedDom && isPopover.value) {
-      isPopover.value = false
-    } else {
-      visualRef.value = selectedDom
-      isPopover.value = true
+    if (selectedDom) {
+      currentNode.value = data
+      if (visualRef.value === selectedDom && isPopover.value) {
+        isPopover.value = false
+      } else {
+        visualRef.value = selectedDom
+        isPopover.value = true
+      }
     }
   }
-  
-  const getParentNodes = function(parentNode:any){
-    if(parentNode.__vnode.props.class !== 'node-container'){
+
+  const getParentNodes = function (parentNode : any) {
+    if (parentNode?.__vnode?.props.class !== 'node-container') {
+      if (!parentNode) {
+        return null
+      }
       return getParentNodes(parentNode.parentNode)
-    }else{
+    } else {
       return parentNode
     }
   }

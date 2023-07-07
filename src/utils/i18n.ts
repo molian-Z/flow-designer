@@ -39,4 +39,6 @@ export const $t = function(val:string){
   return langResource.value[val]
 }
 
+export {setLangData} from '@/lang/index'
+
 export default language

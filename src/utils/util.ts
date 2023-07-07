@@ -47,3 +47,26 @@ export const rgbaToArray = function (colorString:string) {
     } else { return null; }
   } else { return null; }
 }
+
+
+export const deepAssign:any = function(){
+  let data = JSON.parse(JSON.stringify(arguments[0]))
+  const recall = function(originalData:any,obj:any){
+    for (let key in obj) {
+      if(typeof obj[key] === 'object'){
+        if(!originalData[key]){
+          originalData[key] = {}
+        }
+        recall(originalData[key],obj[key])
+      }else{
+        originalData[key] = obj[key]
+      }
+    }
+    return originalData
+  }
+  for (var i = 1; i < arguments.length; i++) {
+    const obj = arguments[i]
+    data = recall(data,obj)
+  }
+  return data
+}

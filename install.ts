@@ -1,20 +1,22 @@
-/* pages */
 import type { App } from 'vue'
+import 'virtual:svg-icons-register'
 import 'color-gradient-picker-vue3/dist/style.css';
+/* pages */
 import JsonViewer from 'vue-json-viewer'
 import workFlowDesigner from '@/pages/index.vue'
 import topbarPanel from '@/pages/topbar-panel/index.vue'
 import leftPanel from '@/pages/left-panel/index.vue'
 import flowContainer from '@/pages/flow-container/index.vue'
-import 'virtual:svg-icons-register'
+
 import {
   setDark,
   i18n
 } from '@/utils/exposeConfig'
 
+/* components */
 import popover from '@/components/popover/index.vue'
-
 import svgIcon from '@/components/svg-icon/index.vue'
+import nodeContainer from '@/components/node-container/index.vue'
 
 
 const setConfig = function (config : any) {
@@ -31,6 +33,7 @@ workFlowDesigner.install = function (app : App, config : any) {
   app.component(flowContainer.name, flowContainer)
   app.component(popover.name, popover)
   app.component(svgIcon.name, svgIcon)
+  app.component(nodeContainer.name,nodeContainer)
   setConfig(config)
 }
 
@@ -52,6 +55,7 @@ flowContainer.install = function (app : App, config : any) {
   app.component(flowContainer.name, flowContainer)
   app.component(popover.name, popover)
   app.component(svgIcon.name, svgIcon)
+  app.component(nodeContainer.name,nodeContainer)
   setConfig(config)
 }
 
@@ -63,7 +67,8 @@ const install = (app : App, config : any) => {
     leftPanel,
     flowContainer,
     popover,
-    svgIcon
+    svgIcon,
+    nodeContainer
   ]
   components.forEach(component => {
     app.component(component.name, component)
@@ -80,8 +85,12 @@ export default {
   flowContainer
 }
 
+
+/* 开放API */
+
 export { setDark, i18n } from '@/utils/exposeConfig'
-export * from '@/pages/index.vue'
-export * from '@/pages/topbar-panel/index.vue'
-export * from '@/pages/left-panel/index.vue'
-export * from '@/pages/flow-container/index.vue'
+export { addTopComps } from '@/pages/topbar-panel/components/index'
+export { addToolComps, addToolMoreComps, setToolbarConfig } from '@/pages/flow-container/toolbar-panel/components/index'
+export { addNodeComps } from '@/pages/flow-container/workflow-widget/index'
+export { useMixins } from '@/pages/flow-container/workflow-widget/node/nodeMixins'
+export { Handle, Position } from '@vue-flow/core'
