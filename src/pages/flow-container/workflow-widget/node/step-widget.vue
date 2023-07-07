@@ -22,7 +22,7 @@
  } from './nodeMixins'
  defineOptions({
    category: 'basicFields',
-   index: -1,
+   index: 1,
    name: 'stepWidget',
    type: 'step',
    icon: 'node-step',
