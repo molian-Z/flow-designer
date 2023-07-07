@@ -3,10 +3,12 @@ import {
 } from 'vue'
 import { useCloned } from '@vueuse/core'
 
-export const languageObj = ref([])
-const langResources = ref([])
+import { deepAssign } from '@/utils/util'
+
+export const languageObj = ref<any[]>([])
+const langResources = ref<any>({})
 const langFiles = import.meta.globEager('./**/*.ts')
-const lang = ref()
+const lang = ref<string>()
 
 export const setLanguage = function(newLang:string){
   lang.value = newLang
@@ -55,3 +57,7 @@ export const langResource = computed(()=>{
   const { cloned } = useCloned(langResources.value[lang.value])
   return lang_revange(cloned.value)
 }) 
+
+export const setLangData = function(data:any){
+  langResources.value = deepAssign(langResources.value,data)
+}

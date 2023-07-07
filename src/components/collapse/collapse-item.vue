@@ -8,7 +8,9 @@
     </div>
     <collapse-transition>
       <div class="collapse-item-body" v-if="isOpened">
-        <slot></slot>
+        <div class="collapse-item-body__content">
+          <slot></slot>
+        </div>
       </div>
     </collapse-transition>
   </div>
@@ -72,7 +74,9 @@
     }
 
     >.collapse-item-body {
-      padding: 15px 5px;
+      >.collapse-item-body__content{
+        padding: 15px 5px;
+      }
     }
   }
 

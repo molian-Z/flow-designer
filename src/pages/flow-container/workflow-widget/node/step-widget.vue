@@ -21,8 +21,22 @@
    useMixins
  } from './nodeMixins'
  defineOptions({
+   category: 'basicFields',
+   index: -1,
    name: 'stepWidget',
-   type: 'step'
+   type: 'step',
+   icon: 'node-step',
+   options: {
+     name: '',
+     label: 'stepNode',
+     customClass: '',
+     hidden: false,
+     position: ['Left', 'Right'],
+     pTopClass: '',
+     pLeftClass: '',
+     pRightClass: '',
+     pBottomClass: ''
+   }
  })
  const {
    widget

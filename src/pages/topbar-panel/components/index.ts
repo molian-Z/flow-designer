@@ -1,5 +1,5 @@
 import { computed, ref } from 'vue'
-interface comps {
+declare interface comps {
   index ?: number
   name : string
   render : any
@@ -13,9 +13,11 @@ const comps = ref<comps[]>([])
 for (const path in modules) {
   comps.value.push(modules[path].default)
 }
-export const addCmps = ref<comps[]>([])
+export const addTopComps = function(compData:comps[]){
+  comps.value.push(...compData)
+}
 export default computed(() => {
-  const allComps = [...comps.value, ...addCmps.value]
+  const allComps = comps.value
   return allComps.sort((a : comps, b : comps) => {
     return a.index - b.index
   })

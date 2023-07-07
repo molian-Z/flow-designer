@@ -1,11 +1,28 @@
 {
   "compilerOptions": {
+    "ignoreDeprecations":"5.0",
+    "noImplicitThis": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
     "baseUrl": ".",
     "declarationDir": "./dist",
     "paths": {
       "@/*": [
         "src/*"
-      ],
+      ]
     },
     "types": [
 

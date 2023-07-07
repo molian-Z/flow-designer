@@ -3,7 +3,9 @@ import {
 } from '@vueuse/core'
 import {
   setLang,
-  currentLang
+  currentLang,
+  $t,
+  setLangData
 } from '@/utils/i18n'
 
 
@@ -16,9 +18,13 @@ export const setDark = function(val:boolean){
 export const i18n = <{
   setLang:any
   currentLang:string
+  $t:any
+  setLangData:any
 }>{
   setLang,
-  currentLang
+  currentLang,
+  $t,
+  setLangData
 }
 
 
