@@ -34,7 +34,7 @@
     return parent.proxy.$attrs.selected
   })
   const styles = computed(()=>{
-    return parent.proxy.$attrs.data.widget.style
+    return parent.proxy.$attrs.data.widget.options.style
   })
   
   onMounted(()=>{

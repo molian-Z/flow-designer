@@ -6,6 +6,10 @@
 
 正在开发中```
 
+> 2023-07-08 更新
+> 工具栏增加types选项可通过该选项配置该组件是在点击线['edge']时显示或者点击节点['node']时显示亦或者全选['node','edge']
+
+
 ### 跟Vue项目集成
 
 <br/>
@@ -231,6 +235,7 @@ testToolComp.vue
   import { defineOptions, defineProps, defineEmits, computed } from 'vue'
   defineOptions({
     name: 'fontWeight1',
+    types:['node','edge'],
     index: -1,
     split:true
   })
@@ -300,6 +305,7 @@ testToolComp.vue
   import { defineOptions } from 'vue'
   defineOptions({
     name: 'moreTest',
+    types:['node','edge'],
     index: -1,
   })
   

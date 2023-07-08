@@ -10,6 +10,7 @@
   defineOptions({
     name: 'fontWeight',
     index: 10,
+    types:['node','edge'],
     split:true
   })
 
@@ -29,21 +30,25 @@
   })
   
   const $emit = defineEmits(['change'])
+  
+  const getStyle = computed(()=>{
+    return props.currentNode.node ? props.currentNode.node.data.widget.options.style : props.currentNode.edge.data.widget.options.labelStyle
+  })
 
   const isActive = computed(() => {
-    return props.currentNode.node.data.widget.style.fontWeight === 'bold'
+    return getStyle.value.fontWeight === 'bold'
   })
 
   const setBold = function () {
-    if(props.currentNode.node.data.widget.style.fontWeight === 'bold'){
-      props.currentNode.node.data.widget.style.fontWeight = 500
+    if(getStyle.value.fontWeight === 'bold'){
+      getStyle.value.fontWeight = 500
     }else{
-      props.currentNode.node.data.widget.style.fontWeight = 'bold'
+      getStyle.value.fontWeight = 'bold'
     }
     
     $emit('change', {
       type: 'fontWeight',
-      value: props.currentNode.node.data.widget.style.fontWeight
+      value: getStyle.value.fontWeight
     })
   }
 </script>

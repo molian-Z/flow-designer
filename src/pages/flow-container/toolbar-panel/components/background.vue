@@ -14,12 +14,13 @@
 <script setup lang="ts">
   import popover from '@/components/popover/index.vue'
   import svgIcon from '@/components/svg-icon/index.vue'
-  import { defineOptions, defineProps, defineEmits, ref, computed } from 'vue'
+  import { defineOptions, defineProps, defineEmits, ref, computed, watch } from 'vue'
   import ColorPicker from 'color-gradient-picker-vue3';
   import { HEX2RGB, rgbaToArray } from '@/utils/util'
 
   defineOptions({
     name: 'background',
+    types:'node',
     index: 30
   })
 
@@ -37,15 +38,23 @@
       }
     }
   })
+  
+  const getComps = computed(()=>{
+    return props.currentNode.node ? props.currentNode.node : props.currentNode.edge
+  })
 
   const $emit = defineEmits(['change'])
 
   const visualRef = ref<any>(null)
-  const currentColor = ref<string>(props.currentNode.node.data.widget.style.background || window.getComputedStyle(props.currentNode.event.target).backgroundColor)
+  const currentColor = ref<string>(getComps.value.data.widget?.options.style?.background || window.getComputedStyle(props.currentNode.event.target).backgroundColor)
   const isPopover = ref<boolean>(false)
   const showPopover = function () {
     isPopover.value = !isPopover.value
   }
+  
+  watch(()=>props.currentNode,(newNode)=>{
+    currentColor.value = getComps.value.data.widget?.options.style?.background || window.getComputedStyle(props.currentNode.event.target).backgroundColor
+  })
   
   const computedColor = computed(() => {
     const colors:any = rgbaToArray(HEX2RGB(currentColor.value))
@@ -60,7 +69,7 @@
 
   const change = function (val : any) {
     currentColor.value = `rgb(${val.red},${val.green},${val.blue})`
-    props.currentNode.node.data.widget.style.background = currentColor.value
+    getComps.value.data.widget.options.style.background = currentColor.value
     $emit('change', {
       type: 'color',
       value: currentColor.value

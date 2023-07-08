@@ -24,9 +24,15 @@ export function useCompsDrag(flowList:any, historyRef:any, {
       label: 'custom label text',
       labelStyle: {
         fill: '#10b981',
-        fontWeight: 700
+        fontWeight: 500,
+        fontSize:'16px'
       },
+      labelBgStyle:{},
+      style:{},
+      labelBgPadding: [0, 0],
+      labelBgBorderRadius: 0,
       markerEnd: MarkerType.ArrowClosed,
+      markerStart:'',
       ...params
     }
     addEdges({
@@ -55,18 +61,18 @@ export function useCompsDrag(flowList:any, historyRef:any, {
   function onEdgeUpdate({
     edge,
     connection
-  }) {
+  }:any) {
     return updateEdge(edge, connection)
   }
   
   //连接线更新结束
-  function onEdgeUpdateEnd(edge) {
+  function onEdgeUpdateEnd(edge:any) {
     return console.log('end update', edge)
   }
   
 
   //左侧组件库拖动时执行
-  function onDragOver(event) {
+  function onDragOver(event:any) {
     event.preventDefault()
 
     if (event.dataTransfer) {
@@ -75,9 +81,7 @@ export function useCompsDrag(flowList:any, historyRef:any, {
   }
   
   //左侧组件库拖放至flow容器中执行
-  function onDrop(event) {
-    const node = {}
-    node.widget = JSON.parse(event.dataTransfer?.getData('application/vueflow'))
+  function onDrop(event:any) {
     const {
       left,
       top
@@ -87,13 +91,19 @@ export function useCompsDrag(flowList:any, historyRef:any, {
       x: event.clientX - left,
       y: event.clientY - top,
     })
-    let id = node.widget.type + '-' + node.widget.key + '_' + flowList.value.length
-    node.widget.options.name = id
-    node.widget.id = id
-    node.widget.style = {}
-    node.props = props
-    node.widget.position = position
-    node.type = 'node'
+    const widget = JSON.parse(event.dataTransfer?.getData('application/vueflow'))
+    let id = widget.type + '-' + widget.key + '_' + flowList.value.length
+    widget.options.name = id
+    widget.options.style = {}
+    const node = {
+      widget:{
+        ...widget,
+        id:id,
+        position
+      },
+      props,
+      type:'node'
+    }
     const newNode = {
       id: id,
       position,
