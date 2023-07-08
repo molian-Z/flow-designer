@@ -29,6 +29,8 @@
     nextTick
   } from 'vue'
 
+  import { getParentNodes } from '@/utils/util'
+
   defineOptions({
     name: 'popover'
   })
@@ -136,12 +138,16 @@
   
   onClickOutside(popoverRef, (e:any) => {
     const needClose = function(){
-      if(!props?.visualRef || e?.target?.__vnode.props.class === props?.visualRef?.__vnode.props.class){
-        return false
-      }else if(props?.visualRef?.contains(e.target)){
+      if(props.visualRef){
+        const selectedDom = getParentNodes(e.target,[props?.visualRef.className,'vue-flow__node','vue-flow__edge'])
+        if(selectedDom){
+          return false
+        }else{
+          return true
+        }
+      }else{
         return false
       }
-      return true
     }
     if (needClose()) {
       useDebounceFn(() => {

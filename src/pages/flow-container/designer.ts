@@ -9,7 +9,7 @@ import magicKeysData from './magicKeys.json'
 export default function({
   historyRef,
   $emit
-}) {
+}:any) {
   const keys = useMagicKeys()
   for (let key in magicKeysData) {
     const item = magicKeysData[key]

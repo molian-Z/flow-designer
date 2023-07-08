@@ -13,6 +13,7 @@
 <script setup lang="ts">
   import popover from '@/components/popover/index.vue'
   import components, { toolbarConfig } from './components/index'
+  import { getParentNodes } from '@/utils/util'
 
   import {
     defineOptions,
@@ -36,7 +37,8 @@
     setVisualRef(data)
   })
   const setVisualRef = function (data : any) {
-    const selectedDom = getParentNodes(data.event.target)
+    const selectedDoms = ['vue-flow__node','vue-flow__edge']
+    const selectedDom = getParentNodes(data.event.target,selectedDoms)
     if (selectedDom) {
       currentNode.value = data
       if (visualRef.value === selectedDom && isPopover.value) {
@@ -45,17 +47,6 @@
         visualRef.value = selectedDom
         isPopover.value = true
       }
-    }
-  }
-
-  const getParentNodes = function (parentNode : any) {
-    if (parentNode?.__vnode?.props.class !== 'node-container') {
-      if (!parentNode) {
-        return null
-      }
-      return getParentNodes(parentNode.parentNode)
-    } else {
-      return parentNode
     }
   }
 </script>

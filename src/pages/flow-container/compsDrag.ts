@@ -5,18 +5,18 @@ import {
   MarkerType
 } from '@vue-flow/core'
 
-export function useCompsDrag(flowList, historyRef, {
+export function useCompsDrag(flowList:any, historyRef:any, {
   project,
   addNodes,
   addEdges,
   updateEdge,
   vueFlowRef
-}) {
+}:any) {
   const { proxy } = getCurrentInstance()
   const props = proxy.$props
   
   // 连接线处理方案
-  function onConnected(params) {
+  function onConnected(params:any) {
     const id = 'edge-' + flowList.value.length
     const options = {
       name: id,
@@ -47,7 +47,7 @@ export function useCompsDrag(flowList, historyRef, {
   }
   
   //连接线更新开始
-  function onEdgeUpdateStart(edge) {
+  function onEdgeUpdateStart(edge:any) {
     return console.log('start update', edge)
   }
 
@@ -125,12 +125,12 @@ export function useCompsDrag(flowList, historyRef, {
   }
   
   //左侧组件库拖放结束时执行
-  function onNodeDragEnd(e) {
+  function onNodeDragEnd(e:any) {
     updateFlowPositionToId(e.node.id, e.node.position)
   }
   
   //更新flow位置并保存历史记录
-  function updateFlowPositionToId(id, position) {
+  function updateFlowPositionToId(id:string, position:any) {
     const node = vueFlowRef.value.__vnode.ctx.exposed.findNode(id)
     node.data.widget.position = position
     node.position = position
