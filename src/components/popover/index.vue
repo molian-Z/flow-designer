@@ -139,7 +139,7 @@
   onClickOutside(popoverRef, (e:any) => {
     const needClose = function(){
       if(props.visualRef){
-        const selectedDom = getParentNodes(e.target,[props?.visualRef.className,'vue-flow__node','vue-flow__edge'])
+        const selectedDom = getParentNodes(e.target,[props?.visualRef.className,'vue-flow__node','vue-flow__edge-textwrapper'])
         if(selectedDom){
           return false
         }else{

@@ -40,7 +40,7 @@
     setVisualRef(data)
   })
   const setVisualRef = function (data : any) {
-    const selectedDoms = ['vue-flow__node','vue-flow__edge']
+    const selectedDoms = ['vue-flow__node','vue-flow__edge-textwrapper']
     const selectedDom = getParentNodes(data.event.target,selectedDoms)
     if (selectedDom) {
       currentNode.value = data
