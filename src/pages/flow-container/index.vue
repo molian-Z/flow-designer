@@ -42,6 +42,7 @@
   
   import toolbarPanel from './toolbar-panel/index.vue'
   import CustomConnectionLine from './workflow-widget/line/index.vue'
+  import edgeLabelContainer from '@/components/edge-label-container/index.vue'
   /* import settingPanel from './setting-panel/index' */
   //register methods
   import {
@@ -52,7 +53,8 @@
     defineEmits,
     defineOptions,
     defineExpose,
-    provide
+    provide,
+    h
   } from 'vue'
   import initDesigner from './designer'
   import {
@@ -94,7 +96,8 @@
           return {
             ...widget.options,
             id: widget.id,
-            data: node
+            data: node,
+            label: ()=> h(edgeLabelContainer,{label:widget.options.label,vueFlowRef}),
           }
         } else if (widget) {
           return {

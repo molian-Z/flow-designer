@@ -1,6 +1,6 @@
 import type { App } from 'vue'
 import 'virtual:svg-icons-register'
-import 'color-gradient-picker-vue3/dist/style.css';
+import '@/components/color-gradient-picker-vue3/style.css';
 /* pages */
 import JsonViewer from 'vue-json-viewer'
 import workFlowDesigner from '@/pages/index.vue'

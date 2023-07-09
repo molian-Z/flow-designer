@@ -1,9 +1,11 @@
 import {
-  nextTick,watch,getCurrentInstance
+  nextTick,watch,getCurrentInstance,h
 } from 'vue'
 import {
   MarkerType
 } from '@vue-flow/core'
+
+import edgeLabelContainer from '@/components/edge-label-container/index.vue'
 
 export function useCompsDrag(flowList:any, historyRef:any, {
   project,
@@ -28,9 +30,10 @@ export function useCompsDrag(flowList:any, historyRef:any, {
         fontSize:'16px'
       },
       labelBgStyle:{},
+      labelShowBg:true,
       style:{},
-      labelBgPadding: [0, 0],
-      labelBgBorderRadius: 0,
+      labelBgPadding: [0,0],
+      labelBgBorderRadius: 5,
       markerEnd: MarkerType.ArrowClosed,
       markerStart:'',
       ...params
@@ -44,7 +47,8 @@ export function useCompsDrag(flowList:any, historyRef:any, {
           options
         }
       },
-      ...options
+      ...options,
+      label: ()=>h(edgeLabelContainer,{label:options.label,vueFlowRef}),
     })
     nextTick(() => {
       historyRef.commit()

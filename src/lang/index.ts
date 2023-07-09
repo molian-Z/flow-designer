@@ -6,7 +6,7 @@ import { useCloned } from '@vueuse/core'
 import { deepAssign } from '@/utils/util'
 
 export const languageObj = ref<any[]>([])
-const langResources = ref<any>({})
+export const langResources = ref<any>({})
 const langFiles = import.meta.globEager('./**/*.ts')
 const lang = ref<string>()
 

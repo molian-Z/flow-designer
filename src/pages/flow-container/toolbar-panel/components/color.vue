@@ -7,15 +7,15 @@
   </div>
   <popover class="color-picker-bg" :visualRef="visualRef" :insertBody="false" :vueFlowRef="vueFlowRef"
     v-model="isPopover">
-    <ColorPicker :color="computedColor" :on-end-change="(color:any) => change(color)"></ColorPicker>
+    <ColorPicker :color="computedColor" @onChange="change"></ColorPicker>
   </popover>
 </template>
 
 <script setup lang="ts">
   import popover from '@/components/popover/index.vue'
   import svgIcon from '@/components/svg-icon/index.vue'
-  import { defineOptions, defineProps, defineEmits, ref, computed, watch } from 'vue'
-  import ColorPicker from 'color-gradient-picker-vue3';
+  import { defineOptions, defineProps, defineEmits, ref, computed } from 'vue'
+ import ColorPicker from '@/components/color-gradient-picker-vue3/index.es'
   import { HEX2RGB, rgbaToArray } from '@/utils/util'
 
   defineOptions({
@@ -65,13 +65,13 @@
       red: colors[0],
       green: colors[1],
       blue: colors[2],
-      alpha: 1,
+      alpha: colors[3] ? colors[3] : 1,
     }
     return colorObj
   })
 
   const change = function (val : any) {
-    const color = `rgb(${val.red},${val.green},${val.blue})`
+    const color = val.style
     if (props.currentNode.node) {
       getStyle.value.color = color
     } else {
