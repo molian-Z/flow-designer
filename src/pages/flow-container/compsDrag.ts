@@ -17,8 +17,16 @@ export function useCompsDrag(flowList:any, historyRef:any, {
   const { proxy } = getCurrentInstance()
   const props = proxy.$props
   
-  // 连接线处理方案
+  //连线开始时(校验)
+  function onConnectStart(params:any){
+    //console.log(params)
+  }
+  
+  // 连接线处理
   function onConnected(params:any) {
+    if(params.source === params.target){
+      return false
+    }
     const id = 'edge-' + flowList.value.length
     const options = {
       name: id,
@@ -48,12 +56,22 @@ export function useCompsDrag(flowList:any, historyRef:any, {
         }
       },
       ...options,
+      id:id,
       label: ()=>h(edgeLabelContainer,{label:options.label,vueFlowRef}),
     })
     nextTick(() => {
       historyRef.commit()
     })
-    return
+    const vueFlow = vueFlowRef.value.__vnode.ctx.exposed
+    const snode = vueFlow.findNode(params.source)
+    snode.sourceEdges.push(id)
+    const tnode = vueFlow.findNode(params.target)
+    tnode.targetEdges.push(id)
+  }
+  
+  //连线结束时
+  function onConnectEnd(event:any){
+    //console.log(event)
   }
   
   //连接线更新开始
@@ -62,7 +80,7 @@ export function useCompsDrag(flowList:any, historyRef:any, {
   }
 
   //更新连接线时执行
-  function onEdgeUpdate({
+  function onEdgeUpdated({
     edge,
     connection
   }:any) {
@@ -98,7 +116,6 @@ export function useCompsDrag(flowList:any, historyRef:any, {
     const widget = JSON.parse(event.dataTransfer?.getData('application/vueflow'))
     let id = widget.type + '-' + widget.key + '_' + flowList.value.length
     widget.options.name = id
-    widget.options.style = {}
     const node = {
       widget:{
         ...widget,
@@ -154,9 +171,11 @@ export function useCompsDrag(flowList:any, historyRef:any, {
   }
 
   return {
+    onConnectStart,
     onConnected,
+    onConnectEnd,
     onEdgeUpdateStart,
-    onEdgeUpdate,
+    onEdgeUpdated,
     onEdgeUpdateEnd,
     onDragOver,
     onDrop,

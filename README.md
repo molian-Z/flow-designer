@@ -126,12 +126,9 @@ app.mount('#app')
 testNodeComp.vue
 
 <template>
-  <node-container :class="widget.options.customClass">
-    <svg-icon :icon-class="type.icon"></svg-icon>
+  <node-container :is-valid-connection="isValidConnection">
+    {{widget.options.label}}
   </node-container>
-  <template v-for="pItem in widget.options.position" :key="pItem">
-    <Handle :id="pItem" type="source" :position="Position[pItem]" :class="[widget.options['p'+pItem+'Class']]" />
-  </template>
 </template>
 
 
@@ -140,8 +137,6 @@ testNodeComp.vue
     defineOptions, getCurrentInstance
   } from 'vue'
   import {
-    Handle,
-    Position,
     useMixins
   } from '@molian-z/flow-designer'
   defineOptions({
@@ -168,6 +163,10 @@ testNodeComp.vue
   const {
     widget
   } = useMixins()
+  
+  const isValidConnection = function (){
+    return false
+  }
 </script>
 
 ```

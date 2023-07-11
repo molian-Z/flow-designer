@@ -21,7 +21,12 @@ interface widget {
   index ?: number
   name : string
   type : string
-  widget : any
+  options : any
+  icon ?: string
+  rules ?: {
+    source ?: boolean
+    target ?: boolean
+  }
 }
 
 export const addWidgets = function (widgetObj : widget) {
@@ -38,8 +43,8 @@ export const addWidgets = function (widgetObj : widget) {
 export default computed(() => {
   for (let key in widgetComps.value) {
     useSorted(widgetComps.value[key], (a, b) => {
-     return a.index - b.index
-    },{
+      return a.index - b.index
+    }, {
       dirty: true,
     })
   }

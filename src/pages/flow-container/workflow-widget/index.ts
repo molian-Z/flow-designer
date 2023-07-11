@@ -14,9 +14,10 @@ interface comps {
   index ?: number
   name : string
   type : string
-  options: any
-  category: string
+  options : any
+  category : string
   icon : string
+  rules : any
   render : any
   setup : any
   __file ?: any
@@ -25,15 +26,15 @@ interface comps {
 }
 
 export const addNodeComps = function (compData : comps[]) {
-  compData.forEach((comp:comps) =>{
+  compData.forEach((comp : comps) => {
     comps.value[comp.name] = comp
   })
 }
 
 export default computed(() => {
   for (let key in comps.value) {
-    const {index ,name ,type, options ,category ,icon } = comps.value[key]
-    addWidgets({index ,name ,type, options ,category ,icon})
+    const { index, name, type, options, category, icon, rules } : comps = comps.value[key]
+    addWidgets({ index, name, type, options, category, icon, rules })
   }
   return comps.value
 })

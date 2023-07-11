@@ -1,9 +1,10 @@
 <template>
   <div class="workflow-container">
     <div class="full-height-width dndflow" @drop="onDrop">
-      <VueFlow fit-view-on-init v-model="flowList" @nodeDragStop="onNodeDragEnd" @onedge-update="onEdgeUpdate"
-        @connect="onConnected" @edge-update-start="onEdgeUpdateStart" @edge-update-end="onEdgeUpdateEnd"
-        @dragover="onDragOver" :nodeTypes="nodeTypes">
+      <VueFlow fit-view-on-init :nodeTypes="nodeTypes" v-model="flowList"
+        @edge-update-start="onEdgeUpdateStart" @edge-update="onEdgeUpdated" @edge-update-end="onEdgeUpdateEnd"
+        @connectStart="onConnectStart" @connect="onConnected" @connectEnd="onConnectEnd"
+        @dragover="onDragOver" @nodeDragStop="onNodeDragEnd">
         <template #connection-line="{ sourceX, sourceY, targetX, targetY }">
           <CustomConnectionLine :source-x="sourceX" :source-y="sourceY" :target-x="targetX" :target-y="targetY" />
         </template>
@@ -54,7 +55,8 @@
     defineOptions,
     defineExpose,
     provide,
-    h
+    h,
+    onMounted
   } from 'vue'
   import initDesigner from './designer'
   import {
@@ -71,6 +73,10 @@
     vueFlowRef
   } = useVueFlow()
   provide('vueFlow', vueFlowRef)
+  onMounted(()=>{
+    vueFlowRef.value.__vnode.ctx.exposed.warningData = []
+    provide('vueFlowExpose', vueFlowRef.value.__vnode.ctx.exposed)
+  })
   const props = defineProps({
     designer: Object,
     modelValue: Array,
@@ -100,12 +106,16 @@
             label: ()=> h(edgeLabelContainer,{label:widget.options.label,vueFlowRef}),
           }
         } else if (widget) {
+          widget.sourceEdges = widget.sourceEdges || []
+          widget.targetEdges = widget.targetEdges || []
           return {
             id: widget.id,
             position: widget.position,
             type: widget.type,
             label: widget.options.label,
-            data: node
+            data: node,
+            sourceEdges:widget.sourceEdges,
+            targetEdges:widget.targetEdges
           }
         }
       })
@@ -145,9 +155,11 @@
   })
 
   const {
+    onConnectStart,
     onConnected,
+    onConnectEnd,
     onEdgeUpdateStart,
-    onEdgeUpdate,
+    onEdgeUpdated,
     onEdgeUpdateEnd,
     onDragOver,
     onDrop,
