@@ -2,11 +2,14 @@
   <div class="workflow-header">
     <div class="workflow-header__body">
       <div class="workflow-header__body-left">
-        <svg-icon icon-class="undo" class="color-svg-icon" style="margin-right: 15px;" @click="flowRef.historyRef.undo()"
-          :class="[!canUndo&&'disabled']"></svg-icon>
+        <svg-icon icon-class="undo" class="color-svg-icon" style="margin-right: 15px;"
+          @click="flowRef.historyRef.undo()" :class="[!canUndo&&'disabled']"></svg-icon>
         <svg-icon icon-class="redo" class="color-svg-icon" @click="flowRef.historyRef.redo()"
           :class="[!canRedo&&'disabled']"></svg-icon>
-          <slot name="left"></slot>    
+        <template v-for="comp in leftComponents" :key="comp.name">
+          <component :is="comp" :flowRef="flowRef" v-if="hiddenComponents.indexOf(comp.name) === -1"></component>
+        </template>
+        <slot name="left"></slot>
       </div>
       <div class="workflow-header__body-right">
         <slot name="right-left"></slot>
@@ -27,23 +30,24 @@
   } from 'vue'
   import svgIcon from '@/components/svg-icon/index.vue'
   import components from './components/index'
-  
+  import leftComponents from './left-components/index'
+
   defineOptions({
-    name:'topbarPanel'
+    name: 'topbarPanel'
   })
-  
+
   const props = defineProps({
     designer: Object,
     modelValue: Array,
     flowRef: {
       type: Object,
-      default: function() {
+      default: function () {
         return {}
       }
     },
-    hiddenComponents:{
-      type:Array,
-      default: function(){
+    hiddenComponents: {
+      type: Array,
+      default: function () {
         return []
       }
     },
@@ -76,8 +80,8 @@
           margin-right: 30px;
         }
       }
-      
-      .workflow-header__body-right{
+
+      .workflow-header__body-right {
         display: flex;
         align-items: center;
       }
@@ -93,9 +97,9 @@
           opacity: .5;
         }
       }
-      
-      .disabled{
-        color:var(--disbled-color);
+
+      .disabled {
+        color: var(--disbled-color);
         cursor: no-drop;
       }
     }

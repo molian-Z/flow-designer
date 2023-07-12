@@ -26,7 +26,7 @@
     overflow: hidden;
     margin: 0;
   }
-  @import 'color-gradient-picker-vue3/dist/style.css';
+  @import '@/components/color-gradient-picker-vue3/style.css';
   @import 'styles/index.scss';
   @import 'vue-json-viewer/style.css';
 </style>

@@ -1,9 +1,10 @@
 <template>
   <div class="workflow-container">
     <div class="full-height-width dndflow" @drop="onDrop">
-      <VueFlow fit-view-on-init v-model="flowList" @nodeDragStop="onNodeDragEnd" @onedge-update="onEdgeUpdate"
-        @connect="onConnected" @edge-update-start="onEdgeUpdateStart" @edge-update-end="onEdgeUpdateEnd"
-        @dragover="onDragOver" :nodeTypes="nodeTypes">
+      <VueFlow fit-view-on-init :nodeTypes="nodeTypes" v-model="flowList"
+        @edge-update-start="onEdgeUpdateStart" @edge-update="onEdgeUpdated" @edge-update-end="onEdgeUpdateEnd"
+        @connectStart="onConnectStart" @connect="onConnected" @connectEnd="onConnectEnd"
+        @dragover="onDragOver" @nodeDragStop="onNodeDragEnd">
         <template #connection-line="{ sourceX, sourceY, targetX, targetY }">
           <CustomConnectionLine :source-x="sourceX" :source-y="sourceY" :target-x="targetX" :target-y="targetY" />
         </template>
@@ -19,7 +20,7 @@
   </div>
 </template>
 
-<script setup name="workflowDesigner">
+<script setup name="workflowDesigner" lang="ts">
   //register components
   import {
     VueFlow,
@@ -42,6 +43,7 @@
   
   import toolbarPanel from './toolbar-panel/index.vue'
   import CustomConnectionLine from './workflow-widget/line/index.vue'
+  import edgeLabelContainer from '@/components/edge-label-container/index.vue'
   /* import settingPanel from './setting-panel/index' */
   //register methods
   import {
@@ -52,7 +54,9 @@
     defineEmits,
     defineOptions,
     defineExpose,
-    provide
+    provide,
+    h,
+    onMounted
   } from 'vue'
   import initDesigner from './designer'
   import {
@@ -67,11 +71,25 @@
     addEdges,
     updateEdge,
     vueFlowRef
-  } = useVueFlow()
+  }:any = useVueFlow()
   provide('vueFlow', vueFlowRef)
+  onMounted(()=>{
+    vueFlowRef.value.__vnode.ctx.exposed.warningData = []
+    provide('vueFlowExpose', vueFlowRef.value.__vnode.ctx.exposed)
+  })
   const props = defineProps({
-    designer: Object,
-    modelValue: Array,
+    designer: {
+      type:Object,
+      default:function(){
+        return{}
+      }
+    },
+    modelValue: {
+      type:Array,
+      default:function(){
+        return []
+      }
+    },
     topbarRef: {
       type: Object,
       default: function() {
@@ -80,12 +98,12 @@
     }
   })
   const $emit = defineEmits(['update:modelValue','command'])
-  const workflowToolbarRef = ref()
+  const workflowToolbarRef = ref<any>(null)
   
   /* 数据处理 */
   const flowList = computed({
     get() {
-      const list = props.modelValue.map(widget => {
+      const list = props.modelValue.map((widget:any) => {
         const node = {
           props,
           widget
@@ -94,26 +112,30 @@
           return {
             ...widget.options,
             id: widget.id,
-            data: node
+            data: node,
+            label: ()=> h(edgeLabelContainer,{label:widget.options.label,vueFlowRef}),
           }
         } else if (widget) {
+          widget.sourceEdges = widget.sourceEdges || []
+          widget.targetEdges = widget.targetEdges || []
           return {
             id: widget.id,
             position: widget.position,
             type: widget.type,
             label: widget.options.label,
-            data: node
+            data: node,
+            sourceEdges:widget.sourceEdges,
+            targetEdges:widget.targetEdges
           }
         }
       })
       return list
     },
     set(e) {
-      const newData = e.map(item => {
+      const newData = e.map((item:any) => {
         return item.data.widget
       })
       if (JSON.stringify(props.modelValue) !== JSON.stringify(newData)) {
-        $emit('update:modelValue', newData)
         historyData.value = newData
       }
     }
@@ -121,8 +143,9 @@
 
   const historyData = ref([])
 
-  watch(historyData, (val) => {
-    $emit('update:modelValue', val)
+  watch(historyData, (data:any) => {
+    isValidWarning(data)
+    $emit('update:modelValue', data)
   })
 
   /* history records */
@@ -134,7 +157,8 @@
 
   const {
     nodeTypes,
-    clearFlowData
+    clearFlowData,
+    isValidWarning
   } = initDesigner({
     designer: props.designer,
     historyRef,
@@ -142,9 +166,11 @@
   })
 
   const {
+    onConnectStart,
     onConnected,
+    onConnectEnd,
     onEdgeUpdateStart,
-    onEdgeUpdate,
+    onEdgeUpdated,
     onEdgeUpdateEnd,
     onDragOver,
     onDrop,

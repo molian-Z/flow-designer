@@ -2,15 +2,15 @@
   <dropdown ref="popcofirm" :activeName="languageName" @command="setLang" :disabled="!isSupported">
     <svg-icon icon-class="lang" class="color-svg-icon" :class="[!isSupported && 'disabled']" />
     <template #dropdown>
-      <dropdownItem>中文</dropdownItem>
-      <dropdownItem>English</dropdownItem>
+      <dropdownItem v-for="lang in languageObj" :key="lang.value">{{lang.label}}</dropdownItem>
     </template>
   </dropdown>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import {languageName, setLang, isSupported} from '@/utils/i18n'
   import { defineOptions } from 'vue'
+  import { languageObj } from '@/lang/index'
   defineOptions({
     name: 'selectedLange',
     index: 50

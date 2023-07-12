@@ -2,7 +2,7 @@
   <popover :visualRef="visualRef" :vueFlowRef="vueFlowRef" v-model="isPopover">
     <div class="toolbar-container" :class="[toolbarConfig.sort]">
       <template v-for="comp in components" :key="comp.name">
-        <div class="toolbar-item" :class="[comp.split && 'split']">
+        <div class="toolbar-item" :class="[comp.split && 'split']" v-if="showComp(comp)">
           <component :is="comp" :vueFlowRef="vueFlowRef" :currentNode="currentNode"></component>
         </div>
       </template>
@@ -13,6 +13,7 @@
 <script setup lang="ts">
   import popover from '@/components/popover/index.vue'
   import components, { toolbarConfig } from './components/index'
+  import { getParentNodes } from '@/utils/util'
 
   import {
     defineOptions,
@@ -29,14 +30,18 @@
   const isPopover = ref<boolean>(false)
   const { edgeClick, nodeClick } = vueFlowRef._object.hooks
   const currentNode = ref<any>(null)
+  const visualType = ref<'node' | 'edge'>('node')
   edgeClick.on((data : any) => {
+    visualType.value = 'edge'
     setVisualRef(data)
   })
   nodeClick.on((data : any) => {
+    visualType.value = 'node'
     setVisualRef(data)
   })
   const setVisualRef = function (data : any) {
-    const selectedDom = getParentNodes(data.event.target)
+    const selectedDoms = ['vue-flow__node','vue-flow__edge-textwrapper']
+    const selectedDom = getParentNodes(data.event.target,selectedDoms)
     if (selectedDom) {
       currentNode.value = data
       if (visualRef.value === selectedDom && isPopover.value) {
@@ -47,16 +52,9 @@
       }
     }
   }
-
-  const getParentNodes = function (parentNode : any) {
-    if (parentNode?.__vnode?.props.class !== 'node-container') {
-      if (!parentNode) {
-        return null
-      }
-      return getParentNodes(parentNode.parentNode)
-    } else {
-      return parentNode
-    }
+  
+  const showComp = function(comp:any){
+    return comp.types.indexOf(visualType.value) > -1
   }
 </script>
 

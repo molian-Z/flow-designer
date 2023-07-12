@@ -7,7 +7,7 @@
   </div>
   <popover class="color-picker-bg" :visualRef="visualRef" :insertBody="false" :vueFlowRef="vueFlowRef"
     v-model="isPopover">
-    <ColorPicker :color="computedColor" :on-end-change="(color:any) => change(color)"></ColorPicker>
+    <ColorPicker :color="computedColor" @onChange="change"></ColorPicker>
   </popover>
 </template>
 
@@ -15,11 +15,12 @@
   import popover from '@/components/popover/index.vue'
   import svgIcon from '@/components/svg-icon/index.vue'
   import { defineOptions, defineProps, defineEmits, ref, computed } from 'vue'
-  import ColorPicker from 'color-gradient-picker-vue3';
+  import ColorPicker from '@/components/color-gradient-picker-vue3/index.es';
   import { HEX2RGB, rgbaToArray } from '@/utils/util'
 
   defineOptions({
     name: 'background',
+    types: ['node', 'edge'],
     index: 30
   })
 
@@ -38,32 +39,57 @@
     }
   })
 
+  const getStyle = computed(() => {
+    return props.currentNode.node ? props.currentNode.node.data.widget.options.style : props.currentNode.edge.data.widget.options.labelBgStyle
+  })
+
+  const currentColor = computed(() => {
+    if (props.currentNode.node) {
+      return getStyle.value.backgroundColor || window.getComputedStyle(props.currentNode.event.target).backgroundColor
+    } else if (props.currentNode.edge) {
+      return getStyle.value.fill
+    }
+  })
+
   const $emit = defineEmits(['change'])
 
   const visualRef = ref<any>(null)
-  const currentColor = ref<string>(props.currentNode.node.data.widget.style.background || window.getComputedStyle(props.currentNode.event.target).backgroundColor)
   const isPopover = ref<boolean>(false)
   const showPopover = function () {
     isPopover.value = !isPopover.value
   }
-  
+
   const computedColor = computed(() => {
-    const colors:any = rgbaToArray(HEX2RGB(currentColor.value))
-    const colorObj = {
-      red: colors[0],
-      green: colors[1],
-      blue: colors[2],
-      alpha: 1,
-   }
-    return colorObj
+    const colors : any = rgbaToArray(HEX2RGB(currentColor.value))
+    if (colors) {
+      return {
+        red: colors[0],
+        green: colors[1],
+        blue: colors[2],
+        alpha: colors[3] ? colors[3] : 1,
+      }
+    }else{
+      return {
+        red:255,
+        green:255,
+        blus:255,
+        alpha:1
+      }
+    }
   })
 
   const change = function (val : any) {
-    currentColor.value = `rgb(${val.red},${val.green},${val.blue})`
-    props.currentNode.node.data.widget.style.background = currentColor.value
+    const bgColor = val.style
+    if (props.currentNode.node) {
+      getStyle.value.backgroundColor = bgColor
+    } else if (props.currentNode.edge) {
+      props.currentNode.edge.data.widget.options.labelBgPadding = [10,5]
+      getStyle.value.fill = bgColor
+    }
+    
     $emit('change', {
       type: 'color',
-      value: currentColor.value
+      value: bgColor
     })
   }
 </script>

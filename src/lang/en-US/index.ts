@@ -12,6 +12,13 @@ export default {
       copiedText: "Copied",
     }
   },
+  warning:{
+    MissingSource: 'Missing Source',
+    MissingTarget: 'Missing Target',
+    node:'Node Name',
+    description:'Problem Details',
+    success:'Success'
+  },
   pages: {
     topbarPanel: {
       clearTitle: 'Are you sure you want to empty the canvas ?',

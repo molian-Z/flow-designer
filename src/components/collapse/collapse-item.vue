@@ -16,7 +16,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import {
     ref,
     defineProps,
@@ -30,10 +30,10 @@
     name: String,
     title: String
   })
-  const collapseItem = ref({})
-  const isOpened = ref(false)
+  const collapseItem = ref<any>({})
+  const isOpened = ref<boolean>(false)
   onMounted(() => {
-    watch(() => collapseItem.value.__vueParentComponent.parent.attrs.activeNames, (newVal) => {
+    watch(() => collapseItem.value.__vueParentComponent.parent.proxy.$attrs.activeNames, (newVal) => {
       if (newVal.indexOf(props.name) > -1) {
         isOpened.value = true
       } else {

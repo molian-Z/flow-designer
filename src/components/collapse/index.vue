@@ -4,9 +4,9 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import { ref } from 'vue'
-  const collapse = ref([])
+  const collapse = ref<any[]>([])
 </script>
 
 <style lang="scss">

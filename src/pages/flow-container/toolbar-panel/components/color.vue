@@ -7,7 +7,7 @@
   </div>
   <popover class="color-picker-bg" :visualRef="visualRef" :insertBody="false" :vueFlowRef="vueFlowRef"
     v-model="isPopover">
-    <ColorPicker :color="computedColor" :on-end-change="(color:any) => change(color)"></ColorPicker>
+    <ColorPicker :color="computedColor" @onChange="change"></ColorPicker>
   </popover>
 </template>
 
@@ -15,11 +15,12 @@
   import popover from '@/components/popover/index.vue'
   import svgIcon from '@/components/svg-icon/index.vue'
   import { defineOptions, defineProps, defineEmits, ref, computed } from 'vue'
-  import ColorPicker from 'color-gradient-picker-vue3';
+ import ColorPicker from '@/components/color-gradient-picker-vue3/index.es'
   import { HEX2RGB, rgbaToArray } from '@/utils/util'
 
   defineOptions({
     name: 'color',
+    types: ['node', 'edge'],
     index: 20
   })
 
@@ -41,29 +42,44 @@
   const $emit = defineEmits(['change'])
 
   const visualRef = ref<any>(null)
-  const currentColor = ref<string>(window.getComputedStyle(props.currentNode.event.target).color)
   const isPopover = ref<boolean>(false)
   const showPopover = function () {
     isPopover.value = !isPopover.value
   }
 
+  const getStyle = computed(() => {
+    return props.currentNode.node ? props.currentNode.node.data.widget.options.style : props.currentNode.edge.data.widget.options.labelStyle
+  })
+  
+  const currentColor = computed(()=>{
+    if(props.currentNode.node){
+      return getStyle.value.color || window.getComputedStyle(props.currentNode.event.target).color
+    }else if(props.currentNode.edge){
+      return getStyle.value.fill
+    }
+  })
+
   const computedColor = computed(() => {
-    const colors:any = rgbaToArray(HEX2RGB(currentColor.value))
+    const colors : any = rgbaToArray(HEX2RGB(currentColor.value))
     const colorObj = {
       red: colors[0],
       green: colors[1],
       blue: colors[2],
-      alpha: 1,
+      alpha: colors[3] ? colors[3] : 1,
     }
     return colorObj
   })
 
   const change = function (val : any) {
-    currentColor.value = `rgb(${val.red},${val.green},${val.blue})`
-    props.currentNode.node.data.widget.style.color = currentColor.value
+    const color = val.style
+    if (props.currentNode.node) {
+      getStyle.value.color = color
+    } else {
+      getStyle.value.fill = color
+    }
     $emit('change', {
       type: 'color',
-      value: currentColor.value
+      value: color
     })
   }
 </script>

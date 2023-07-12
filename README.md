@@ -6,6 +6,12 @@
 
 正在开发中```
 
+> 因正在开发部分功能可能会有数据调整,望见谅
+
+> 2023-07-08 更新
+> 工具栏增加types选项可通过该选项配置该组件是在点击线['edge']时显示或者点击节点['node']时显示亦或者全选['node','edge']
+
+
 ### 跟Vue项目集成
 
 <br/>
@@ -122,12 +128,9 @@ app.mount('#app')
 testNodeComp.vue
 
 <template>
-  <node-container :class="widget.options.customClass">
-    <svg-icon :icon-class="type.icon"></svg-icon>
+  <node-container :is-valid-connection="isValidConnection">
+    {{widget.options.label}}
   </node-container>
-  <template v-for="pItem in widget.options.position" :key="pItem">
-    <Handle :id="pItem" type="source" :position="Position[pItem]" :class="[widget.options['p'+pItem+'Class']]" />
-  </template>
 </template>
 
 
@@ -136,8 +139,6 @@ testNodeComp.vue
     defineOptions, getCurrentInstance
   } from 'vue'
   import {
-    Handle,
-    Position,
     useMixins
   } from '@molian-z/flow-designer'
   defineOptions({
@@ -145,6 +146,10 @@ testNodeComp.vue
     category: 'customFields',
     index: 0,
     type: 'yuan',
+    rules:{ //通过性校验
+      source:true,
+      target:true,
+    },
     icon: `<svg t="1688727637302" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2278" width="200" height="200"><path d="M514.048 128q79.872 0 149.504 30.208t121.856 82.432 82.432 122.368 30.208 150.016q0 78.848-30.208 148.48t-82.432 121.856-121.856 82.432-149.504 30.208-149.504-30.208-121.856-82.432-82.432-121.856-30.208-148.48q0-79.872 30.208-150.016t82.432-122.368 121.856-82.432 149.504-30.208z" p-id="2279"></path></svg>`,
     options: {
       name: '',
@@ -164,6 +169,10 @@ testNodeComp.vue
   const {
     widget
   } = useMixins()
+  
+  const isValidConnection = function (){
+    return false
+  }
 </script>
 
 ```
@@ -231,6 +240,7 @@ testToolComp.vue
   import { defineOptions, defineProps, defineEmits, computed } from 'vue'
   defineOptions({
     name: 'fontWeight1',
+    types:['node','edge'],
     index: -1,
     split:true
   })
@@ -300,6 +310,7 @@ testToolComp.vue
   import { defineOptions } from 'vue'
   defineOptions({
     name: 'moreTest',
+    types:['node','edge'],
     index: -1,
   })
   

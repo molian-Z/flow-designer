@@ -29,6 +29,8 @@
     nextTick
   } from 'vue'
 
+  import { getParentNodes } from '@/utils/util'
+
   defineOptions({
     name: 'popover'
   })
@@ -95,7 +97,7 @@
     cancel
   } = useConfirmDialog()
   onReveal((showRef) => {
-    const flowRect = props.vueFlowRef.getBoundingClientRect()
+    const flowRect = props.vueFlowRef?.getBoundingClientRect ? props.vueFlowRef.getBoundingClientRect() : document.querySelector('body').getBoundingClientRect()
     const {
       x,
       y,
@@ -136,12 +138,17 @@
   
   onClickOutside(popoverRef, (e:any) => {
     const needClose = function(){
-      if(!props?.visualRef || e?.target?.__vnode.props.class === props?.visualRef?.__vnode.props.class){
-        return false
-      }else if(props?.visualRef?.contains(e.target)){
+      if(props.visualRef){
+        const currentDom = props.vueFlowRef.__vnode ? [props?.visualRef.className,'vue-flow__node','vue-flow__edge-textwrapper'] : [props?.visualRef.__vnode.scopeId]
+        const selectedDom = getParentNodes(e.target,currentDom)
+        if(selectedDom){
+          return false
+        }else{
+          return true
+        }
+      }else{
         return false
       }
-      return true
     }
     if (needClose()) {
       useDebounceFn(() => {

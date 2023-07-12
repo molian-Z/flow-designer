@@ -5,11 +5,12 @@ import {
   whenever
 } from '@vueuse/core'
 import magicKeysData from './magicKeys.json'
+import { $t } from '@/utils/i18n'
 
 export default function({
   historyRef,
   $emit
-}) {
+}:any) {
   const keys = useMagicKeys()
   for (let key in magicKeysData) {
     const item = magicKeysData[key]
@@ -18,7 +19,7 @@ export default function({
     })
   }
 
-  const command = function(cmd) {
+  const command = function(cmd:string) {
     switch (cmd) {
       case 'undo':
         historyRef.canUndo.value && historyRef.undo()
@@ -45,8 +46,42 @@ export default function({
     historyRef.commit()
   }
   
+  function isValidWarning(widgets:any){
+    widgets.forEach((widget:any) =>{
+      if(widget.type !== 'edge'){
+        widget.isWarning = false
+        widget.warningData = []
+        if (widget.rules) {
+          if (widget.rules.source) {
+            if (widget.sourceEdges && widget.sourceEdges.length === 0 || !widget.sourceEdges) {
+              widget.warningData.push({
+                label:widget.options.label,
+                name:widget.options.name,
+                id:widget.id,
+                message:$t('warning.missingTarget')
+              })
+              widget.isWarning = true
+            }
+          }
+          if (widget.rules.target) {
+            if (widget.targetEdges && widget.targetEdges.length === 0 || !widget.targetEdges) {
+              widget.warningData.push({
+                label:widget.options.label,
+                name:widget.options.name,
+                id:widget.id,
+                message:$t('warning.missingSource')
+              })
+              widget.isWarning = true
+            }
+          }
+        }
+      }
+    })
+  }
+  
   return {
     nodeTypes,
-    clearFlowData
+    clearFlowData,
+    isValidWarning
   }
 }

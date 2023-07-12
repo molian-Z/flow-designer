@@ -18,7 +18,7 @@ export const HEX2RGB = function (hex : string) { //十六进制转为RGB
   }
 }
 
-export const rgbaToArray = function (colorString:string) {
+export const rgbaToArray = function (colorString : string) {
   var rgbOrgbaJudgeTag = /^([^\(]+)\([^\)]+\)$/i;
   var aaa = rgbOrgbaJudgeTag.exec(colorString);
   if (aaa !== null) {
@@ -49,16 +49,16 @@ export const rgbaToArray = function (colorString:string) {
 }
 
 
-export const deepAssign:any = function(){
+export const deepAssign : any = function () {
   let data = JSON.parse(JSON.stringify(arguments[0]))
-  const recall = function(originalData:any,obj:any){
+  const recall = function (originalData : any, obj : any) {
     for (let key in obj) {
-      if(typeof obj[key] === 'object'){
-        if(!originalData[key]){
+      if (typeof obj[key] === 'object') {
+        if (!originalData[key]) {
           originalData[key] = {}
         }
-        recall(originalData[key],obj[key])
-      }else{
+        recall(originalData[key], obj[key])
+      } else {
         originalData[key] = obj[key]
       }
     }
@@ -66,7 +66,21 @@ export const deepAssign:any = function(){
   }
   for (var i = 1; i < arguments.length; i++) {
     const obj = arguments[i]
-    data = recall(data,obj)
+    data = recall(data, obj)
   }
   return data
+}
+
+export const getParentNodes:any = function (parentNode : any, classes : string[]) {
+  const isBtn = classes.findIndex(item =>{
+    return parentNode?.classList?.contains(item) || parentNode?.__vnode?.scopeId === item
+  })
+  if (isBtn == -1) {
+    if (!parentNode) {
+      return null
+    }
+    return getParentNodes(parentNode.parentNode, classes)
+  } else {
+    return parentNode
+  }
 }

@@ -20,6 +20,7 @@
   import { defineOptions, defineProps, ref } from 'vue'
   defineOptions({
     name: 'more',
+    types:['node','edge'],
     index: 99999
   })
 
