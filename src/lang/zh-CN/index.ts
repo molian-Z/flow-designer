@@ -12,6 +12,13 @@ export default {
       copiedText: "复制成功",
     }
   },
+  warning:{
+    missingSource:'缺少上级节点',
+    missingTarget:'缺少下级节点',
+    node:'节点名称',
+    description:'问题详情',
+    success:'审查通过'
+  },
   pages: {
     topbarPanel: {
       clearTitle: '确定要清空画布么?',
@@ -33,7 +40,7 @@ export default {
       }
     },
     flowContainer: {
-
+      
     },
     toolbarPanel: {
 

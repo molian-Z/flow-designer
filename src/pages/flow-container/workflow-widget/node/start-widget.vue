@@ -20,8 +20,8 @@
     type: 'start',
     icon: 'node-start',
     rules:{
-      source:false,
-      target:true,
+      source:true,
+      target:false,
     },
     options: {
       name: '',

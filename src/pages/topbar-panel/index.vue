@@ -6,7 +6,9 @@
           @click="flowRef.historyRef.undo()" :class="[!canUndo&&'disabled']"></svg-icon>
         <svg-icon icon-class="redo" class="color-svg-icon" @click="flowRef.historyRef.redo()"
           :class="[!canRedo&&'disabled']"></svg-icon>
-        <svg-icon icon-class="warning" class="color-svg-icon warning-icon" v-if="isWarning"></svg-icon>
+        <template v-for="comp in leftComponents" :key="comp.name">
+          <component :is="comp" :flowRef="flowRef" v-if="hiddenComponents.indexOf(comp.name) === -1"></component>
+        </template>
         <slot name="left"></slot>
       </div>
       <div class="workflow-header__body-right">
@@ -28,6 +30,7 @@
   } from 'vue'
   import svgIcon from '@/components/svg-icon/index.vue'
   import components from './components/index'
+  import leftComponents from './left-components/index'
 
   defineOptions({
     name: 'topbarPanel'
@@ -54,10 +57,6 @@
   })
   const canRedo = computed(() => {
     return props?.flowRef?.historyRef?.canRedo.value
-  })
-  
-  const isWarning = computed(()=>{
-    return true
   })
 </script>
 
@@ -102,10 +101,6 @@
       .disabled {
         color: var(--disbled-color);
         cursor: no-drop;
-      }
-      
-      .warning-icon{
-        color:#ddc71f;
       }
     }
   }

@@ -20,7 +20,7 @@
   </div>
 </template>
 
-<script setup name="workflowDesigner">
+<script setup name="workflowDesigner" lang="ts">
   //register components
   import {
     VueFlow,
@@ -71,15 +71,25 @@
     addEdges,
     updateEdge,
     vueFlowRef
-  } = useVueFlow()
+  }:any = useVueFlow()
   provide('vueFlow', vueFlowRef)
   onMounted(()=>{
     vueFlowRef.value.__vnode.ctx.exposed.warningData = []
     provide('vueFlowExpose', vueFlowRef.value.__vnode.ctx.exposed)
   })
   const props = defineProps({
-    designer: Object,
-    modelValue: Array,
+    designer: {
+      type:Object,
+      default:function(){
+        return{}
+      }
+    },
+    modelValue: {
+      type:Array,
+      default:function(){
+        return []
+      }
+    },
     topbarRef: {
       type: Object,
       default: function() {
@@ -88,12 +98,12 @@
     }
   })
   const $emit = defineEmits(['update:modelValue','command'])
-  const workflowToolbarRef = ref()
+  const workflowToolbarRef = ref<any>(null)
   
   /* 数据处理 */
   const flowList = computed({
     get() {
-      const list = props.modelValue.map(widget => {
+      const list = props.modelValue.map((widget:any) => {
         const node = {
           props,
           widget
@@ -122,11 +132,10 @@
       return list
     },
     set(e) {
-      const newData = e.map(item => {
+      const newData = e.map((item:any) => {
         return item.data.widget
       })
       if (JSON.stringify(props.modelValue) !== JSON.stringify(newData)) {
-        $emit('update:modelValue', newData)
         historyData.value = newData
       }
     }
@@ -134,8 +143,9 @@
 
   const historyData = ref([])
 
-  watch(historyData, (val) => {
-    $emit('update:modelValue', val)
+  watch(historyData, (data:any) => {
+    isValidWarning(data)
+    $emit('update:modelValue', data)
   })
 
   /* history records */
@@ -147,7 +157,8 @@
 
   const {
     nodeTypes,
-    clearFlowData
+    clearFlowData,
+    isValidWarning
   } = initDesigner({
     designer: props.designer,
     historyRef,

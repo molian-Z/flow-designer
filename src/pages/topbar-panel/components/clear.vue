@@ -7,7 +7,7 @@
   </popconfirm>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import svgIcon from '@/components/svg-icon/index.vue'
   import popconfirm from '@/components/popconfirm/index.vue'
   import { $t } from '@/utils/i18n'

@@ -7,7 +7,7 @@
   </dropdown>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import {languageName, setLang, isSupported} from '@/utils/i18n'
   import { defineOptions } from 'vue'
   import { languageObj } from '@/lang/index'

@@ -55,9 +55,6 @@
     padding: 5px 10px;
     color:var(--vf-node-text);
     box-shadow: var(--box-shadow-lighter);
-  }
-  
-  .vue-flow__node{
     transition: box-shadow var(--transition);
   }
   
@@ -78,7 +75,7 @@
   }
   
   .vue-flow__node-start > .node-container{
-    background: var(--vf-handle-success);
+    background: var(--vf-handle-primary);
     color:var(--vf-node-text-selectable);
   }
   
@@ -88,7 +85,7 @@
   }
   
   .vue-flow__node-end > .node-container{
-    background: var(--vf-handle-danger);
+    background: var(--vf-handle-success);
     color:var(--vf-node-text-selectable);
   }
   

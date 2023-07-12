@@ -20,8 +20,8 @@
     type: 'end',
     icon: 'node-end',
     rules:{
-      source:true,
-      target:false,
+      source:false,
+      target:true,
     },
     options: {
       name: '',

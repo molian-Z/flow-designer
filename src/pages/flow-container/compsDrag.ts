@@ -59,14 +59,14 @@ export function useCompsDrag(flowList:any, historyRef:any, {
       id:id,
       label: ()=>h(edgeLabelContainer,{label:options.label,vueFlowRef}),
     })
-    nextTick(() => {
-      historyRef.commit()
-    })
     const vueFlow = vueFlowRef.value.__vnode.ctx.exposed
     const snode = vueFlow.findNode(params.source)
     snode.sourceEdges.push(id)
     const tnode = vueFlow.findNode(params.target)
     tnode.targetEdges.push(id)
+    nextTick(() => {
+      historyRef.commit()
+    })
   }
   
   //连线结束时
@@ -116,6 +116,8 @@ export function useCompsDrag(flowList:any, historyRef:any, {
     const widget = JSON.parse(event.dataTransfer?.getData('application/vueflow'))
     let id = widget.type + '-' + widget.key + '_' + flowList.value.length
     widget.options.name = id
+    widget.options.label = widget.options.label + '_'+ flowList.value.length
+    widget.options.style = {}
     const node = {
       widget:{
         ...widget,

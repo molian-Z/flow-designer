@@ -48,30 +48,18 @@
   })
 
   const selected = computed(() => {
-    return parent.attrs.selected
+    return parent.proxy.$attrs.selected
   })
   const styles = computed(() => {
-    return parent.attrs.data.widget.options.style
+    return parent.proxy.$attrs.data.widget.options.style
   })
 
   const widget = computed(() => {
-    return parent.attrs.data.widget
+    return parent.proxy.$attrs.data.widget
   })
 
   const isWarning = computed(() => {
-    if (widget.value.rules) {
-      if (widget.value.rules.source) {
-        if (widget.value.sourceEdges && widget.value.sourceEdges.length === 0 || !widget.value.sourceEdges) {
-          return true
-        }
-      }
-      if (widget.value.rules.target) {
-        if (widget.value.targetEdges && widget.value.targetEdges.length === 0 || !widget.value.targetEdges) {
-          return true
-        }
-      }
-    }
-    return false
+    return widget.value.isWarning
   })
 
   onMounted(() => {
@@ -84,7 +72,7 @@
     }
   })
 
-  parent.attrs.events.doubleClick((e : any) => {
+  parent.proxy.$attrs.events.doubleClick((e : any) => {
     currentNode.value = e.node
     isDbl.value = true
     nextTick(() => {
@@ -116,7 +104,7 @@
     }
 
     &.is-warning {
-      outline: 2px solid #000;
+      outline: 2px dashed var(--color-danger);
     }
   }
 </style>

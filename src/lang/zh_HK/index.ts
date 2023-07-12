@@ -12,6 +12,13 @@ export default {
       copiedText: '複製成功',
     }
   },
+  warning:{
+    missingSource:'缺少上級節點',
+    missingTarget:'缺少下級節點',
+    node:'節點名稱',
+    description:'問題詳情',
+    success:'審查通過'
+  },
   pages: {
     topbarPanel: {
       clearTitle: '確定要清空畫布麼？',

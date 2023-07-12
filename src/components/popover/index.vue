@@ -97,7 +97,7 @@
     cancel
   } = useConfirmDialog()
   onReveal((showRef) => {
-    const flowRect = props.vueFlowRef.getBoundingClientRect()
+    const flowRect = props.vueFlowRef?.getBoundingClientRect ? props.vueFlowRef.getBoundingClientRect() : document.querySelector('body').getBoundingClientRect()
     const {
       x,
       y,
@@ -139,7 +139,8 @@
   onClickOutside(popoverRef, (e:any) => {
     const needClose = function(){
       if(props.visualRef){
-        const selectedDom = getParentNodes(e.target,[props?.visualRef.className,'vue-flow__node','vue-flow__edge-textwrapper'])
+        const currentDom = props.vueFlowRef.__vnode ? [props?.visualRef.className,'vue-flow__node','vue-flow__edge-textwrapper'] : [props?.visualRef.__vnode.scopeId]
+        const selectedDom = getParentNodes(e.target,currentDom)
         if(selectedDom){
           return false
         }else{
