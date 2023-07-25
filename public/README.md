@@ -136,7 +136,7 @@ testNodeComp.vue
 
 <script setup lang="ts">
   import {
-    defineOptions, getCurrentInstance
+    defineOptions
   } from 'vue'
   import {
     useMixins
@@ -146,9 +146,9 @@ testNodeComp.vue
     category: 'customFields',
     index: 0,
     type: 'yuan',
-    rules:{ //通过性校验
-      source:true,
-      target:true,
+    rules: { //规则校验,漏连提醒
+      source: true,
+      target: true,
     },
     icon: `<svg t="1688727637302" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2278" width="200" height="200"><path d="M514.048 128q79.872 0 149.504 30.208t121.856 82.432 82.432 122.368 30.208 150.016q0 78.848-30.208 148.48t-82.432 121.856-121.856 82.432-149.504 30.208-149.504-30.208-121.856-82.432-82.432-121.856-30.208-148.48q0-79.872 30.208-150.016t82.432-122.368 121.856-82.432 149.504-30.208z" p-id="2279"></path></svg>`,
     options: {
@@ -164,14 +164,12 @@ testNodeComp.vue
     }
   })
 
-  const { type } = getCurrentInstance()
-
   const {
     widget
   } = useMixins()
-  
-  const isValidConnection = function (){
-    return false
+
+  const isValidConnection = function (connection : any) {
+    return connection.target.indexOf('start-dndnode') === -1 //不允许连接起始节点
   }
 </script>
 
@@ -240,8 +238,8 @@ testToolComp.vue
   import { defineOptions, defineProps, defineEmits, computed } from 'vue'
   defineOptions({
     name: 'fontWeight1',
+    index: 10,
     types:['node','edge'],
-    index: -1,
     split:true
   })
 
@@ -261,21 +259,25 @@ testToolComp.vue
   })
   
   const $emit = defineEmits(['change'])
+  
+  const getStyle = computed(()=>{
+    return props.currentNode.node ? props.currentNode.node.data.widget.options.style : props.currentNode.edge.data.widget.options.labelStyle
+  })
 
   const isActive = computed(() => {
-    return props.currentNode.node.data.widget.style.fontWeight === 'bold'
+    return getStyle.value.fontWeight === 'bold'
   })
 
   const setBold = function () {
-    if(props.currentNode.node.data.widget.style.fontWeight === 'bold'){
-      props.currentNode.node.data.widget.style.fontWeight = 500
+    if(getStyle.value.fontWeight === 'bold'){
+      getStyle.value.fontWeight = 500
     }else{
-      props.currentNode.node.data.widget.style.fontWeight = 'bold'
+      getStyle.value.fontWeight = 'bold'
     }
     
     $emit('change', {
       type: 'fontWeight',
-      value: props.currentNode.node.data.widget.style.fontWeight
+      value: getStyle.value.fontWeight
     })
   }
 </script>
