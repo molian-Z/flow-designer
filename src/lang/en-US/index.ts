@@ -38,6 +38,13 @@ export default {
         user: 'User'
       }
     },
+    settingPanel: {
+      title:'Setting Panel',
+      category:{
+        basic:'Basic Setting',
+        event:'Event Setting'
+      }
+    },
     flowContainer: {
 
     },

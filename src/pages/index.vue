@@ -8,19 +8,20 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import {
     ref,defineOptions, watch,defineExpose
   } from 'vue'
   import leftPanel from './left-panel/index.vue'
   import flowContainer from './flow-container/index.vue'
   import topbarPanel from './topbar-panel/index.vue'
+  import { useStorage } from '@vueuse/core'
   
   defineOptions({
     name:"workFlowDesigner"
   })
   
-  const workflowData = ref([])
+  const workflowData = useStorage<any[]>('workflow_data', [])
   const designer = ref({})
   const flowRef = ref({})
   const topbarRef = ref({})

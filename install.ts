@@ -91,6 +91,7 @@ export default {
 export { setDark, i18n } from '@/utils/exposeConfig'
 export { addTopComps } from '@/pages/topbar-panel/components/index'
 export { addToolComps, addToolMoreComps, setToolbarConfig } from '@/pages/flow-container/toolbar-panel/components/index'
+export { addSettingComps, addSettingCategory } from '@/pages/flow-container/setting-panel/components/index'
 export { addNodeComps } from '@/pages/flow-container/workflow-widget/index'
 export { useMixins } from '@/pages/flow-container/workflow-widget/node/nodeMixins'
 export { Handle, Position } from '@vue-flow/core'

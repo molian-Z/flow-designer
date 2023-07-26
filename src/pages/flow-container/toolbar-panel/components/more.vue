@@ -5,7 +5,7 @@
       <div class="more-list">
         <template v-for="moreComp in moreComps" :key="moreComp.name">
           <div class="more-list-item">
-            <component :is="moreComp" :vueFlowRef="vueFlowRef"></component>
+            <component :is="moreComp" :vueFlowRef="vueFlowRef" :optionsModel="optionsModel"></component>
           </div>
         </template>
       </div>
@@ -29,6 +29,12 @@
       type: Object,
       default: function () {
         return {}
+      }
+    },
+    optionsModel:{
+      type:Object,
+      default: function(){
+        return null
       }
     }
   })

@@ -37,10 +37,12 @@ export function useCompsDrag(flowList:any, historyRef:any, {
         fontWeight: 500,
         fontSize:'16px'
       },
-      labelBgStyle:{},
-      labelShowBg:true,
+      labelBgStyle:{
+        fill:'#FFFFFF',
+        filter: 'drop-shadow(var(--box-shadow-lighter))'
+      },
       style:{},
-      labelBgPadding: [0,0],
+      labelBgPadding: [10,5],
       labelBgBorderRadius: 5,
       markerEnd: MarkerType.ArrowClosed,
       markerStart:'',

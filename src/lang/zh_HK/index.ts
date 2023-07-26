@@ -38,6 +38,13 @@ export default {
         user: '用戶'
       }
     },
+    settingPanel: {
+      title:'配置面板',
+      category:{
+        basic:'基础配置',
+        event:'事件配置'
+      }
+    },
     flowContainer: {
     },
     toolbarPanel: {

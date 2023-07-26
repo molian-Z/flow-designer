@@ -17,6 +17,7 @@
     </div>
     <!-- <settingPanel></settingPanel> -->
     <toolbarPanel ref="workflowToolbarRef"></toolbarPanel>
+    <settingPanel ref="workflowSettingRef"></settingPanel>
   </div>
 </template>
 
@@ -42,9 +43,9 @@
 
   
   import toolbarPanel from './toolbar-panel/index.vue'
+  import settingPanel from './setting-panel/index.vue'
   import CustomConnectionLine from './workflow-widget/line/index.vue'
   import edgeLabelContainer from '@/components/edge-label-container/index.vue'
-  /* import settingPanel from './setting-panel/index' */
   //register methods
   import {
     ref,
@@ -99,6 +100,7 @@
   })
   const $emit = defineEmits(['update:modelValue','command'])
   const workflowToolbarRef = ref<any>(null)
+  const workflowSettingRef = ref<any>(null)
   
   /* 数据处理 */
   const flowList = computed({
@@ -203,6 +205,7 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
+    position: relative;
 
     .full-height-width {
       height: 100%;
