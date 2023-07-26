@@ -1,8 +1,9 @@
 import { computed, ref } from 'vue'
+import { $t } from '@/utils/i18n'
 interface comps {
   index ?: number
+  category : string
   name : string
-  split ?: boolean
   render : any
   setup : any
   __file ?: any
@@ -10,37 +11,63 @@ interface comps {
   __name ?: any
 }
 
-interface config {
-  sort: 'asc' | 'desc'
+interface category {
+  name : string
+  label : string
+  index ?: number
+  children ?: comps[]
 }
 
 const modules : any = import.meta.globEager('./*.vue')
 const comps = ref<comps[]>([])
+const category = ref<category[]>([{
+  name: 'basic',
+  label: $t('pages.settingPanel.category.basic'),
+  index: 0
+}, {
+  name: 'event',
+  label: $t('pages.settingPanel.category.event'),
+  index: 10
+}])
 for (const path in modules) {
   comps.value.push(modules[path].default)
 }
 
-export const settingConfig = ref<config>({
-  sort: 'asc'
-})
-
-export const setSettingConfig = function(config:config){
-  settingConfig.value = {
-    ...settingConfig,
-    ...config
-  }
-}
-
-export const addSettingComps = function(compData:comps[]){
+export const addSettingComps = function (compData : comps[]) {
   comps.value.push(...compData)
 }
 
+export const addSettingCategory = function (categoryData : category[]) {
+  category.value.push(...categoryData)
+}
+
 export default computed(() => {
-  return comps.value.sort((a : comps, b : comps) => {
-    if (settingConfig.value.sort === 'asc') {
-      return a.index - b.index
-    } else if (settingConfig.value.sort === 'desc') {
-      return b.index - a.index
+  const newComps = comps.value.sort((a : comps, b : comps) => {
+    return a.index - b.index
+  })
+  category.value.forEach(item =>{
+    delete item.children
+    item.label = $t('pages.settingPanel.category.'+item.name) || item.label
+  })
+  newComps.forEach((item:comps) => {
+    const i = category.value.findIndex((cateItem:category) => {
+      return cateItem.name === item.category
+    })
+    if (i > -1) {
+      if(!category.value[i].children){
+        category.value[i].children = []
+      }
+      category.value[i].children.push(item)
+    } else {
+      category.value.push({
+        name: item.category,
+        label : item.category,
+        index : 999,
+        children : [item],
+      })
     }
+  })
+  return category.value.sort((a : comps, b : comps) => {
+    return a.index - b.index
   })
 })

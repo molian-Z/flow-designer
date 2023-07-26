@@ -74,10 +74,10 @@
 
   parent.proxy.$attrs.events.doubleClick((e : any) => {
     currentNode.value = e.node
-    isDbl.value = true
+    /* isDbl.value = true
     nextTick(() => {
       textareaRef.value.focus()
-    })
+    }) */
   })
 </script>
 

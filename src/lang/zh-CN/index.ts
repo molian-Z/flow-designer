@@ -24,7 +24,6 @@ export default {
       clearTitle: '确定要清空画布么?',
       importData: '导入数据',
       exportData: '导出数据',
-
     },
     leftPanel: {
       collapseName: {
@@ -37,6 +36,17 @@ export default {
         step: '流程事件',
         end: '结束流程',
         user: '用户'
+      }
+    },
+    settingPanel: {
+      title:'配置面板',
+      category:{
+        basic:'基础配置',
+        event:'事件配置'
+      },
+      components:{
+        name:'名称',
+        label:'文本'
       }
     },
     flowContainer: {

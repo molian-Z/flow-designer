@@ -2,8 +2,8 @@
   <popover :visualRef="visualRef" :vueFlowRef="vueFlowRef" v-model="isPopover">
     <div class="toolbar-container" :class="[toolbarConfig.sort]">
       <template v-for="comp in components" :key="comp.name">
-        <div class="toolbar-item" :class="[comp.split && 'split']" v-if="showComp(comp)">
-          <component :is="comp" :vueFlowRef="vueFlowRef" :currentNode="currentNode"></component>
+        <div class="toolbar-item" :class="[comp.split && 'split']" v-if="showComp(comp) && optionsModel">
+          <component :is="comp" :vueFlowRef="vueFlowRef" :currentNode="currentNode" :optionsModel="optionsModel"></component>
         </div>
       </template>
     </div>
@@ -18,7 +18,8 @@
   import {
     defineOptions,
     ref,
-    inject
+    inject,
+    computed
   } from 'vue'
 
   defineOptions({
@@ -31,6 +32,19 @@
   const { edgeClick, nodeClick } = vueFlowRef._object.hooks
   const currentNode = ref<any>(null)
   const visualType = ref<'node' | 'edge'>('node')
+  const optionsModel = computed(() => {
+    if (currentNode.value) {
+      let data
+      if (currentNode.value.node) {
+        data = vueFlowRef.value.__vnode.ctx.exposed.findNode(currentNode.value.node.id)
+      } else {
+        data = vueFlowRef.value.__vnode.ctx.exposed.findEdge(currentNode.value.edge.id)
+      }
+      return data?.data?.widget?.options
+    } else {
+      return null
+    }
+  })
   edgeClick.on((data : any) => {
     visualType.value = 'edge'
     setVisualRef(data)

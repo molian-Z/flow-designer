@@ -36,11 +36,17 @@
       default: function () {
         return []
       }
+    },
+    optionsModel:{
+      type:Object,
+      default: function(){
+        return null
+      }
     }
   })
 
   const getStyle = computed(() => {
-    return props.currentNode.node ? props.currentNode.node.data.widget.options.style : props.currentNode.edge.data.widget.options.labelBgStyle
+    return props.optionsModel.labelBgStyle ? props.optionsModel.labelBgStyle : props.optionsModel.style
   })
 
   const currentColor = computed(() => {
@@ -83,7 +89,6 @@
     if (props.currentNode.node) {
       getStyle.value.backgroundColor = bgColor
     } else if (props.currentNode.edge) {
-      props.currentNode.edge.data.widget.options.labelBgPadding = [10,5]
       getStyle.value.fill = bgColor
     }
     

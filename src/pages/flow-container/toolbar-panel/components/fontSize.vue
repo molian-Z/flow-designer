@@ -32,6 +32,12 @@
       default: function () {
         return []
       }
+    },
+    optionsModel:{
+      type:Object,
+      default: function(){
+        return null
+      }
     }
   })
 
@@ -43,7 +49,7 @@
   const sizeListRef = ref<any>(null)
 
   const getStyle = computed(() => {
-    return props.currentNode.node ? props.currentNode.node.data.widget.options.style : props.currentNode.edge.data.widget.options.labelStyle
+    return props.optionsModel.labelStyle ? props.optionsModel.labelStyle : props.optionsModel.style
   })
 
   const fontSize = computed(() => {
