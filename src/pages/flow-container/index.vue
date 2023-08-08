@@ -103,7 +103,8 @@
   const workflowSettingRef = ref<any>(null)
   
   /* 数据处理 */
-  const flowList = computed({
+  const historyData = ref<any>(null)
+  const flowList = computed<any>({
     get() {
       const list = props.modelValue.map((widget:any) => {
         const node = {
@@ -137,13 +138,11 @@
       const newData = e.map((item:any) => {
         return item.data.widget
       })
-      if (JSON.stringify(props.modelValue) !== JSON.stringify(newData)) {
+      if (JSON.stringify(props.modelValue) !== JSON.stringify(newData) || historyData.value === null) {
         historyData.value = newData
       }
     }
   })
-
-  const historyData = ref([])
 
   watch(historyData, (data:any) => {
     isValidWarning(data)

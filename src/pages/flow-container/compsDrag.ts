@@ -1,5 +1,5 @@
 import {
-  nextTick,watch,getCurrentInstance,h
+  nextTick, watch, getCurrentInstance, h
 } from 'vue'
 import {
   MarkerType
@@ -7,24 +7,24 @@ import {
 
 import edgeLabelContainer from '@/components/edge-label-container/index.vue'
 
-export function useCompsDrag(flowList:any, historyRef:any, {
+export function useCompsDrag(flowList : any, historyRef : any, {
   project,
   addNodes,
   addEdges,
   updateEdge,
   vueFlowRef
-}:any) {
+} : any) {
   const { proxy } = getCurrentInstance()
   const props = proxy.$props
-  
+
   //连线开始时(校验)
-  function onConnectStart(params:any){
+  function onConnectStart(params : any) {
     //console.log(params)
   }
-  
+
   // 连接线处理
-  function onConnected(params:any) {
-    if(params.source === params.target){
+  function onConnected(params : any) {
+    if (params.source === params.target) {
       return false
     }
     const id = 'edge-' + flowList.value.length
@@ -35,17 +35,17 @@ export function useCompsDrag(flowList:any, historyRef:any, {
       labelStyle: {
         fill: '#10b981',
         fontWeight: 500,
-        fontSize:'16px'
+        fontSize: '16px'
       },
-      labelBgStyle:{
-        fill:'#FFFFFF',
+      labelBgStyle: {
+        fill: '#FFFFFF',
         filter: 'drop-shadow(var(--box-shadow-lighter))'
       },
-      style:{},
-      labelBgPadding: [10,5],
+      style: {},
+      labelBgPadding: [10, 5],
       labelBgBorderRadius: 5,
       markerEnd: MarkerType.ArrowClosed,
-      markerStart:'',
+      markerStart: '',
       ...params
     }
     addEdges({
@@ -58,26 +58,32 @@ export function useCompsDrag(flowList:any, historyRef:any, {
         }
       },
       ...options,
-      id:id,
-      label: ()=>h(edgeLabelContainer,{label:options.label,vueFlowRef}),
+      id: id,
+      label: () => h(edgeLabelContainer, { label: options.label, vueFlowRef }),
     })
     const vueFlow = vueFlowRef.value.__vnode.ctx.exposed
     const snode = vueFlow.findNode(params.source)
-    snode.sourceEdges.push(id)
+    if(!snode.data.widget.sourceEdges){
+      snode.data.widget.sourceEdges = []
+    }
+    snode.data.widget.sourceEdges.push(id)
     const tnode = vueFlow.findNode(params.target)
-    tnode.targetEdges.push(id)
+    if(!tnode.data.widget.targetEdges){
+      tnode.data.widget.targetEdges = []
+    }
+    tnode.data.widget.targetEdges.push(id)
     nextTick(() => {
       historyRef.commit()
     })
   }
-  
+
   //连线结束时
-  function onConnectEnd(event:any){
+  function onConnectEnd(event : any) {
     //console.log(event)
   }
-  
+
   //连接线更新开始
-  function onEdgeUpdateStart(edge:any) {
+  function onEdgeUpdateStart(edge : any) {
     return console.log('start update', edge)
   }
 
@@ -85,32 +91,32 @@ export function useCompsDrag(flowList:any, historyRef:any, {
   function onEdgeUpdated({
     edge,
     connection
-  }:any) {
+  } : any) {
     return updateEdge(edge, connection)
   }
-  
+
   //连接线更新结束
-  function onEdgeUpdateEnd(edge:any) {
+  function onEdgeUpdateEnd(edge : any) {
     return console.log('end update', edge)
   }
-  
+
 
   //左侧组件库拖动时执行
-  function onDragOver(event:any) {
+  function onDragOver(event : any) {
     event.preventDefault()
 
     if (event.dataTransfer) {
       event.dataTransfer.dropEffect = 'move'
     }
   }
-  
+
   //左侧组件库拖放至flow容器中执行
-  function onDrop(event:any) {
+  function onDrop(event : any) {
     const {
       left,
       top
     } = vueFlowRef.value.getBoundingClientRect()
-  
+
     const position = project({
       x: event.clientX - left,
       y: event.clientY - top,
@@ -118,16 +124,16 @@ export function useCompsDrag(flowList:any, historyRef:any, {
     const widget = JSON.parse(event.dataTransfer?.getData('application/vueflow'))
     let id = widget.type + '-' + widget.key + '_' + flowList.value.length
     widget.options.name = id
-    widget.options.label = widget.options.label + '_'+ flowList.value.length
+    widget.options.label = widget.options.label + '_' + flowList.value.length
     widget.options.style = {}
     const node = {
-      widget:{
+      widget: {
         ...widget,
-        id:id,
+        id: id,
         position
       },
       props,
-      type:'node'
+      type: 'node'
     }
     const newNode = {
       id: id,
@@ -152,20 +158,20 @@ export function useCompsDrag(flowList:any, historyRef:any, {
             updateFlowPositionToId(node.id, node.position)
           }
         }, {
-          deep: true,
-          flush: 'post'
-        },
+        deep: true,
+        flush: 'post'
+      },
       )
     })
   }
-  
+
   //左侧组件库拖放结束时执行
-  function onNodeDragEnd(e:any) {
+  function onNodeDragEnd(e : any) {
     updateFlowPositionToId(e.node.id, e.node.position)
   }
-  
+
   //更新flow位置并保存历史记录
-  function updateFlowPositionToId(id:string, position:any) {
+  function updateFlowPositionToId(id : string, position : any) {
     const node = vueFlowRef.value.__vnode.ctx.exposed.findNode(id)
     node.data.widget.position = position
     node.position = position
