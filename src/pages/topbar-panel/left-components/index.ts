@@ -13,7 +13,7 @@ const comps = ref<comps[]>([])
 for (const path in modules) {
   comps.value.push(modules[path].default)
 }
-export const addTopComps = function(compData:comps[]){
+export const addLeftTopComps = function(compData:comps[]){
   comps.value.push(...compData)
 }
 export default computed(() => {

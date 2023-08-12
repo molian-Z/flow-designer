@@ -20,9 +20,11 @@ import nodeContainer from '@/components/node-container/index.vue'
 
 
 const setConfig = function (config : any) {
-  setDark(config.setDark)
-  if (!!config.setLang) {
-    i18n.setLang(config.setLang)
+  if(config){
+    setDark(config.setDark)
+    if (!!config.setLang) {
+      i18n.setLang(config.setLang)
+    }
   }
 }
 
@@ -90,6 +92,7 @@ export default {
 
 export { setDark, i18n } from '@/utils/exposeConfig'
 export { addTopComps } from '@/pages/topbar-panel/components/index'
+export { addLeftTopComps } from '@/pages/topbar-panel/left-components/index'
 export { addToolComps, addToolMoreComps, setToolbarConfig } from '@/pages/flow-container/toolbar-panel/components/index'
 export { addSettingComps, addSettingCategory } from '@/pages/flow-container/setting-panel/components/index'
 export { addNodeComps } from '@/pages/flow-container/workflow-widget/index'

@@ -34,8 +34,6 @@
     }
   })
   
-  
-  
   const stringSvg = props?.iconClass?.length < 100 ? '': {
     render: () => {
       return h(compile(iconName.value));
