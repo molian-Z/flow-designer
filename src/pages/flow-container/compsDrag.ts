@@ -12,7 +12,8 @@ export function useCompsDrag(flowList : any, historyRef : any, {
   addNodes,
   addEdges,
   updateEdge,
-  vueFlowRef
+  vueFlowRef,
+  vueFlowExpose
 } : any) {
   const { proxy } = getCurrentInstance()
   const props = proxy.$props
@@ -61,7 +62,7 @@ export function useCompsDrag(flowList : any, historyRef : any, {
       id: id,
       label: () => h(edgeLabelContainer, { label: options.label, vueFlowRef }),
     })
-    const vueFlow = vueFlowRef.value.__vnode.ctx.exposed
+    const vueFlow = vueFlowExpose
     const snode = vueFlow.findNode(params.source)
     if(!snode.data.widget.sourceEdges){
       snode.data.widget.sourceEdges = []
@@ -145,7 +146,7 @@ export function useCompsDrag(flowList : any, historyRef : any, {
     addNodes(newNode)
     // align node position after drop, so it's centered to the mouse
     nextTick(() => {
-      const node = vueFlowRef.value.__vnode.ctx.exposed.findNode(newNode.id)
+      const node = vueFlowExpose.findNode(newNode.id)
       const stop = watch(
         () => node.dimensions,
         (dimensions) => {
@@ -172,7 +173,7 @@ export function useCompsDrag(flowList : any, historyRef : any, {
 
   //更新flow位置并保存历史记录
   function updateFlowPositionToId(id : string, position : any) {
-    const node = vueFlowRef.value.__vnode.ctx.exposed.findNode(id)
+    const node = vueFlowExpose.findNode(id)
     node.data.widget.position = position
     node.position = position
     nextTick(() => {

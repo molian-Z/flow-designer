@@ -45,7 +45,7 @@
   const command = function (cmd : string) {
     const options : any = {}
     showLoading.value = true
-    const vueFlowRefMethods = props.flowRef.vueFlowRef.__vnode.ctx.exposed
+    const vueFlowRefMethods = props.flowRef.vueFlowExpose
     const SelectedElements = vueFlowRefMethods.getSelectedElements.value
     if(cmd === 'save2PDF'){
       vueFlowRefMethods.fitView({ padding: .25, includeHiddenNodes: false })

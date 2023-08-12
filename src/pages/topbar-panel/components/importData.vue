@@ -40,7 +40,7 @@
           }
         }
       })
-      props.flowRef.vueFlowRef.__vnode.ctx.exposed.fitView()
+      props.flowRef.vueFlowExpose.fitView()
     }catch(e){
       alert('数据格式有误')
     }

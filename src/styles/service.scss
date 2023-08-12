@@ -40,13 +40,15 @@ input,textarea{
     justify-content: center;
     align-items: center;
     .setting-editor__label{
-      width:100px;
+      width:80px;
       font-size: 13px;
     }
     .setting-editor__content{
       height: 28px;
+      width: 180px;
       input{
         line-height: 24px;
+        width: 100%;
         padding: 0 10px;
       }
     }

@@ -1,6 +1,6 @@
 <template>
   <div class="collapse-item-container" ref="collapseItem">
-    <div class="collapse-item-header" @click="isOpened = !isOpened">
+    <div class="collapse-item-header" @click="clcikItem">
       <div class="title">{{title}}</div>
       <div class="arrow" :class="[isOpened?'':'rotate']">
         <svgIcon icon-class="arrow-down"></svgIcon>
@@ -20,33 +20,31 @@
   import {
     ref,
     defineProps,
-    defineExpose,
-    onMounted,
-    watch
+    inject,
+    computed
   } from 'vue'
   import collapseTransition from '@/components/collapse/collapse-transition.vue'
   import svgIcon from '@/components/svg-icon/index.vue'
+  
   const props = defineProps({
     name: String,
     title: String
   })
   const collapseItem = ref<any>({})
-  const isOpened = ref<boolean>(false)
-  onMounted(() => {
-    watch(() => collapseItem.value.__vueParentComponent.parent.proxy.$attrs.activeNames, (newVal) => {
-      if (newVal.indexOf(props.name) > -1) {
-        isOpened.value = true
-      } else {
-        isOpened.value = false
-      }
-    }, {
-      immediate: true
-    })
+  
+  const activeNames = inject('activeNames')
+  
+  const isOpened = computed(()=>{
+    return activeNames.value.indexOf(props.name) > -1
   })
-
-  defineExpose({
-    isOpened
-  })
+  
+  function clcikItem(){
+    if(activeNames.value.indexOf(props.name) > -1){
+      activeNames.value?.splice(activeNames.value.indexOf(props.name),1)
+    }else{
+      activeNames.value.push(props.name)
+    }
+  }
 </script>
 
 <style scoped lang="scss">

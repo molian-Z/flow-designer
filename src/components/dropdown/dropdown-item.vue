@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-  import { onMounted, ref, computed } from 'vue'
+  import { onMounted, ref, computed, inject } from 'vue'
   const activeNode = ref<boolean>(false)
   const itemRef = ref<any>(null)
   const props = defineProps({
@@ -17,8 +17,9 @@
   const modelValue = computed(()=>{
     return props.value ? props.value : itemRef?.value?.outerText
   })
+  const activeName = inject('activeName')
   onMounted(() => {
-    if(modelValue.value === itemRef.value.parentNode.__vnode.props.activeName){
+    if(modelValue.value === activeName){
       activeNode.value = true
     }
   })

@@ -1,6 +1,6 @@
 {
   "name": "@molian-z/flow-designer",
-  "version": "0.10.3",
+  "version": "0.10.6",
   "private": false,
   "author": "molian-Z",
   "homepage": "https://github.com/molian-Z/flow-designer#readme",
@@ -9,7 +9,7 @@
     "url": "git+https://github.com/molian-Z/flow-designer.git"
   },
   "main": "./dist/dist/index.umd.js",
-  "module": "./dist/dist/index.umd.js",
+  "module": "./dist/dist/index.es.js",
   "types": "./dist/dist/index.d.ts",
   "scripts": {
     "dev": "vite --host",

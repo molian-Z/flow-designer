@@ -46,6 +46,7 @@
   })
 
   const vueFlowRef = inject<any>('vueFlow')
+  const vueFlowExpose = inject<any>('vueFlowExpose')
   const settingRef = ref<HTMLElement | null | any>(null)
   const dragRef = ref<HTMLElement | null>(null)
   const positionStyle = useStorage<any>('setting-panel__position_style', null)
@@ -58,9 +59,9 @@
     if (currentNode.value) {
       let data
       if (currentNode.value.node) {
-        data = vueFlowRef.value.__vnode.ctx.exposed.findNode(currentNode.value.node.id)
+        data = vueFlowExpose.findNode(currentNode.value.node.id)
       } else {
-        data = vueFlowRef.value.__vnode.ctx.exposed.findEdge(currentNode.value.edge.id)
+        data = vueFlowExpose.findEdge(currentNode.value.edge.id)
       }
       return data?.data?.widget?.options
     } else {
@@ -109,7 +110,7 @@
 <style lang="scss">
   .setting-container {
     position: absolute;
-    min-width: 260px;
+    min-width: 300px;
     background-color: var(--bg-color);
     box-shadow: var(--box-shadow-light);
     border-radius: var(--border-radius-body);

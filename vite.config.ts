@@ -22,20 +22,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": resolve(__dirname, 'src'), // 路径别名
-      '#': resolve(__dirname, 'src/types'),
-      'vue': 'vue/dist/vue.esm-bundler.js'
+      '#': resolve(__dirname, 'src/types')
     },
-  },
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks: id => {
-          // 将 node_modules 中的代码单独打包成一个 JS 文件
-          if (id.includes('node_modules')) {
-            return 'vendor'
-          }
-        }
-      }
-    }
   }
 })

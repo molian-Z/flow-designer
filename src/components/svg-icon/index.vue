@@ -1,13 +1,14 @@
 <template>
-  <svg :class="svgClass" aria-hidden="true" v-if="props?.iconClass?.length < 100">
+  <svg :class="svgClass" aria-hidden="true" v-if="props?.iconClass?.length < 100" :style="{width:size,height:size}">
     <use :xlink:href="iconName" rel="external nofollow"></use>
     <title v-if="!!title">{{title}}</title>
   </svg>
-  <stringSvg :class="svgClass" v-else></stringSvg>
+ <!-- <stringSvg :class="svgClass" v-else></stringSvg> -->
+ <div :class="svgClass" :style="{width:size,height:size}" v-else v-html="stringSvg.template"></div>
 </template>
 
 <script lang="ts" setup>
-  import { defineOptions, defineProps, computed, h, compile } from 'vue'
+  import { defineOptions, defineProps, computed } from 'vue'
   defineOptions({
     name: 'SvgIcon'
   })
@@ -23,6 +24,10 @@
     title: {
       type: String,
       default: ''
+    },
+    size:{
+      type:Number,
+      default:18
     }
   })
 
@@ -35,9 +40,7 @@
   })
   
   const stringSvg = props?.iconClass?.length < 100 ? '': {
-    render: () => {
-      return h(compile(iconName.value));
-    },
+    template:iconName.value
   }
   
   const svgClass:any = computed(()=>{
@@ -59,5 +62,10 @@
     fill: currentColor;
     overflow: hidden;
     outline: none;
+    
+    :deep(svg){
+      width: inherit;
+      height: inherit;
+    }
   }
 </style>

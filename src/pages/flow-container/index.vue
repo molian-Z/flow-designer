@@ -66,6 +66,7 @@
   defineOptions({
     name: 'flowContainer'
   })
+  
   const {
     project,
     addNodes,
@@ -74,10 +75,7 @@
     vueFlowRef
   }:any = useVueFlow()
   provide('vueFlow', vueFlowRef)
-  onMounted(()=>{
-    vueFlowRef.value.__vnode.ctx.exposed.warningData = []
-    provide('vueFlowExpose', vueFlowRef.value.__vnode.ctx.exposed)
-  })
+  provide('vueFlowExpose', useVueFlow())
   const props = defineProps({
     designer: {
       type:Object,
@@ -181,7 +179,8 @@
     addNodes,
     addEdges,
     updateEdge,
-    vueFlowRef
+    vueFlowRef,
+    vueFlowExpose:useVueFlow()
   })
 
   defineExpose({
@@ -189,7 +188,8 @@
     vueFlowRef,
     flowList,
     flowData:historyData,
-    clearFlowData
+    clearFlowData,
+    vueFlowExpose:useVueFlow()
   })
 </script>
 

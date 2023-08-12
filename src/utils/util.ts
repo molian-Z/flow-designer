@@ -73,7 +73,7 @@ export const deepAssign : any = function () {
 
 export const getParentNodes:any = function (parentNode : any, classes : string[]) {
   const isBtn = classes.findIndex(item =>{
-    return parentNode?.classList?.contains(item) || parentNode?.__vnode?.scopeId === item
+    return parentNode?.classList?.contains(item)
   })
   if (isBtn == -1) {
     if (!parentNode) {

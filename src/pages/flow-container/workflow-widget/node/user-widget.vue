@@ -1,6 +1,6 @@
 <template>
   <node-container>
-    <svg-icon :icon-class="type.icon"></svg-icon>
+    <svg-icon :icon-class="type.icon" :size="widget.options.style.fontSize"></svg-icon>
   </node-container>
 </template>
 
@@ -11,6 +11,9 @@
   import {
     defineOptions, getCurrentInstance
   } from 'vue'
+  import {
+    useMixins
+  } from './nodeMixins'
   defineOptions({
     name: 'userWidget',
     index:0,
@@ -33,6 +36,10 @@
       pBottomClass: ''
     }
   })
-
+  
   const { type } = getCurrentInstance()
+  
+  const {
+    widget
+  } = useMixins()
 </script>

@@ -25,6 +25,7 @@
     defineOptions,
     defineProps,
     defineEmits,
+    provide
   } from 'vue'
 
   defineOptions({
@@ -42,6 +43,8 @@
       default:false
     }
   })
+  
+  provide('activeName', props.activeName)
   
   const dropdown = ref<any>({})
   const dropdownMenu = ref<any>({})
